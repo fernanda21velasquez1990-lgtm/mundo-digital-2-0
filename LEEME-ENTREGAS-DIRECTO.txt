@@ -1,0 +1,44 @@
+MUNDO DIGITAL 2.0 — PORTAL CLIENTE / ENTREGAS DIRECTO
+
+CORRECCIÓN:
+El portal ahora abre explícitamente la base real de Mundo Digital 2.0
+y lee ENTREGAS directamente por estos encabezados reales:
+
+ENTREGA_ID
+VENTA_ID
+CLIENTE_ID
+PRODUCTO_ID
+CUENTA_ID
+FECHA_ENTREGA
+TIPO_ENTREGA
+ARCHIVO_URL
+USUARIO_ENTREGADO
+CONTRASENA_ENTREGADA
+PERFIL_ENTREGADO
+PIN_ENTREGADO
+ESTADO
+
+Para ARCHIVO:
+- Muestra la entrega en Mi cuenta.
+- Si existe ARCHIVO_URL aparece:
+  📥 Abrir / Descargar archivo
+
+MARCADOR DE VERSIÓN:
+La respuesta del servidor incluye:
+MD20-ENTREGAS-DIRECTO-1
+
+INSTALACIÓN:
+A) APPS SCRIPT PRINCIPAL
+1. apps-script/Codigo.gs
+2. Reemplazar Código.gs de Mundo Digital 2.0 - Sistema.
+3. Ctrl+S.
+4. Implementar > Administrar implementaciones > lápiz > Nueva versión > Implementar.
+
+B) PÁGINA
+1. Reemplazar js/mi-cuenta.js en la carpeta local.
+2. Subir a GitHub:
+   git add .
+   git commit -m "Corrige portal cliente lectura directa de entregas"
+   git push
+3. Esperar Vercel.
+4. Cerrar sesión del portal y volver a entrar.

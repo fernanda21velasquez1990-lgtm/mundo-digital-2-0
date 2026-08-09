@@ -1,0 +1,33 @@
+MUNDO DIGITAL 2.0 — URL APPS SCRIPT PRINCIPAL CORREGIDA
+
+Se reemplazó la URL antigua por la nueva implementación principal en:
+
+- js/configuracion.js
+- js/tienda-config.js
+
+NUEVA URL:
+https://script.google.com/macros/s/AKfycbzlbNSOhEnIMk2kC9kg4yw1NdEtU9He_X0sAzb4-w7EWMVAF4EAU9_8327Zs45czbCM/exec
+
+INSTALACIÓN:
+1. Extrae este ZIP en tu carpeta local del proyecto.
+2. Acepta reemplazar archivos.
+3. Abre VS Code en la carpeta correcta.
+4. Ejecuta:
+
+git status
+git add .
+git commit -m "Actualiza URL Apps Script principal del portal cliente"
+git push
+
+5. Espera que Vercel quede Ready.
+6. Abre:
+https://mundo-digital-2-0.vercel.app/mi-cuenta.html
+7. Haz Ctrl+F5.
+8. Cierra sesión y vuelve a entrar con celular + token.
+
+RESULTADO ESPERADO EN LA FRANJA:
+Versión servidor: MD20-DIAGNOSTICO-2
+
+Y para el cliente de prueba:
+Entregas encontradas: 1 o más
+Servicios construidos: 1 o más

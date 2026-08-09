@@ -1,0 +1,34 @@
+MUNDO DIGITAL 2.0 — PORTAL CLIENTE / SERVICIOS CORREGIDOS
+
+CORRECCIÓN:
+El login por celular + token funcionaba, pero el portal mostraba 0 servicios cuando el cliente tenía datos en ENTREGAS/VENTAS/CUENTAS_DIGITALES y no en SUSCRIPCIONES.
+
+AHORA MI CUENTA LEE:
+- SUSCRIPCIONES
+- CANVA
+- ENTREGAS
+- VENTAS
+- CUENTAS_DIGITALES
+
+PARA ENTREGAS MUESTRA CUANDO EXISTAN:
+- Producto
+- Usuario/correo
+- Contraseña
+- Perfil
+- PIN
+- Plataforma/tipo
+- Fecha de entrega/compra
+- Fecha de vencimiento de la cuenta vinculada
+- Días restantes
+- Estado
+- Precio de referencia de la venta
+
+También permite Quiero renovar / No renovar para servicios obtenidos desde ENTREGAS.
+
+INSTALACIÓN:
+1. En Apps Script principal Mundo Digital 2.0 - Sistema reemplaza Código.gs por apps-script/Codigo.gs.
+2. Ctrl+S.
+3. Implementar > Administrar implementaciones > lápiz > Nueva versión > Implementar.
+4. No es necesario cambiar TelegramAdmin.gs.
+5. La página mi-cuenta.html no necesita cambio para esta corrección.
+6. Vuelve a iniciar sesión con celular + token.

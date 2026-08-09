@@ -5519,6 +5519,89 @@ function consultarPortalClienteLoginMD20_(telefono,token){
       });
     });
 
+  // Respaldo: mostrar también servicios entregados aunque todavía no exista
+  // una fila formal en SUSCRIPCIONES. Esto conecta el portal con el flujo
+  // real VENTA -> PAGO -> ENTREGA que ya usa Mundo Digital 2.0.
+  const idsYaMostrados={};
+  servicios.forEach(x=>{
+    if(x&&x.id)idsYaMostrados[String(x.id)]=true;
+  });
+
+  const cuentasPorId={};
+  listarInventarioDigitalMD20_().forEach(c=>{
+    cuentasPorId[String(c.id||'')]=c;
+  });
+
+  const ventasPorId={};
+  listarVentasMD20_().forEach(v=>{
+    ventasPorId[String(v.id||'')]=v;
+  });
+
+  listarEntregasMD20_()
+    .filter(e=>String(e.clienteId||'')===String(cliente.id||''))
+    .filter(e=>!['CANCELADA','ERROR','BLOQUEADA'].includes(String(e.estado||'').toUpperCase()))
+    .forEach(e=>{
+      const cuenta=cuentasPorId[String(e.cuentaId||'')]||{};
+      const venta=ventasPorId[String(e.ventaId||'')]||{};
+      const servicioId='ENTREGA-'+String(e.id||'');
+
+      // Evitar duplicar una cuenta si ya aparece por SUSCRIPCIONES/CANVA.
+      const yaExiste=servicios.some(s=>{
+        const mismoUsuario=String(s.usuarioCuenta||s.correo||'').trim() &&
+          String(s.usuarioCuenta||s.correo||'').trim()===String(e.usuarioEntregado||cuenta.usuarioCuenta||'').trim();
+        const mismoNombre=String(s.nombre||'').trim() &&
+          String(s.nombre||'').trim()===String(e.productoNombre||venta.productoNombre||cuenta.productoNombre||'').trim();
+        return mismoUsuario && mismoNombre;
+      });
+      if(yaExiste)return;
+
+      const fechaVence=cuenta.fechaVencimiento||'';
+      const dias=fechaVence?calcularDias_(convertirFecha_(fechaVence)):0;
+      let estadoPortal='ACTIVA';
+      if(fechaVence){
+        if(dias<0)estadoPortal='VENCIDA';
+        else if(dias<=3)estadoPortal='POR_VENCER';
+      }else if(['PENDIENTE','AUTORIZADA','ENVIANDO'].includes(String(e.estado||'').toUpperCase())){
+        estadoPortal='ACTIVA';
+      }
+
+      servicios.push({
+        id:servicioId,
+        entregaId:String(e.id||''),
+        tipoServicio:'ENTREGA',
+        nombre:e.productoNombre||venta.productoNombre||cuenta.productoNombre||'Servicio digital',
+        correo:e.usuarioEntregado||cuenta.usuarioCuenta||'',
+        usuarioCuenta:e.usuarioEntregado||cuenta.usuarioCuenta||'',
+        contrasenaCuenta:e.contrasenaEntregada||cuenta.contrasenaCuenta||'',
+        perfil:e.perfilEntregado||cuenta.perfil||'',
+        pin:e.pinEntregado||cuenta.pin||'',
+        plataforma:cuenta.plataforma||e.tipoEntrega||'',
+        fechaInicio:e.fechaEntrega||venta.fechaVenta||cuenta.fechaCompra||'',
+        fechaVencimiento:fechaVence,
+        diasRestantes:dias,
+        precioRenovacion:Number(venta.total||venta.precioUnitario||0),
+        moneda:venta.moneda||cuenta.moneda||'USD',
+        estado:estadoPortal,
+        respuestaCliente:'SIN_RESPUESTA'
+      });
+    });
+
+  // Lectura flexible adicional: asegura compatibilidad con las hojas reales
+  // creadas por las versiones más recientes y por el bot de Telegram.
+  const flex=md20PortalServiciosFlexCliente_(cliente.id);
+  flex.forEach(f=>{
+    const existe=servicios.some(s=>{
+      if(String(s.entregaId||'') && String(s.entregaId||'')===String(f.entregaId||''))return true;
+      const u1=String(s.usuarioCuenta||s.correo||'').trim();
+      const u2=String(f.usuarioCuenta||f.correo||'').trim();
+      return u1 && u2 && u1===u2 && String(s.nombre||'').trim()===String(f.nombre||'').trim();
+    });
+    if(!existe)servicios.push(f);
+  });
+
+  const diagnosticoEntregas = md20PortalFilasFlex_('ENTREGAS')
+    .filter(e => String(md20PortalValorFlex_(e,['CLIENTE_ID']) || '').trim() === String(cliente.id || '').trim());
+
   return {
     ok:true,
     cliente:{
@@ -5528,9 +5611,260 @@ function consultarPortalClienteLoginMD20_(telefono,token){
     },
     servicios:servicios,
     soporteWhatsapp:obtenerWhatsappSoportePortalMD20_(),
-    acceso:{estado:'ACTIVO',vence:acceso.vence?fechaApi_(acceso.vence):''}
+    acceso:{estado:'ACTIVO',vence:acceso.vence?fechaApi_(acceso.vence):''},
+    portalVersion:'MD20-DIAGNOSTICO-2',
+    diagnostico:{
+      clienteId:String(cliente.id||''),
+      entregasEncontradas:diagnosticoEntregas.length,
+      serviciosConstruidos:servicios.length,
+      entregasIds:diagnosticoEntregas.map(e=>String(md20PortalValorFlex_(e,['ENTREGA_ID'])||''))
+    }
   };
 }
+
+
+/**
+ * Lector flexible para el portal del cliente.
+ * Lee las hojas por nombre de encabezado, no por posiciones fijas.
+ */
+function md20PortalFilasFlex_(nombreHoja){
+  // Abrimos explícitamente la base real de Mundo Digital 2.0.
+  // Esto evita depender del archivo "activo" del contexto de ejecución.
+  const ss=SpreadsheetApp.openById('1FQyMHtJOnOomg1BPDZKUHxyMbyfjlkCOZJWvuL12zeY');
+  const h=ss.getSheetByName(nombreHoja);
+  if(!h||h.getLastRow()<=1||h.getLastColumn()<=0)return[];
+
+  const headers=h
+    .getRange(1,1,1,h.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v=>String(v||'').trim().toUpperCase());
+
+  return h
+    .getRange(2,1,h.getLastRow()-1,h.getLastColumn())
+    .getValues()
+    .map((fila,i)=>{
+      const o={_FILA:i+2};
+      headers.forEach((k,j)=>{
+        if(k)o[k]=fila[j];
+      });
+      return o;
+    });
+}
+
+function md20PortalValorFlex_(o,nombres){
+  for(let i=0;i<nombres.length;i++){
+    const k=String(nombres[i]||'').trim().toUpperCase();
+    if(Object.prototype.hasOwnProperty.call(o,k)){
+      const v=o[k];
+      if(v!==''&&v!==null&&v!==undefined)return v;
+    }
+  }
+  return '';
+}
+
+function md20PortalServiciosFlexCliente_(clienteId){
+  const cid=String(clienteId||'').trim();
+  if(!cid)return[];
+
+  const ventas={};
+  md20PortalFilasFlex_('VENTAS').forEach(v=>{
+    const id=String(
+      md20PortalValorFlex_(v,['VENTA_ID','ID_VENTA','REGISTRO_ID','ID'])||''
+    ).trim();
+    if(id)ventas[id]=v;
+  });
+
+  // Productos reales: el PRODUCTO_ID de ENTREGAS se resuelve aquí.
+  const productos={};
+  ['PRODUCTOS','CATALOGO','CATÁLOGO'].forEach(nombreHoja=>{
+    md20PortalFilasFlex_(nombreHoja).forEach(p=>{
+      const id=String(
+        md20PortalValorFlex_(p,['PRODUCTO_ID','ID_PRODUCTO','REGISTRO_ID','ID'])||''
+      ).trim();
+      if(id)productos[id]=p;
+    });
+  });
+
+  const cuentas={};
+  ['CUENTAS_DIGITALES','INVENTARIO'].forEach(nombreHoja=>{
+    md20PortalFilasFlex_(nombreHoja).forEach(c=>{
+      const id=String(
+        md20PortalValorFlex_(c,['CUENTA_ID','ID_CUENTA','INVENTARIO_ID','REGISTRO_ID','ID'])||''
+      ).trim();
+      if(id)cuentas[id]=c;
+    });
+  });
+
+  const entregas=md20PortalFilasFlex_('ENTREGAS')
+    .filter(e=>{
+      const filaCliente=String(
+        md20PortalValorFlex_(e,['CLIENTE_ID'])||''
+      ).trim();
+
+      return filaCliente===cid;
+    });
+
+  const servicios=[];
+
+  entregas.forEach(e=>{
+    const entregaId=String(
+      md20PortalValorFlex_(e,['ENTREGA_ID'])||('FILA_'+e._FILA)
+    ).trim();
+
+    const ventaId=String(
+      md20PortalValorFlex_(e,['VENTA_ID'])||''
+    ).trim();
+
+    const productoId=String(
+      md20PortalValorFlex_(e,['PRODUCTO_ID'])||''
+    ).trim();
+
+    const cuentaId=String(
+      md20PortalValorFlex_(e,['CUENTA_ID'])||''
+    ).trim();
+
+    const estadoEntrega=String(
+      md20PortalValorFlex_(e,['ESTADO'])||''
+    ).trim().toUpperCase();
+
+    if(['CANCELADA','CANCELADO','ERROR','BLOQUEADA'].includes(estadoEntrega)){
+      return;
+    }
+
+    const venta=ventas[ventaId]||{};
+    const producto=productos[productoId]||{};
+    const cuenta=cuentas[cuentaId]||{};
+
+    const tipoEntrega=String(
+      md20PortalValorFlex_(e,['TIPO_ENTREGA'])||''
+    ).trim().toUpperCase();
+
+    const archivoUrl=String(
+      md20PortalValorFlex_(e,['ARCHIVO_URL'])||
+      md20PortalValorFlex_(producto,['ARCHIVO_URL','ENLACE','LINK','URL'])||
+      ''
+    ).trim();
+
+    const nombre=String(
+      md20PortalValorFlex_(producto,['NOMBRE','NOMBRE_PRODUCTO','PRODUCTO','TITULO'])||
+      md20PortalValorFlex_(venta,['PRODUCTO_NOMBRE','NOMBRE_PRODUCTO','PRODUCTO'])||
+      md20PortalValorFlex_(e,['PRODUCTO_NOMBRE','NOMBRE_PRODUCTO','PRODUCTO'])||
+      (productoId ? ('Producto '+productoId) : 'Servicio digital')
+    ).trim();
+
+    const usuario=String(
+      md20PortalValorFlex_(e,['USUARIO_ENTREGADO'])||
+      md20PortalValorFlex_(cuenta,['USUARIO_CUENTA','USUARIO','CORREO','EMAIL','LOGIN'])||
+      ''
+    ).trim();
+
+    const clave=String(
+      md20PortalValorFlex_(e,['CONTRASENA_ENTREGADA','CONTRASEÑA_ENTREGADA'])||
+      md20PortalValorFlex_(cuenta,['CONTRASENA_CUENTA','CONTRASEÑA_CUENTA','CONTRASENA','CONTRASEÑA','PASSWORD','CLAVE'])||
+      ''
+    ).trim();
+
+    const perfil=String(
+      md20PortalValorFlex_(e,['PERFIL_ENTREGADO'])||
+      md20PortalValorFlex_(cuenta,['PERFIL','PANTALLA'])||
+      ''
+    ).trim();
+
+    const pin=String(
+      md20PortalValorFlex_(e,['PIN_ENTREGADO'])||
+      md20PortalValorFlex_(cuenta,['PIN'])||
+      ''
+    ).trim();
+
+    const fechaInicio=
+      md20PortalValorFlex_(e,['FECHA_ENTREGA'])||
+      md20PortalValorFlex_(venta,['FECHA_VENTA','FECHA'])||
+      '';
+
+    const fechaVence=
+      md20PortalValorFlex_(e,['FECHA_VENCIMIENTO','VENCIMIENTO'])||
+      md20PortalValorFlex_(cuenta,['FECHA_VENCIMIENTO','VENCIMIENTO'])||
+      '';
+
+    let dias=0;
+    let estadoPortal='ACTIVA';
+
+    if(fechaVence){
+      try{
+        dias=calcularDias_(convertirFecha_(fechaVence));
+        if(dias<0)estadoPortal='VENCIDA';
+        else if(dias<=3)estadoPortal='POR_VENCER';
+      }catch(_){
+        dias=0;
+      }
+    }else if(estadoEntrega==='PENDIENTE'){
+      // Sigue apareciendo en el portal, pero se identifica como pendiente.
+      estadoPortal='PENDIENTE';
+    }
+
+    const precio=Number(
+      md20PortalValorFlex_(venta,['TOTAL','PRECIO_FINAL','PRECIO_UNITARIO','MONTO'])||0
+    );
+
+    servicios.push({
+      id:'ENTREGA-'+entregaId,
+      entregaId:entregaId,
+      ventaId:ventaId,
+      productoId:productoId,
+      cuentaId:cuentaId,
+      tipoServicio:'ENTREGA',
+      tipoEntrega:tipoEntrega,
+      nombre:nombre,
+      correo:usuario,
+      usuarioCuenta:usuario,
+      contrasenaCuenta:clave,
+      perfil:perfil,
+      pin:pin,
+      plataforma:String(
+        md20PortalValorFlex_(cuenta,['PLATAFORMA'])||
+        tipoEntrega||
+        ''
+      ),
+      archivoUrl:archivoUrl,
+      fechaInicio:fechaApi_(fechaInicio),
+      fechaVencimiento:fechaApi_(fechaVence),
+      diasRestantes:dias,
+      precioRenovacion:precio,
+      moneda:String(
+        md20PortalValorFlex_(venta,['MONEDA'])||
+        md20PortalValorFlex_(cuenta,['MONEDA'])||
+        'USD'
+      ),
+      estado:estadoPortal,
+      estadoEntrega:estadoEntrega,
+      respuestaCliente:'SIN_RESPUESTA'
+    });
+  });
+
+  return servicios;
+}
+
+function PROBAR_SERVICIOS_PORTAL_MD20(){
+  const clienteId='CLI-AB4A48C21F';
+
+  const entregas=md20PortalFilasFlex_('ENTREGAS')
+    .filter(e=>String(md20PortalValorFlex_(e,['CLIENTE_ID'])||'').trim()===clienteId);
+
+  const servicios=md20PortalServiciosFlexCliente_(clienteId);
+
+  const resultado={
+    version:'MD20-DIAGNOSTICO-2',
+    clienteId:clienteId,
+    entregasEncontradas:entregas.length,
+    entregaIds:entregas.map(e=>String(md20PortalValorFlex_(e,['ENTREGA_ID'])||'')),
+    serviciosConstruidos:servicios.length,
+    servicios:servicios
+  };
+
+  console.log(JSON.stringify(resultado,null,2));
+  return resultado;
+}
+
 
 function validarTokenClienteTelegramMD20_(telefono,token){
   const tel=normalizarTelefonoPortalMD20_(telefono);
@@ -5625,6 +5959,17 @@ function responderRenovacionPortalMD20_(c){
     h.getRange(fila,23).setValue(respuesta);
     h.getRange(fila,26).setValue(new Date());
     nombreProducto='Canva';fechaVencimiento=cuenta.fechaVencimiento;dias=cuenta.diasRestantes;
+  }else if(tipo==='ENTREGA'){
+    const entregaId=servicioId.replace(/^ENTREGA-/,'');
+    const entrega=listarEntregasMD20_().find(x=>String(x.id||'')===entregaId);
+    if(!entrega)throw new Error('No se encontró la entrega.');
+    if(String(entrega.clienteId||'')!==String(acceso.clienteId||''))throw new Error('El servicio no pertenece a este cliente.');
+
+    const venta=listarVentasMD20_().find(x=>String(x.id||'')===String(entrega.ventaId||''))||{};
+    const cuenta=listarInventarioDigitalMD20_().find(x=>String(x.id||'')===String(entrega.cuentaId||''))||{};
+    nombreProducto=entrega.productoNombre||venta.productoNombre||cuenta.productoNombre||'Servicio digital';
+    fechaVencimiento=cuenta.fechaVencimiento||'';
+    dias=fechaVencimiento?calcularDias_(convertirFecha_(fechaVencimiento)):0;
   }else throw new Error('Tipo de servicio no válido.');
 
   const hr=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);

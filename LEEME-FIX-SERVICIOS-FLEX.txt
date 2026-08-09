@@ -1,0 +1,12 @@
+MUNDO DIGITAL 2.0 — FIX PORTAL CLIENTE / SERVICIOS FLEXIBLES
+
+Esta versión corrige la lectura de servicios del portal.
+Ahora ENTREGAS, VENTAS, CUENTAS_DIGITALES e INVENTARIO se leen por nombre de encabezado, no por posición fija.
+
+INSTALACIÓN:
+1. Usa solamente apps-script/Codigo.gs.
+2. Reemplaza Código.gs en Mundo Digital 2.0 - Sistema.
+3. Ctrl+S.
+4. Implementar > Administrar implementaciones > lápiz > Nueva versión > Implementar.
+5. No necesitas cambiar la web para esta corrección.
+6. Cierra sesión en Mi cuenta y entra otra vez.

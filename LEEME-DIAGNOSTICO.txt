@@ -1,0 +1,33 @@
+MUNDO DIGITAL 2.0 — DIAGNÓSTICO PORTAL CLIENTE
+
+Esta versión muestra dentro de Mi cuenta:
+- versión del servidor
+- CLIENTE_ID
+- entregas encontradas
+- servicios construidos
+
+VERSIÓN CORRECTA:
+MD20-DIAGNOSTICO-2
+
+También agrega en Apps Script:
+PROBAR_SERVICIOS_PORTAL_MD20
+
+INSTALACIÓN:
+1. Reemplaza apps-script/Codigo.gs en Mundo Digital 2.0 - Sistema.
+2. Ctrl+S.
+3. Implementar > Administrar implementaciones > lápiz > Nueva versión > Implementar.
+4. Reemplaza mi-cuenta.html y js/mi-cuenta.js en tu carpeta web.
+5. git add .
+6. git commit -m "Agrega diagnostico portal cliente"
+7. git push
+8. Espera Vercel.
+9. Cierra sesión y vuelve a entrar.
+10. Envíame captura de la franja de diagnóstico.
+
+PRUEBA EXTRA:
+En Apps Script puedes ejecutar:
+PROBAR_SERVICIOS_PORTAL_MD20
+
+Debe indicar:
+entregasEncontradas: 1 o más
+serviciosConstruidos: 1 o más
