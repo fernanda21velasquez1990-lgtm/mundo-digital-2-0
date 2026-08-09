@@ -1,0 +1,9 @@
+MUNDO DIGITAL 2.0 - REPARACIÓN PROVEEDORES Y REVENDEDORES
+
+1. Reemplaza js/socios.js en tu proyecto.
+2. En Apps Script reemplaza el código del módulo anterior por el contenido completo de apps-script/ModuloSocios.gs.
+3. Guarda y ejecuta repararProveedoresYRevendedoresMD20 una sola vez.
+4. Ve a Implementar > Administrar implementaciones > Editar > Nueva versión > Implementar.
+5. Regresa a la página y presiona Ctrl + F5.
+
+La reparación recupera registros que pudieron quedar guardados en la fila 1001.

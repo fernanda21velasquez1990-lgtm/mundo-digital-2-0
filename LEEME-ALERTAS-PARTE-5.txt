@@ -1,0 +1,30 @@
+MUNDO DIGITAL 2.0 — FASE 5 · PARTE 5
+CENTRO DE ALERTAS Y CONFIRMACIÓN ADMINISTRATIVA
+
+NUEVO ARCHIVO
+alertas-pagos.html
+
+FUNCIONES
+- Lista pagos EN_REVISION.
+- Abre el comprobante guardado en Drive.
+- Confirma o rechaza con motivo.
+- Actualiza PAGOS, VENTAS, PEDIDOS_TIENDA y ENTREGA.
+- Marca notificaciones de revisión como leídas.
+- Evita procesar dos veces el mismo pago.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Codigo.gs completo.
+3. Guarda.
+4. Actualiza la implementación con Nueva versión.
+5. Abre alertas-pagos.html y presiona Ctrl + F5.
+
+PRUEBA
+1. Debe aparecer el pago EN_REVISION.
+2. Pulsa Revisar comprobante.
+3. Abre el comprobante.
+4. Confirma el pago.
+5. PAGOS debe quedar CONFIRMADO.
+6. VENTAS debe quedar PAGADO.
+7. PEDIDOS_TIENDA debe quedar ESTADO_PAGO CONFIRMADO.
+8. La entrega debe quedar habilitada/PENDIENTE.

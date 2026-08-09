@@ -1,0 +1,35 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN WHATSAPP DE LA TIENDA
+
+PROBLEMA
+La tienda funcionaba, pero mostraba:
+Falta configurar WHATSAPP_PRINCIPAL.
+
+CORRECCIÓN
+- CONFIGURACION se lee por los encabezados CLAVE y VALOR.
+- Si WHATSAPP_PRINCIPAL está vacío, se intenta usar:
+  WHATSAPP_SOPORTE
+  TELEFONO_SOPORTE
+  WHATSAPP
+- Se agregó prepararConfiguracionTiendaPublicaMD20.
+- La función crea las configuraciones faltantes sin borrar las existentes.
+- El JavaScript cambió de nombre para evitar caché.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta una sola vez:
+   prepararConfiguracionTiendaPublicaMD20
+5. Abre CONFIGURACION.
+6. Revisa la fila WHATSAPP_PRINCIPAL.
+7. Si está vacía, escribe el número del negocio con código de país,
+   sin espacios y sin el signo +.
+8. Actualiza la implementación con Nueva versión.
+9. Abre tienda.html.
+10. Presiona Ctrl + F5.
+11. Prueba Enviar pedido por WhatsApp.
+
+EJEMPLOS
+Colombia: 573001234567
+Venezuela: 584121234567
+Estados Unidos: 14145550123

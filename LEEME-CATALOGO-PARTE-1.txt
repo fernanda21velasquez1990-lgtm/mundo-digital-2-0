@@ -1,0 +1,61 @@
+MUNDO DIGITAL 2.0
+FASE 5 — CATÁLOGO PÚBLICO Y TIENDA
+PARTE 1 — ADMINISTRACIÓN Y PUBLICACIÓN
+
+ARCHIVOS NUEVOS
+- catalogo-admin.html
+- css/catalogo-admin.css
+- js/catalogo-admin-20260730.js
+
+CAMBIOS EN GOOGLE SHEETS
+La función prepararModuloCatalogoMD20 agrega al final de PRODUCTOS:
+
+PUBLICAR_CATALOGO
+SLUG_PRODUCTO
+DESCRIPCION_CORTA
+DESCRIPCION_COMPLETA
+PRECIO_PUBLICO
+PRECIO_ANTERIOR
+OFERTA
+DESTACADO
+ORDEN_CATALOGO
+DISPONIBILIDAD
+ETIQUETAS_PUBLICAS
+VENDE_ADMIN
+VENDE_REVENDEDOR
+ACTUALIZADO_CATALOGO_EN
+
+FUNCIONAMIENTO
+- Puedes crear y editar productos desde catalogo-admin.html.
+- Los datos se guardan en PRODUCTOS.
+- También puedes editar las columnas directamente en Google Sheets.
+- Al actualizar la página se muestran los cambios de la hoja.
+- Los productos existentes quedan PUBLICAR_CATALOGO = NO.
+- El archivo privado ARCHIVO_ID nunca se devuelve en el catálogo público.
+- Se preparó listarCatalogoPublicoMD20 para la Parte 2.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza todo Código.gs con apps-script/Codigo.gs.
+3. Guarda Apps Script.
+4. Ejecuta una sola vez: prepararModuloCatalogoMD20
+5. Acepta los permisos cuando Google los solicite.
+6. Actualiza la implementación:
+   Implementar > Administrar implementaciones > Lápiz >
+   Nueva versión > Implementar.
+7. Abre catalogo-admin.html.
+8. Presiona Ctrl + F5.
+
+PRIMERA PRUEBA RECOMENDADA
+1. Busca Agenda para maestras.
+2. Pulsa Editar.
+3. Coloca descripción corta y completa.
+4. Verifica imagen, precio y categoría.
+5. En Publicar en el catálogo selecciona SI.
+6. Guarda.
+7. Revisa PRODUCTOS en Google Sheets.
+8. Confirma que PUBLICAR_CATALOGO muestre SI.
+
+NOTA
+La carga directa de imágenes todavía no se incluye. En esta parte se usa
+IMAGEN_URL. La tienda pública con categorías y búsqueda corresponde a la Parte 2.

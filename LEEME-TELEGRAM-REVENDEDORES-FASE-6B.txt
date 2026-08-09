@@ -1,0 +1,41 @@
+MUNDO DIGITAL 2.0 — FASE 6B
+TELEGRAM PARA REVENDEDORES
+
+ESTA PARTE INCLUYE
+- Un bot general separado del bot administrativo.
+- Hojas TELEGRAM_USUARIOS, TELEGRAM_MENSAJES y TELEGRAM_ACCIONES.
+- Configuración privada del token en Apps Script.
+- Webhook independiente para revendedores.
+- Enlace privado distinto para cada revendedor.
+- Vinculación automática mediante /start TOKEN.
+- Bloqueo para impedir que un mismo Telegram se vincule con dos revendedores.
+- Página telegram-revendedores.html.
+- Menú inicial del revendedor.
+- Auditoría básica de vinculaciones y acciones.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta una sola vez:
+   prepararTelegramRevendedoresMD20
+5. Actualiza la implementación con Nueva versión.
+6. Abre telegram-revendedores.html.
+7. Crea un BOT NUEVO para revendedores en @BotFather.
+8. Guarda su token en la página.
+9. Pulsa Probar bot.
+10. Pulsa Registrar webhook.
+11. Genera el enlace de un revendedor.
+12. Envía ese enlace al revendedor.
+13. El revendedor abre Telegram y pulsa Iniciar.
+
+IMPORTANTE
+No uses el token del bot administrativo.
+El bot de revendedores debe ser otro bot independiente.
+
+SIGUIENTE PARTE
+- Mis ventas.
+- Mis pagos.
+- Mis clientes.
+- Mi enlace de tienda.
+- Ganancias y comisiones.

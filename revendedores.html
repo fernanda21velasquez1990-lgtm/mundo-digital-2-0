@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gestión de revendedores de Mundo Digital 2.0">
+  <title>Mundo Digital 2.0 | Revendedores</title>
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/socios.css">
+</head>
+<body data-modulo="REVENDEDOR">
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5ZM2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3h2l2.4 11.3a2 2 0 0 0 2 1.7H18a2 2 0 0 0 2-1.6L21 7H6M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v10a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V6M16 13h4"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 9h4l3 4v4h-7zM7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM18 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M5 13v8h14v-8M9 21v-6h6v6M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M8.5 7.5c.5 3 2.5 5 5.5 6l1.5-1.5 2 1c-.5 2-1.5 3-3.5 3-4.5-.5-8-4-8.5-8.5 0-2 1-3 3-3.5l1 2-1 1.5Z"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M5 3v4M19 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v13H3V7a2 2 0 0 1 2-2Z"/></symbol>
+  </svg>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div id="capaOscura" class="capa-oscura"></div>
+  
+  <aside id="menuLateral" class="menu-lateral">
+    <div class="marca-menu">
+      <a class="marca" href="dashboard.html" aria-label="Ir al inicio">
+        <span class="marca-orbita"><span>MD</span></span>
+        <span class="marca-copy"><strong>Mundo Digital</strong><small>CONTROL CENTER 2.0</small></span>
+      </a>
+      <button id="botonCerrarMenu" class="boton-icono cerrar-menu" type="button" aria-label="Cerrar menú"><svg><use href="#i-close"></use></svg></button>
+    </div>
+    <div class="estado-sistema"><span class="pulso"></span><div><strong>Sistema operativo</strong><small>Servicios en línea</small></div><span class="latencia">24 ms</span></div>
+    <nav class="navegacion" aria-label="Navegación principal">
+      <p class="grupo-menu">Centro de control</p>
+      <a href="dashboard.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-grid"></use></svg></span><span class="texto-menu"><strong>Resumen</strong><small>Vista general</small></span></a>
+      <p class="grupo-menu">Gestión comercial</p>
+      <a href="clientes.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-users"></use></svg></span><span class="texto-menu"><strong>Clientes</strong><small>Contactos y compras</small></span></a>
+      <a href="productos.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-box"></use></svg></span><span class="texto-menu"><strong>Productos</strong><small>Catálogo digital</small></span></a>
+      <a href="catalogo-admin.html" class="enlace-menu" data-menu-page="catalogo-admin.html">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Catálogo y tienda</strong><small>Publicación de productos</small></span>
+      </a>
+      <a href="canva.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-box"></use></svg></span><span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span></a>
+      <a href="proveedores.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-truck"></use></svg></span><span class="texto-menu"><strong>Proveedores</strong><small>Compras y renovaciones</small></span></a>
+      <a href="revendedores.html" class="enlace-menu activo"><span class="halo-icono"><svg><use href="#i-store"></use></svg></span><span class="texto-menu"><strong>Revendedores</strong><small>Servicios y ganancias</small></span><span class="marca-activa"></span></a>
+      <a href="inventario.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-layers"></use></svg></span><span class="texto-menu"><strong>Inventario</strong><small>Cuentas y accesos</small></span><span class="chip-menu">12</span></a>
+      <a href="ventas.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-cart"></use></svg></span><span class="texto-menu"><strong>Ventas</strong><small>Pedidos y facturación</small></span></a>
+      <p class="grupo-menu">Operaciones</p>
+      <a href="pagos.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-wallet"></use></svg></span><span class="texto-menu"><strong>Pagos</strong><small>Movimientos recibidos</small></span></a>
+      <a href="entregas.html" class="enlace-menu" data-menu-page="entregas.html"><span class="halo-icono"><svg><use href="#i-send"></use></svg></span><span class="texto-menu"><strong>Entregas</strong><small>Archivos y credenciales</small></span></a>
+      <a href="suscripciones.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-clock"></use></svg></span><span class="texto-menu"><strong>Suscripciones</strong><small>Vencimientos</small></span><span class="chip-menu alerta">4</span></a>
+      <a href="renovaciones.html" class="enlace-menu"><span class="halo-icono"><svg><use href="#i-bell"></use></svg></span><span class="texto-menu"><strong>Renovaciones</strong><small>Respuestas de clientes</small></span></a>
+      <p class="grupo-menu">Inteligencia</p>
+      <a href="#" class="enlace-menu" data-pagina="Reportes"><span class="halo-icono"><svg><use href="#i-chart"></use></svg></span><span class="texto-menu"><strong>Reportes</strong><small>Análisis de resultados</small></span></a>
+      <a href="#" class="enlace-menu" data-pagina="Usuarios"><span class="halo-icono"><svg><use href="#i-shield"></use></svg></span><span class="texto-menu"><strong>Usuarios</strong><small>Accesos y permisos</small></span></a>
+      <a href="#" class="enlace-menu" data-pagina="Configuración"><span class="halo-icono"><svg><use href="#i-settings"></use></svg></span><span class="texto-menu"><strong>Configuración</strong><small>Ajustes del sistema</small></span></a>
+    </nav>
+    <div class="usuario-menu"><div class="avatar">A</div><div class="usuario-copy"><strong>Administrador</strong><small>Cuenta principal</small></div><button id="botonCerrarSesion" class="boton-icono boton-salir" type="button" aria-label="Cerrar sesión"><svg><use href="#i-logout"></use></svg></button></div>
+  </aside>
+  <main class="contenido-principal">
+    <header class="barra-superior">
+      <div class="cabecera-izquierda">
+        <button id="botonAbrirMenu" class="boton-icono boton-menu-movil" type="button" aria-label="Abrir menú"><svg><use href="#i-menu"></use></svg></button>
+        <div><span class="sobrelinea">GESTIÓN COMERCIAL</span><h1>Revendedores</h1></div>
+      </div>
+      <div class="cabecera-derecha">
+        <span id="estadoConexion" class="estado-conexion local">Comprobando conexión...</span>
+        <button id="botonActualizar" class="boton-icono accion-cabecera" type="button" aria-label="Actualizar información"><svg><use href="#i-refresh"></use></svg></button>
+        <button class="boton-icono accion-cabecera notificacion" type="button" aria-label="Notificaciones"><svg><use href="#i-bell"></use></svg><span id="contadorAlertas">0</span></button>
+      </div>
+    </header>
+
+    <section class="modulo-socios">
+      <section class="cabecera-modulo">
+        <div class="cabecera-copy"><span class="sobrelinea">CONTROL DE CUENTAS Y VENCIMIENTOS</span><h2>Revendedores <span>inteligentes</span></h2><p>Controla las cuentas entregadas a revendedores, calcula la ganancia y avisa los vencimientos por WhatsApp.</p></div>
+        <button id="botonNuevoSocio" class="boton-nuevo-socio" type="button"><svg><use href="#i-plus"></use></svg> Nuevo revendedor</button>
+      </section>
+
+      <section class="kpis-socios">
+        <article class="kpi-socio"><div class="kpi-socio-superior"><span class="kpi-socio-icono"><svg><use href="#i-store"></use></svg></span></div><p>Total registrados</p><h3 id="kpiTotal">0</h3><small>Todos los servicios guardados</small></article>
+        <article class="kpi-socio"><div class="kpi-socio-superior"><span class="kpi-socio-icono"><svg><use href="#i-check"></use></svg></span></div><p>Servicios activos</p><h3 id="kpiActivos">0</h3><small>Con tiempo disponible</small></article>
+        <article class="kpi-socio"><div class="kpi-socio-superior"><span class="kpi-socio-icono"><svg><use href="#i-clock"></use></svg></span></div><p>Por vencer</p><h3 id="kpiPorVencer">0</h3><small>Requieren aviso o renovación</small></article>
+        <article class="kpi-socio"><div class="kpi-socio-superior"><span class="kpi-socio-icono"><svg><use href="#i-calendar"></use></svg></span></div><p>Vencidos</p><h3 id="kpiVencidos">0</h3><small>Servicios fuera de fecha</small></article>
+      </section>
+
+      <section class="panel-socios">
+        <div class="barra-herramientas-socios">
+          <label class="buscador-socios"><svg><use href="#i-search"></use></svg><input id="buscarSocio" type="search" placeholder="Buscar por nombre, producto, cuenta o WhatsApp..."></label>
+          <select id="filtroEstado" class="filtro-socios" aria-label="Filtrar por estado"><option value="TODOS">Todos los estados</option><option value="ACTIVO">Activos</option><option value="POR_VENCER">Por vencer</option><option value="VENCIDO">Vencidos</option><option value="INACTIVO">Inactivos</option></select>
+        </div>
+        <div class="tabla-socios-contenedor">
+          <table class="tabla-socios">
+            <thead><tr><th>Contacto</th><th>Producto</th><th>Cuenta</th><th>Compra y vencimiento</th><th>Tiempo</th><th>Costos y ganancia</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="tablaSociosBody"></tbody>
+          </table>
+          <div id="cargandoTabla" class="estado-tabla"><div class="cargando-puntos"><span></span><span></span><span></span></div><p>Cargando información...</p></div>
+          <div id="estadoVacio" class="estado-tabla" hidden><span class="estado-tabla-icono"><svg><use href="#i-store"></use></svg></span><h3>Todavía no hay revendedores</h3><p>Registra el primer servicio para controlar la cuenta, su costo, la ganancia y la fecha de vencimiento.</p><button id="botonNuevoVacio" class="boton-nuevo-socio" type="button"><svg><use href="#i-plus"></use></svg> Crear primer registro</button></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="modalSocio" class="modal-fondo" aria-hidden="true">
+    <section class="modal-socio" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+      <header class="modal-cabecera"><div><span class="sobrelinea">REGISTRO DE SERVICIO</span><h2 id="tituloModal">Nuevo revendedor</h2></div><button id="botonCerrarModal" class="modal-cerrar" type="button" aria-label="Cerrar"><svg><use href="#i-close"></use></svg></button></header>
+      <form id="formularioSocio" class="formulario-socio" novalidate>
+        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Datos de contacto</h3><div class="cuadricula-formulario">
+          <div class="campo-formulario"><label for="nombre">Nombre <span>*</span></label><input id="nombre" name="nombre" type="text" autocomplete="given-name" required></div>
+          <div class="campo-formulario"><label for="apellido">Apellido <span>*</span></label><input id="apellido" name="apellido" type="text" autocomplete="family-name" required></div>
+          <div class="campo-formulario"><label for="whatsapp">WhatsApp <span>*</span></label><input id="whatsapp" name="whatsapp" type="tel" placeholder="Ejemplo: 573001234567" required><small class="ayuda-campo">Coloca el código de país sin espacios. El mensaje avisará el vencimiento y mostrará el precio de renovación.</small></div>
+        </div></section>
+
+        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Servicio adquirido</h3><div class="cuadricula-formulario">
+          <div class="campo-formulario ancho-3"><label for="producto">Nombre del producto <span>*</span></label><input id="producto" name="producto" type="text" placeholder="Escríbelo manualmente: Netflix, Canva, Gemini, etc." required></div>
+          <div class="campo-formulario"><label for="fechaCompra">Fecha de compra <span>*</span></label><input id="fechaCompra" name="fechaCompra" type="date" required></div>
+          <div class="campo-formulario"><label for="tiempoServicio">Tiempo del servicio <span>*</span></label><select id="tiempoServicio" name="tiempoServicio" required><option value="">Selecciona</option><option value="1">1 mes</option><option value="2">2 meses</option><option value="3">3 meses</option><option value="6">6 meses</option><option value="12">1 año</option></select></div>
+          <div class="campo-formulario"><label for="fechaVencimiento">Fecha de vencimiento</label><input id="fechaVencimiento" name="fechaVencimiento" type="date" readonly><small class="ayuda-campo">Se calcula automáticamente con la fecha y el tiempo seleccionado.</small></div>
+        </div></section>
+
+        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Credenciales de la cuenta</h3><div class="cuadricula-formulario">
+          <div class="campo-formulario ancho-2"><label for="correoCuenta">Correo de la cuenta <span>*</span></label><input id="correoCuenta" name="correoCuenta" type="text" autocomplete="off" required></div>
+          <div class="campo-formulario"><label for="contrasenaCuenta">Contraseña de la cuenta <span>*</span></label><input id="contrasenaCuenta" name="contrasenaCuenta" type="text" autocomplete="off" required><small class="ayuda-campo">Se ocultará en la tabla y podrá mostrarse con el botón Ver.</small></div>
+        </div></section>
+
+        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Precios y ganancia</h3><div class="cuadricula-formulario">
+          <div class="campo-formulario"><label for="precioCuenta">Costo de la cuenta</label><input id="precioCuenta" name="precioCuenta" type="number" min="0" step="0.01" value="0"></div>
+          <div class="campo-formulario"><label for="precioFinal">Precio final</label><input id="precioFinal" name="precioFinal" type="number" min="0" step="0.01" value="0"></div>
+          <div class="campo-formulario"><label for="ganancia">Ganancia</label><input id="ganancia" name="ganancia" type="number" step="0.01" value="0" readonly></div>
+          <div class="campo-formulario"><label for="moneda">Moneda</label><select id="moneda" name="moneda"><option value="USD">USD</option><option value="VES">VES</option><option value="COP">COP</option></select></div>
+          <div class="campo-formulario ancho-2"><label for="notas">Notas</label><textarea id="notas" name="notas" placeholder="Información adicional del servicio o de la cuenta"></textarea></div>
+        </div></section>
+
+        <div class="modal-acciones"><button id="botonCancelar" class="boton-cancelar" type="button">Cancelar</button><button id="botonGuardar" class="boton-guardar" type="submit">Guardar registro</button></div>
+      </form>
+    </section>
+  </div>
+  <div id="mensajePanel" class="mensaje-flotante" role="alert" aria-live="polite"></div>
+  <script src="js/configuracion.js"></script>
+  <script src="js/socios-tiendas-revendedores-visible-20260730.js?v=20260730002"></script>
+</body>
+</html>

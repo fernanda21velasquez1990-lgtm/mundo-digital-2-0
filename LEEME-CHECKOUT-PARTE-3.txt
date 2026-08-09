@@ -1,0 +1,61 @@
+MUNDO DIGITAL 2.0 — FASE 5 · PARTE 3
+CHECKOUT Y REGISTRO AUTOMÁTICO DEL PEDIDO
+
+NUEVO FLUJO
+1. El cliente agrega productos.
+2. Pulsa Continuar con la compra.
+3. Completa nombre, WhatsApp, correo y país.
+4. Selecciona un método de pago.
+5. Revisa el pedido.
+6. El sistema verifica los precios en Google Sheets.
+7. Registra o actualiza CLIENTES.
+8. Crea PEDIDOS_TIENDA.
+9. Crea una VENTA y un PAGO PENDIENTE por cada producto.
+10. Genera número de pedido y token privado.
+
+SEGURIDAD
+- El precio enviado por el navegador no se utiliza.
+- Apps Script vuelve a consultar PRODUCTOS.
+- Solo acepta productos ACTIVOS y PUBLICADOS.
+- Valida que el vendedor exista.
+- Evita el doble registro mediante SOLICITUD_ID.
+- La tienda pública no recibe la clave API administrativa.
+- No expone ARCHIVO_ID ni credenciales.
+
+INSTALACIÓN
+1. Cierra las páginas de Mundo Digital 2.0.
+2. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+3. Reemplaza todo Código.gs.
+4. Guarda con Ctrl + S.
+5. Ejecuta una sola vez:
+   prepararCheckoutTiendaMD20
+6. Confirma que se creó PEDIDOS_TIENDA.
+7. Actualiza la implementación:
+   Implementar > Administrar implementaciones > Lápiz >
+   Nueva versión > Implementar.
+8. Abre tienda.html.
+9. Presiona Ctrl + F5.
+
+PRUEBA
+1. Agrega la agenda al carrito.
+2. Pulsa Continuar con la compra.
+3. Completa los datos.
+4. Selecciona un método de pago.
+5. Revisa y registra el pedido.
+6. Debe mostrar un número PED-AAAAMMDD-0001.
+7. Revisa CLIENTES.
+8. Revisa PEDIDOS_TIENDA.
+9. Revisa VENTAS.
+10. Revisa PAGOS.
+
+ESTADOS INICIALES
+PEDIDO: PENDIENTE
+PAGO: PENDIENTE
+ENTREGA: BLOQUEADA
+
+SIGUIENTE PARTE
+- Tasa del día.
+- Precio automático en bolívares.
+- Datos bancarios por método.
+- Carga del comprobante.
+- Pago EN_REVISION.

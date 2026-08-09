@@ -1,0 +1,26 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN DE MENSAJES REPETIDOS EN TELEGRAM
+
+CAUSA
+Telegram volvió a entregar la misma actualización /start varias veces.
+El webhook no controlaba update_id y enviaba nuevamente el mensaje.
+
+CORRECCIÓN
+- Se guarda el último update_id procesado.
+- Las actualizaciones repetidas se responden con OK sin ejecutarlas.
+- El token privado se invalida después de vincular correctamente.
+- Si el Telegram ya estaba vinculado, no repite el mensaje de bienvenida.
+- Se mantiene el menú disponible.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta una sola vez:
+   reiniciarControlRepeticionesTelegramRevendedoresMD20
+5. Actualiza la implementación con Nueva versión.
+6. Registra nuevamente el webhook desde telegram-revendedores.html.
+7. No es necesario volver a vincular a Carlos.
+8. Envía /menu al bot para comprobar el menú.
+
+RESULTADO
+El mensaje de Telegram vinculado correctamente debe enviarse una sola vez.

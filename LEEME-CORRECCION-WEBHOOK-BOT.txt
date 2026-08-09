@@ -1,0 +1,33 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN DEL WEBHOOK DEL BOT
+
+PROBLEMA
+- Escribir menu no producía respuesta.
+- Los botones no ejecutaban las consultas.
+- El bot estaba vinculado, pero Telegram no entregaba correctamente
+  los nuevos mensajes al Código.gs desplegado.
+
+CORRECCIONES
+- Acepta menu, /menu, inicio y /inicio.
+- Valida el secreto antes de registrar el update_id.
+- Elimina el webhook anterior.
+- Registra el webhook nuevo.
+- Verifica con getWebhookInfo que Telegram guardó la URL exacta.
+- Elimina actualizaciones antiguas pendientes.
+- Reinicia el control de update_id.
+- Registra errores del webhook en TELEGRAM_ACCIONES.
+- Agrega Diagnosticar webhook en la página.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Actualiza la implementación con Nueva versión.
+5. Abre telegram-revendedores.html.
+6. Presiona Ctrl + F5.
+7. Pulsa Registrar y verificar webhook.
+8. Pulsa Diagnosticar webhook.
+9. Debe indicar Webhook correcto.
+10. En Telegram escribe menu o /menu.
+11. Prueba los botones.
+
+No es necesario volver a vincular a Carlos.

@@ -1,0 +1,73 @@
+MUNDO DIGITAL 2.0 — TELEGRAM UNIFICADO
+
+A partir de esta versión NO trabajaremos con muchos archivos .gs.
+
+ESTRUCTURA
+- La plataforma local se mantiene completa.
+- El Codigo.gs original de la plataforma NO se modifica.
+- Telegram queda en UN SOLO archivo:
+  TELEGRAM-APPS-SCRIPT/Telegram.gs
+
+QUÉ INCLUYE TELEGRAM.GS
+- Bot de revendedores
+- Bot administrador
+- Webhooks de ambos bots
+- Seguridad y bloqueo de update_id repetidos
+- Vinculación por código
+- TELEGRAM_USUARIOS
+- TELEGRAM_CODIGOS
+- TELEGRAM_LOGS
+- Mi resumen
+- Mi tienda
+- Mis ventas
+- Mis pagos
+- Mis clientes
+- Mis ganancias
+- Mis diamantes
+- Soporte
+- Resumen administrador
+- Pagos pendientes
+- Ventas
+- Entregas
+- Clientes
+- Revendedores
+
+INSTALACIÓN LOCAL
+1. Extrae este ZIP.
+2. Reemplaza tu carpeta mundo-digital-2-0-futurista por la nueva.
+3. No reemplaces el Codigo.gs de la plataforma por Telegram.
+
+INSTALACIÓN EN EL PROYECTO INDEPENDIENTE DE APPS SCRIPT
+1. Abre "Mundo Digital 2.0 - Telegram".
+2. Borra los archivos .gs anteriores de ese proyecto Telegram.
+3. Deja UN SOLO archivo llamado Telegram.gs.
+4. Copia completo:
+   TELEGRAM-APPS-SCRIPT/Telegram.gs
+5. Guarda.
+
+PRIMERA CONFIGURACIÓN
+1. Ejecuta prepararTelegramUnificadoMD20.
+2. Dentro de CONFIGURAR_TELEGRAM_MD20 pega temporalmente:
+   - token NUEVO de revendedores
+   - URL /exec de la implementación ACTIVA
+   - token admin solo cuando esté listo
+3. Ejecuta CONFIGURAR_TELEGRAM_MD20.
+4. Borra otra vez los tokens visibles y guarda.
+5. Publica Nueva versión.
+6. Ejecuta instalarWebhookRevendedoresMD20.
+7. Ejecuta diagnosticarTelegramRevendedoresMD20.
+
+IMPORTANTE SOBRE LA URL
+La URL /exec se guarda explícitamente.
+YA NO usamos ScriptApp.getService().getUrl() para decidir qué implementación usar.
+Esto evita volver a registrar por error una implementación vieja o archivada.
+
+RESULTADO ESPERADO
+diagnosticarTelegramRevendedoresMD20 debe mostrar:
+- coincide: true
+- actualizacionesPendientes: 0
+- ultimoErrorMensaje: ""
+
+Luego /start debe responder en el bot de revendedores.
+
+NO USES los paquetes anteriores de Telegram después de instalar este.

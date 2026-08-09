@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo de productos digitales de Mundo Digital 2.0">
+  <meta name="theme-color" content="#08080a">
+  <title>Mundo Digital 2.0 | Tienda</title>
+  <link rel="stylesheet" href="css/tienda.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="t-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="t-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="t-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="t-cart" viewBox="0 0 24 24"><path d="M3 3h2l2.4 11.3a2 2 0 0 0 2 1.7H18a2 2 0 0 0 2-1.6L21 7H6M10 21h.01M18 21h.01"/></symbol>
+    <symbol id="t-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="t-bag" viewBox="0 0 24 24"><path d="M6 8V6a6 6 0 0 1 12 0v2M4 8h16l-1 13H5L4 8Z"/></symbol>
+    <symbol id="t-arrow" viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></symbol>
+    <symbol id="t-star" viewBox="0 0 24 24"><path d="m12 2 3 6 7 .9-5 4.8 1.2 6.8L12 17.3 5.8 20.5 7 13.7 2 8.9 9 8l3-6Z"/></symbol>
+    <symbol id="t-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="t-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14"/></symbol>
+    <symbol id="t-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="t-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="t-whatsapp" viewBox="0 0 24 24"><path d="M20 11.5a8.5 8.5 0 0 1-12.5 7.5L3 20l1.1-4.2A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8.5 7.5c.4 3.3 2.7 5.7 6 6"/></symbol>
+    <symbol id="t-box" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+    <symbol id="t-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></symbol>
+    <symbol id="t-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  </svg>
+
+  <div class="fondo-ambiente fondo-uno"></div>
+  <div class="fondo-ambiente fondo-dos"></div>
+
+  <header class="cabecera-tienda">
+    <div class="contenedor cabecera-contenido">
+      <a class="marca-tienda" href="#inicio" aria-label="Ir al inicio">
+        <span class="logo-tienda">MD</span>
+        <span>
+          <strong id="nombreMarca">Mundo Digital 2.0</strong>
+          <small>Productos digitales</small>
+        </span>
+      </a>
+
+      <nav id="navegacionTienda" class="navegacion-tienda">
+        <a href="#inicio">Inicio</a>
+        <a href="#destacados">Destacados</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#productos">Productos</a>
+      </nav>
+
+      <div class="acciones-cabecera">
+        <button id="botonMenu" class="boton-icono boton-menu" type="button" aria-label="Abrir menú">
+          <svg><use href="#t-menu"></use></svg>
+        </button>
+        <button id="botonCarrito" class="boton-carrito-cabecera" type="button">
+          <svg><use href="#t-cart"></use></svg>
+          <span>Mi pedido</span>
+          <b id="contadorCarrito">0</b>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section id="barraTasaTienda" class="barra-tasa-tienda" hidden>
+    <div class="contenedor barra-tasa-contenido">
+      <span><b>Tasa del día</b> <strong id="tasaDiaTienda">1 USD = 0,00 Bs</strong></span>
+      <small id="fechaTasaTienda">Actualizada por el administrador</small>
+    </div>
+  </section>
+
+  <main>
+    <section id="inicio" class="hero-tienda">
+      <div class="contenedor hero-rejilla">
+        <div class="hero-copy">
+          <span class="etiqueta-superior">CATÁLOGO DIGITAL</span>
+          <h1>Todo lo que necesitas, en un solo lugar.</h1>
+          <p>Explora nuestros cursos, agendas, libros, herramientas y servicios digitales. Elige tus productos y solicita tu compra directamente por WhatsApp.</p>
+
+          <div class="hero-acciones">
+            <a class="boton-principal-tienda" href="#productos">
+              Ver productos <svg><use href="#t-arrow"></use></svg>
+            </a>
+            <button id="botonVerDestacados" class="boton-secundario-tienda" type="button">
+              Ver destacados
+            </button>
+          </div>
+
+          <div class="beneficios-rapidos">
+            <span><svg><use href="#t-check"></use></svg> Entrega digital</span>
+            <span><svg><use href="#t-check"></use></svg> Atención personalizada</span>
+            <span><svg><use href="#t-check"></use></svg> Compra sencilla</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="orbita orbita-uno"></div>
+          <div class="orbita orbita-dos"></div>
+          <article class="tarjeta-hero tarjeta-hero-principal">
+            <span class="mini-icono"><svg><use href="#t-bag"></use></svg></span>
+            <small>Productos publicados</small>
+            <strong id="heroTotalProductos">0</strong>
+            <p>Opciones disponibles para ti.</p>
+          </article>
+          <article class="tarjeta-hero tarjeta-hero-secundaria">
+            <span class="mini-icono"><svg><use href="#t-star"></use></svg></span>
+            <strong id="heroDestacados">0 destacados</strong>
+            <small>Selección recomendada</small>
+          </article>
+          <article class="tarjeta-hero tarjeta-hero-terciaria">
+            <span class="mini-icono"><svg><use href="#t-download"></use></svg></span>
+            <strong>Entrega digital</strong>
+            <small>Rápida y organizada</small>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="franja-confianza">
+      <div class="contenedor franja-rejilla">
+        <article>
+          <span><svg><use href="#t-shield"></use></svg></span>
+          <div><strong>Compra acompañada</strong><small>Te guiamos durante el proceso</small></div>
+        </article>
+        <article>
+          <span><svg><use href="#t-download"></use></svg></span>
+          <div><strong>Productos digitales</strong><small>Archivos, cursos y accesos</small></div>
+        </article>
+        <article>
+          <span><svg><use href="#t-whatsapp"></use></svg></span>
+          <div><strong>Atención por WhatsApp</strong><small>Consulta antes de pagar</small></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="destacados" class="seccion-tienda seccion-destacados" hidden>
+      <div class="contenedor">
+        <div class="encabezado-seccion">
+          <div>
+            <span class="etiqueta-superior">RECOMENDADOS</span>
+            <h2>Productos destacados</h2>
+            <p>Una selección especial de nuestras mejores opciones.</p>
+          </div>
+          <div class="controles-carrusel">
+            <button id="destacadosAnterior" type="button" aria-label="Anterior">‹</button>
+            <button id="destacadosSiguiente" type="button" aria-label="Siguiente">›</button>
+          </div>
+        </div>
+        <div id="rejillaDestacados" class="rejilla-productos destacados-horizontal"></div>
+      </div>
+    </section>
+
+    <section id="categorias" class="seccion-tienda">
+      <div class="contenedor">
+        <div class="encabezado-seccion">
+          <div>
+            <span class="etiqueta-superior">EXPLORA</span>
+            <h2>Encuentra lo que buscas</h2>
+            <p>Filtra los productos por categoría o utiliza el buscador.</p>
+          </div>
+        </div>
+
+        <div class="barra-busqueda">
+          <label class="campo-busqueda">
+            <svg><use href="#t-search"></use></svg>
+            <input id="buscarTienda" type="search" placeholder="Buscar cursos, agendas, herramientas...">
+          </label>
+          <button id="limpiarBusqueda" class="boton-limpiar" type="button" hidden>Limpiar</button>
+        </div>
+
+        <div id="listaCategorias" class="lista-categorias" aria-label="Categorías"></div>
+      </div>
+    </section>
+
+    <section id="productos" class="seccion-tienda productos-publicos">
+      <div class="contenedor">
+        <div class="encabezado-seccion encabezado-productos">
+          <div>
+            <span class="etiqueta-superior">CATÁLOGO</span>
+            <h2 id="tituloResultados">Todos los productos</h2>
+            <p id="textoResultados">Cargando productos publicados...</p>
+          </div>
+          <select id="ordenProductos" class="selector-orden" aria-label="Ordenar productos">
+            <option value="RECOMENDADOS">Recomendados</option>
+            <option value="PRECIO_ASC">Precio: menor a mayor</option>
+            <option value="PRECIO_DESC">Precio: mayor a menor</option>
+            <option value="NOMBRE">Nombre</option>
+          </select>
+        </div>
+
+        <div id="cargandoTienda" class="estado-tienda">
+          <span class="cargador"></span>
+          <strong>Cargando catálogo...</strong>
+          <small>Consultando productos publicados</small>
+        </div>
+
+        <div id="errorTienda" class="estado-tienda error" hidden>
+          <svg><use href="#t-box"></use></svg>
+          <strong>No pudimos cargar la tienda</strong>
+          <small id="textoErrorTienda">Revisa la conexión e inténtalo nuevamente.</small>
+          <button id="reintentarTienda" type="button">Reintentar</button>
+        </div>
+
+        <div id="vacioTienda" class="estado-tienda" hidden>
+          <svg><use href="#t-search"></use></svg>
+          <strong>No encontramos productos</strong>
+          <small>Prueba con otra búsqueda o categoría.</small>
+        </div>
+
+        <div id="rejillaProductos" class="rejilla-productos"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie-tienda">
+    <div class="contenedor pie-rejilla">
+      <div class="marca-pie">
+        <span class="logo-tienda">MD</span>
+        <div>
+          <strong id="nombrePie">Mundo Digital 2.0</strong>
+          <p>Productos y soluciones digitales para aprender, organizarte y disfrutar.</p>
+        </div>
+      </div>
+      <div>
+        <strong>Catálogo</strong>
+        <a href="#destacados">Destacados</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#productos">Productos</a>
+      </div>
+      <div>
+        <strong>Atención</strong>
+        <button id="contactarWhatsAppPie" type="button">WhatsApp</button>
+        <a id="correoTienda" href="#" hidden>Correo</a>
+      </div>
+    </div>
+    <div class="contenedor derechos">
+      <span>© 2026 <b id="nombreDerechos">Mundo Digital 2.0</b></span>
+      <span>Catálogo digital</span>
+    </div>
+  </footer>
+
+  <button id="botonCarritoFlotante" class="carrito-flotante" type="button" hidden>
+    <svg><use href="#t-cart"></use></svg>
+    <span><b id="contadorFlotante">0</b> productos</span>
+    <strong id="totalFlotante">0,00 USD</strong>
+  </button>
+
+  <div id="capaModal" class="capa-modal" hidden></div>
+
+  <section id="modalProducto" class="modal-producto" role="dialog" aria-modal="true" aria-labelledby="detalleNombre" hidden>
+    <button id="cerrarDetalle" class="cerrar-modal" type="button" aria-label="Cerrar">
+      <svg><use href="#t-close"></use></svg>
+    </button>
+    <div class="detalle-imagen">
+      <img id="detalleImagen" src="" alt="">
+      <div id="detalleImagenError" class="imagen-fallback" hidden>
+        <svg><use href="#t-box"></use></svg>
+        <span>Producto digital</span>
+      </div>
+      <div id="detalleBadges" class="badges-producto"></div>
+    </div>
+    <div class="detalle-contenido">
+      <span id="detalleCategoria" class="detalle-categoria"></span>
+      <h2 id="detalleNombre"></h2>
+      <p id="detalleDescripcion"></p>
+      <div id="detalleEtiquetas" class="detalle-etiquetas"></div>
+      <div class="detalle-informacion">
+        <span><small>Entrega</small><strong id="detalleEntrega"></strong></span>
+        <span><small>Disponibilidad</small><strong id="detalleDisponibilidad"></strong></span>
+        <span id="detalleDuracionCaja"><small>Duración</small><strong id="detalleDuracion"></strong></span>
+      </div>
+      <div class="detalle-pie">
+        <div class="detalle-precio">
+          <small id="detallePrecioAnterior"></small>
+          <strong id="detallePrecio"></strong><span id="detallePrecioBs" class="precio-bs"></span>
+        </div>
+        <div class="detalle-acciones">
+          <button id="agregarDesdeDetalle" class="boton-secundario-tienda" type="button">
+            Agregar al pedido
+          </button>
+          <button id="comprarDesdeDetalle" class="boton-principal-tienda" type="button">
+            Comprar ahora
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <aside id="panelCarrito" class="panel-carrito" aria-labelledby="tituloCarrito" hidden>
+    <header>
+      <div>
+        <span class="etiqueta-superior">TU SELECCIÓN</span>
+        <h2 id="tituloCarrito">Mi pedido</h2>
+      </div>
+      <button id="cerrarCarrito" class="cerrar-modal" type="button" aria-label="Cerrar pedido">
+        <svg><use href="#t-close"></use></svg>
+      </button>
+    </header>
+
+    <div id="carritoVacio" class="carrito-vacio">
+      <svg><use href="#t-cart"></use></svg>
+      <strong>Tu pedido está vacío</strong>
+      <p>Agrega productos del catálogo para continuar.</p>
+      <button id="seguirComprando" class="boton-secundario-tienda" type="button">Ver productos</button>
+    </div>
+
+    <div id="contenidoCarrito" class="contenido-carrito" hidden>
+      <div id="listaCarrito" class="lista-carrito"></div>
+
+      <div class="resumen-carrito">
+        <div><span>Productos</span><strong id="cantidadResumen">0</strong></div>
+        <div class="total-carrito"><span>Total estimado</span><strong id="totalCarrito">0,00 USD</strong><small id="totalCarritoBs" class="precio-bs"></small></div>
+      </div>
+
+      <p class="nota-carrito">Completa tus datos y selecciona el método de pago. El sistema registrará automáticamente tu pedido.</p>
+
+      <button id="continuarCheckout" class="boton-checkout" type="button">
+        Continuar con la compra
+        <svg><use href="#t-arrow"></use></svg>
+      </button>
+      <button id="vaciarCarrito" class="boton-vaciar" type="button">Vaciar pedido</button>
+    </div>
+  </aside>
+
+
+  <section id="modalCheckout" class="modal-checkout" role="dialog" aria-modal="true" aria-labelledby="tituloCheckout" hidden>
+    <header class="checkout-cabecera">
+      <div>
+        <span class="etiqueta-superior">COMPRA SEGURA</span>
+        <h2 id="tituloCheckout">Completar pedido</h2>
+      </div>
+      <button id="cerrarCheckout" class="cerrar-modal" type="button" aria-label="Cerrar compra">
+        <svg><use href="#t-close"></use></svg>
+      </button>
+    </header>
+
+    <div class="checkout-pasos" aria-label="Progreso de la compra">
+      <span class="activo" data-indicador-paso="1"><b>1</b> Tus datos</span>
+      <span data-indicador-paso="2"><b>2</b> Método</span>
+      <span data-indicador-paso="3"><b>3</b> Confirmar</span>
+      <span data-indicador-paso="4"><b>4</b> Pedido listo</span>
+    </div>
+
+    <div class="checkout-cuerpo">
+      <section data-checkout-paso="1">
+        <div class="checkout-introduccion">
+          <h3>Datos del comprador</h3>
+          <p>Estos datos se utilizarán para registrar tu compra y enviarte la información del pedido.</p>
+        </div>
+
+        <div class="formulario-checkout">
+          <label class="campo-checkout ancho-completo">
+            <span>Nombre y apellido *</span>
+            <input id="checkoutNombre" type="text" autocomplete="name" maxlength="100" placeholder="Ejemplo: Eliu Flores">
+          </label>
+
+          <label class="campo-checkout campo-codigo">
+            <span>Código de país *</span>
+            <input id="checkoutCodigoPais" type="text" inputmode="tel" autocomplete="tel-country-code" maxlength="6" placeholder="+58">
+          </label>
+
+          <label class="campo-checkout campo-telefono">
+            <span>WhatsApp *</span>
+            <input id="checkoutWhatsapp" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="18" placeholder="4121234567">
+          </label>
+
+          <label class="campo-checkout">
+            <span>Correo electrónico *</span>
+            <input id="checkoutCorreo" type="email" autocomplete="email" maxlength="140" placeholder="cliente@correo.com">
+          </label>
+
+          <label class="campo-checkout">
+            <span>País *</span>
+            <input id="checkoutPais" type="text" autocomplete="country-name" maxlength="80" placeholder="Venezuela">
+          </label>
+
+          <label class="campo-checkout">
+            <span>Documento</span>
+            <input id="checkoutDocumento" type="text" maxlength="40" placeholder="Opcional">
+          </label>
+
+          <label class="campo-checkout ancho-completo">
+            <span>Nota sobre el pedido</span>
+            <textarea id="checkoutNotas" rows="3" maxlength="400" placeholder="Información adicional, horario de contacto u observaciones."></textarea>
+          </label>
+
+          <label class="campo-trampa" aria-hidden="true">
+            <span>Sitio web</span>
+            <input id="checkoutSitioWeb" type="text" tabindex="-1" autocomplete="off">
+          </label>
+
+          <label class="aceptar-checkout ancho-completo">
+            <input id="checkoutTerminos" type="checkbox">
+            <span>Acepto que mis datos sean utilizados para registrar y gestionar esta compra.</span>
+          </label>
+        </div>
+      </section>
+
+      <section data-checkout-paso="2" hidden>
+        <div class="checkout-introduccion">
+          <h3>Selecciona el método de pago</h3>
+          <p>En la siguiente parte del proyecto aparecerán aquí los datos bancarios, la tasa del día y la carga del comprobante.</p>
+        </div>
+
+        <div id="metodosPagoCheckout" class="metodos-checkout"></div>
+
+        <div id="sinMetodosCheckout" class="aviso-checkout" hidden>
+          No hay métodos de pago activos. Revisa la pestaña METODOS_PAGO.
+        </div>
+      </section>
+
+      <section data-checkout-paso="3" hidden>
+        <div class="checkout-introduccion">
+          <h3>Revisa tu pedido</h3>
+          <p>Los precios serán verificados nuevamente en Google Sheets antes de registrar la compra.</p>
+        </div>
+
+        <div class="resumen-checkout">
+          <article>
+            <span>Comprador</span>
+            <strong id="resumenCheckoutNombre"></strong>
+            <small id="resumenCheckoutContacto"></small>
+          </article>
+
+          <article>
+            <span>Método seleccionado</span>
+            <strong id="resumenCheckoutMetodo"></strong>
+            <small id="resumenCheckoutVendedor"></small>
+          </article>
+        </div>
+
+        <div id="productosResumenCheckout" class="productos-resumen-checkout"></div>
+
+        <div class="total-checkout">
+          <span>Total del pedido</span>
+          <div><strong id="totalResumenCheckout">0,00 USD</strong><small id="totalResumenCheckoutBs" class="precio-bs"></small></div>
+        </div>
+
+        <div id="procesandoCheckout" class="procesando-checkout" hidden>
+          <span class="cargador"></span>
+          <div>
+            <strong>Registrando tu pedido...</strong>
+            <small>No cierres esta ventana.</small>
+          </div>
+        </div>
+      </section>
+
+      <section data-checkout-paso="4" hidden>
+        <div id="pedidoConfirmadoBloque" class="pedido-confirmado pedido-pago-activo">
+          <span class="icono-confirmado"><svg><use href="#t-check"></use></svg></span>
+          <span class="etiqueta-superior">PEDIDO REGISTRADO</span>
+          <h3>Completa el pago</h3>
+          <p>Realiza el pago con los datos indicados, carga el comprobante y envíalo para revisión.</p>
+
+          <div class="numero-pedido-confirmado">
+            <small>Número del pedido</small>
+            <strong id="numeroPedidoConfirmado"></strong>
+          </div>
+
+          <div class="datos-pedido-confirmado">
+            <span><small>Pago</small><strong id="estadoPagoConfirmado">PENDIENTE</strong></span>
+            <span><small>Entrega</small><strong id="estadoEntregaConfirmado">BLOQUEADA</strong></span>
+            <span><small>Total</small><strong id="totalPedidoConfirmado"></strong></span>
+            <span><small>Método</small><strong id="metodoPedidoConfirmado"></strong></span>
+          </div>
+
+          <div class="instrucciones-pago-checkout">
+            <div class="cabecera-instrucciones-pago">
+              <div><span class="etiqueta-superior">DATOS PARA PAGAR</span><h4 id="nombreMetodoPagoFinal"></h4></div>
+              <div class="monto-exacto-pago"><small>Monto exacto</small><strong id="montoExactoPago"></strong></div>
+            </div>
+            <div id="datosMetodoPagoFinal" class="datos-metodo-final"></div>
+          </div>
+
+          <div id="formularioComprobante" class="formulario-comprobante">
+            <label class="campo-checkout"><span>Referencia u operación *</span><input id="pagoReferencia" type="text" maxlength="80" placeholder="Ejemplo: 87654"></label>
+            <label class="campo-checkout"><span>Banco o plataforma de origen *</span><input id="pagoBancoOrigen" type="text" maxlength="100" placeholder="Ejemplo: Banco de Venezuela"></label>
+            <label class="campo-checkout"><span>Titular que realizó el pago *</span><input id="pagoTitular" type="text" maxlength="120" placeholder="Nombre del titular"></label>
+            <label class="campo-checkout"><span>Fecha del pago *</span><input id="pagoFecha" type="date"></label>
+            <label class="campo-archivo-comprobante ancho-completo">
+              <span>Comprobante JPG, PNG, WEBP o PDF *</span>
+              <input id="pagoComprobante" type="file" accept="image/jpeg,image/png,image/webp,application/pdf">
+              <div id="vistaComprobante" class="vista-comprobante"><svg><use href="#t-download"></use></svg><div><strong>Selecciona el comprobante</strong><small id="ayudaComprobante">Tamaño máximo: 5 MB</small></div></div>
+            </label>
+            <button id="enviarComprobantePago" class="boton-whatsapp ancho-completo" type="button">Enviar comprobante para revisión</button>
+          </div>
+
+          <div id="pagoEnRevision" class="pago-en-revision" hidden>
+            <span class="icono-revision"><svg><use href="#t-clock"></use></svg></span>
+            <h4>Comprobante recibido</h4>
+            <p>Tu pago quedó en revisión. La entrega permanecerá bloqueada hasta que el administrador confirme el pago.</p>
+            <strong id="referenciaRevision"></strong>
+          </div>
+
+          <p class="token-pedido">Token privado: <code id="tokenPedidoConfirmado"></code></p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="checkout-pie">
+      <button id="checkoutAtras" class="boton-secundario-tienda" type="button">Atrás</button>
+      <button id="checkoutSiguiente" class="boton-principal-tienda" type="button">
+        Continuar
+        <svg><use href="#t-arrow"></use></svg>
+      </button>
+      <button id="checkoutFinalizar" class="boton-principal-tienda" type="button" hidden>
+        Cerrar y volver a la tienda
+      </button>
+    </footer>
+  </section>
+
+
+  <div id="mensajeTienda" class="mensaje-tienda" role="status" aria-live="polite"></div>
+
+  <script src="js/tienda-control-revendedores-20260730.js?v=20260730001"></script>
+  <script src="js/tienda-pagos-20260730.js?v=20260730004"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+MUNDO DIGITAL 2.0 — FASE 5 · PARTE 2
+TIENDA PÚBLICA
+
+ARCHIVOS NUEVOS
+- tienda.html
+- css/tienda.css
+- js/tienda-config.js
+- js/tienda-20260730.js
+
+FUNCIONES INCLUIDAS
+- Página pública sin menú administrativo.
+- Carga solamente productos PUBLICADOS y ACTIVOS.
+- Filtra productos del canal administrador.
+- Imágenes reales y adaptación de enlaces de Google Drive.
+- Productos destacados.
+- Categorías.
+- Buscador.
+- Ordenamiento por precio y nombre.
+- Vista detallada del producto.
+- Carrito o pedido local.
+- Compra por WhatsApp.
+- Diseño adaptable a teléfonos.
+- Botón Ver tienda pública en catalogo-admin.html.
+
+SEGURIDAD DEL CATÁLOGO
+La respuesta pública NO incluye:
+- ARCHIVO_ID
+- PRECIO_COMPRA
+- proveedor
+- usuario
+- contraseña
+- cuentas del inventario
+- clave API administrativa
+
+INSTALACIÓN
+1. Cierra las páginas de Mundo Digital 2.0.
+2. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+3. Abre apps-script/Codigo.gs.
+4. Reemplaza todo tu Código.gs por el nuevo.
+5. Guarda con Ctrl + S.
+6. Actualiza la implementación:
+   Implementar > Administrar implementaciones > Lápiz >
+   Nueva versión > Implementar.
+7. En Google Sheets abre CONFIGURACION.
+8. En WHATSAPP_PRINCIPAL escribe el número del negocio con código
+   de país y sin el signo +. Ejemplo: 573001234567.
+9. Abre tienda.html.
+10. Presiona Ctrl + F5.
+
+PRUEBA
+- Debe aparecer la Agenda publicada.
+- Debe mostrar imagen, descripción, precio y oferta.
+- Prueba buscar Agenda.
+- Prueba Ver detalles.
+- Pulsa Comprar ahora.
+- El producto debe entrar en Mi pedido.
+- Pulsa Enviar pedido por WhatsApp.
+
+IMPORTANTE
+En esta Parte 2 el pedido se envía por WhatsApp.
+La creación automática de CLIENTE, VENTA, PAGO y ENTREGA se
+conectará en la Parte 3.

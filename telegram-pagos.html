@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundo Digital 2.0 | Telegram</title>
+  <link rel="stylesheet" href="css/telegram-pagos.css">
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true">
+    <symbol id="tg-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="tg-save" viewBox="0 0 24 24"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></symbol>
+    <symbol id="tg-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="tg-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="tg-refresh" viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5"/><path d="M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"/></symbol>
+    <symbol id="tg-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+
+  <main class="pagina">
+    <header class="cabecera">
+      <a href="alertas-pagos.html" class="volver">
+        <svg><use href="#tg-back"></use></svg>
+      </a>
+      <div>
+        <span>INTEGRACIONES</span>
+        <h1>Telegram para pagos</h1>
+        <p>Configura el bot que recibirá las alertas y aprobará los pagos.</p>
+      </div>
+    </header>
+
+    <section class="estado">
+      <article>
+        <small>Token del bot</small>
+        <strong id="estadoToken">Sin comprobar</strong>
+      </article>
+      <article>
+        <small>Administradores</small>
+        <strong id="estadoChats">0</strong>
+      </article>
+      <article>
+        <small>Webhook</small>
+        <strong id="estadoWebhook">Sin comprobar</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="encabezado-panel">
+        <div>
+          <span>CONFIGURACIÓN SEGURA</span>
+          <h2>Conectar el bot</h2>
+        </div>
+      </div>
+
+      <div class="formulario">
+        <label class="campo completo">
+          <span>Token del bot de Telegram</span>
+          <input id="tokenBot" type="password" autocomplete="off" placeholder="1234567890:AA...">
+          <small>Se obtiene en @BotFather. El token se guarda en las propiedades privadas de Apps Script.</small>
+        </label>
+
+        <label class="campo completo">
+          <span>Chat ID de los administradores</span>
+          <textarea id="chatIds" rows="3" placeholder="123456789&#10;987654321"></textarea>
+          <small>Puedes colocar uno o varios Chat ID separados por coma, espacio o una línea nueva.</small>
+        </label>
+
+        <label class="campo completo">
+          <span>Secreto del webhook</span>
+          <input id="secretoWebhook" type="text" autocomplete="off" placeholder="Déjalo vacío para generarlo automáticamente">
+          <small>Protege el enlace que Telegram utilizará para enviar las acciones del bot.</small>
+        </label>
+      </div>
+
+      <div class="acciones">
+        <button id="guardarTelegram" class="principal" type="button">
+          <svg><use href="#tg-save"></use></svg>
+          Guardar configuración
+        </button>
+        <button id="probarTelegram" type="button">
+          <svg><use href="#tg-send"></use></svg>
+          Enviar prueba
+        </button>
+        <button id="registrarWebhook" type="button">
+          <svg><use href="#tg-link"></use></svg>
+          Registrar webhook
+        </button>
+        <button id="enviarPendientes" type="button">
+          <svg><use href="#tg-refresh"></use></svg>
+          Enviar pagos pendientes
+        </button>
+      </div>
+    </section>
+
+    <section class="ayuda">
+      <h2>Preparación rápida</h2>
+      <ol>
+        <li>En Telegram abre <strong>@BotFather</strong>.</li>
+        <li>Utiliza <code>/newbot</code> y copia el token.</li>
+        <li>Escribe un mensaje a tu bot.</li>
+        <li>Obtén tu Chat ID y colócalo arriba.</li>
+        <li>Guarda, envía la prueba y registra el webhook.</li>
+      </ol>
+      <p>Después podrás utilizar <code>/pagos</code> en el bot para consultar los comprobantes pendientes.</p>
+    </section>
+  </main>
+
+  <div id="mensajeTelegram" class="mensaje"></div>
+
+  <script src="js/configuracion.js"></script>
+  <script src="js/telegram-pagos-20260730.js?v=20260730001"></script>
+</body>
+</html>

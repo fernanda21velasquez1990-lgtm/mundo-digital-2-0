@@ -1,0 +1,24 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN DE BOTONES DEL BOT
+
+PROBLEMA
+Mi resumen funcionaba, pero los demás botones no enviaban respuesta.
+
+CORRECCIÓN
+- Las respuestas dinámicas ahora se envían como texto plano.
+- Se eliminó Markdown en ventas, pagos, clientes, tienda y ganancias.
+- Cada botón tiene su propio bloque de error.
+- Si una consulta falla, Telegram muestra el nombre del botón y el detalle.
+- El error queda registrado en TELEGRAM_ACCIONES.
+- Un botón con error no bloquea los demás botones.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Actualiza la implementación con Nueva versión.
+5. Abre telegram-revendedores.html.
+6. Pulsa Registrar y verificar webhook.
+7. En Telegram escribe menu.
+8. Prueba todos los botones.
+
+No es necesario volver a vincular a Carlos.

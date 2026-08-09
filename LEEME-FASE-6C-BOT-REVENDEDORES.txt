@@ -1,0 +1,36 @@
+MUNDO DIGITAL 2.0 — FASE 6C
+DATOS REALES EN EL BOT DEL REVENDEDOR
+
+FUNCIONES CONECTADAS
+- Mi resumen
+- Mi tienda
+- Mis ventas
+- Mis pagos
+- Mis clientes
+- Mis ganancias
+
+SEGURIDAD
+Cada consulta usa el REVENDEDOR_ID guardado en TELEGRAM_USUARIOS.
+El revendedor no puede escribir otro ID para consultar datos ajenos.
+
+FILTRO DE VENTAS
+Las ventas se identifican mediante la referencia del vendedor guardada
+en las notas de la venta y en PEDIDOS_TIENDA.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Actualiza la implementación con Nueva versión.
+5. Abre telegram-revendedores.html.
+6. Pulsa Registrar webhook nuevamente.
+7. En Telegram escribe /menu.
+8. Prueba cada botón.
+
+IMPORTANTE
+- Carlos no necesita vincularse otra vez.
+- Mi tienda muestra el enlace local de referencia.
+- El enlace será realmente compartible cuando publiquemos en Vercel.
+- La ganancia neta todavía no descuenta costos o comisiones; esta parte
+  muestra ventas confirmadas y totales. Las reglas de comisión se
+  configurarán en la siguiente fase.

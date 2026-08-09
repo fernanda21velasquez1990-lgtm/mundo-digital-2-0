@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Telegram Revendedores | Mundo Digital 2.0</title>
+<style>
+body{margin:0;background:#080808;color:#fff;font-family:Arial,sans-serif}
+.wrap{max-width:1050px;margin:auto;padding:28px}
+.card{background:#121218;border:1px solid #30303a;border-radius:18px;padding:20px;margin-top:18px}
+input,button{padding:12px;border-radius:10px;border:1px solid #333;background:#0b0b10;color:#fff}
+input{width:100%;margin:6px 0 12px}
+button{cursor:pointer;font-weight:700}
+.primary{background:#ff5b24;border-color:#ff5b24}
+.fila{border:1px solid #30303a;border-radius:15px;padding:18px;margin-top:12px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.codigo{margin-top:15px;padding:18px;border:1px solid #ff5b24;border-radius:14px;text-align:center;background:#0a0a0f}
+.codigo strong{display:block;font-size:44px;letter-spacing:7px;margin:10px 0}
+.codigo code{display:block;background:#17171f;padding:12px;border-radius:10px;margin-bottom:10px;user-select:all}
+#msg{position:fixed;right:20px;bottom:20px;background:#1b1b23;border:1px solid #333;padding:12px 15px;border-radius:10px;display:none}
+@media(max-width:700px){.top{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Telegram de revendedores</h1>
+  <p>Genera el código de vinculación directamente desde la página.</p>
+
+  <div class="card">
+    <h2>Configuración</h2>
+    <label>URL /exec activa</label>
+    <input id="url" placeholder="https://script.google.com/macros/s/.../exec">
+
+    <label>Clave privada del panel</label>
+    <input id="clave" type="password" placeholder="Clave del panel">
+
+    <button id="guardar" class="primary">Guardar configuración</button>
+    <button id="cargar">Cargar revendedores</button>
+  </div>
+
+  <div class="card">
+    <h2>Revendedores</h2>
+    <div id="lista"><p>Presiona Cargar revendedores.</p></div>
+  </div>
+</div>
+
+<div id="msg"></div>
+
+<script>
+(() => {
+  const $=s=>document.querySelector(s);
+  const E={url:$('#url'),clave:$('#clave'),guardar:$('#guardar'),cargar:$('#cargar'),lista:$('#lista'),msg:$('#msg')};
+  const codigos=new Map();
+
+  function aviso(t){
+    E.msg.textContent=t;
+    E.msg.style.display='block';
+    clearTimeout(aviso.timer);
+    aviso.timer=setTimeout(()=>E.msg.style.display='none',3500);
+  }
+
+  function esc(v){
+    return String(v??'')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+
+  function leer(){
+    E.url.value=localStorage.getItem('md20_tg_url')||'';
+    E.clave.value=localStorage.getItem('md20_tg_key')||'';
+  }
+
+  function guardar(){
+    localStorage.setItem('md20_tg_url',E.url.value.trim());
+    localStorage.setItem('md20_tg_key',E.clave.value.trim());
+    aviso('Configuración guardada.');
+  }
+
+  async function api(action,extra={}){
+    const base=E.url.value.trim();
+    const clave=E.clave.value.trim();
+
+    if(!base)throw new Error('Falta la URL /exec.');
+    if(!clave)throw new Error('Falta la clave del panel.');
+
+    const u=new URL(base);
+    u.searchParams.set('action',action);
+    u.searchParams.set('clave',clave);
+
+    Object.entries(extra).forEach(([k,v])=>u.searchParams.set(k,v));
+
+    const r=await fetch(u.toString());
+    const d=await r.json();
+    if(!d.ok)throw new Error(d.mensaje||'Error de Apps Script.');
+    return d;
+  }
+
+  function render(rs){
+    if(!rs.length){
+      E.lista.innerHTML='<p>No hay revendedores.</p>';
+      return;
+    }
+
+    E.lista.innerHTML=rs.map(r=>{
+      const c=codigos.get(r.revendedorId);
+      return `
+        <div class="fila">
+          <div class="top">
+            <div>
+              <h3>${esc(r.nombre)}</h3>
+              <p>${esc(r.revendedorId)} · ${esc(r.whatsapp||'Sin WhatsApp')}</p>
+              <small>${esc(r.telegramEstado)}</small>
+            </div>
+            <button class="primary" data-gen="${esc(r.revendedorId)}">Generar código</button>
+          </div>
+          ${c?`
+          <div class="codigo">
+            <span>TU CÓDIGO</span>
+            <strong>${esc(c.codigo)}</strong>
+            <code>${esc(c.comando)}</code>
+            <button data-copy="${esc(r.revendedorId)}">Copiar comando</button>
+          </div>`:''}
+        </div>`;
+    }).join('');
+
+    document.querySelectorAll('[data-gen]').forEach(b=>b.onclick=()=>generar(b.dataset.gen));
+    document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copiar(b.dataset.copy));
+  }
+
+  async function listar(){
+    try{
+      E.lista.innerHTML='<p>Cargando...</p>';
+      const d=await api('listarRevendedoresTelegram');
+      render(d.registros||[]);
+    }catch(e){
+      E.lista.innerHTML='<p>No se pudo cargar.</p>';
+      aviso(e.message);
+    }
+  }
+
+  async function generar(id){
+    try{
+      const d=await api('generarCodigoRevendedorTelegram',{revendedorId:id});
+      codigos.set(id,d.registro);
+      await listar();
+      aviso('Código generado.');
+    }catch(e){aviso(e.message)}
+  }
+
+  async function copiar(id){
+    const r=codigos.get(id);
+    if(!r)return;
+
+    try{
+      await navigator.clipboard.writeText(r.comando);
+    }catch(e){
+      const ta=document.createElement('textarea');
+      ta.value=r.comando;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    aviso('Comando copiado.');
+  }
+
+  E.guardar.onclick=guardar;
+  E.cargar.onclick=listar;
+  leer();
+})();
+</script>
+</body>
+</html>

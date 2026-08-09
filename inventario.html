@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mundo Digital 2.0 | Inventario</title>
+<link rel="stylesheet" href="css/panel.css"><link rel="stylesheet" href="css/socios.css"><link rel="stylesheet" href="css/inventario.css">
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true">
+<symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5ZM2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3h2l2.4 11.3H18L21 7H6"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 9h4l3 4v4h-7z"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M5 13v8h14v-8"/></symbol>
+
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v10a2 2 0 0 1-2 2H5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7Z"/></symbol>
+  </svg>
+
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div id="capaOscura" class="capa-oscura"></div>
+<aside id="menuLateral" class="menu-lateral">
+<div class="marca-menu"><a class="marca" href="dashboard.html"><span class="marca-orbita"><span>MD</span></span><span class="marca-copy"><strong>Mundo Digital</strong><small>CONTROL CENTER 2.0</small></span></a><button id="botonCerrarMenu" class="boton-icono cerrar-menu"><svg><use href="#i-close"></use></svg></button></div>
+<div class="estado-sistema"><span class="pulso"></span><div><strong>Sistema operativo</strong><small>Servicios en línea</small></div><span class="latencia">24 ms</span></div>
+<nav class="navegacion">
+      <p class="grupo-menu">Centro de control</p>
+      <a href="dashboard.html" class="enlace-menu" data-menu-page="dashboard.html">
+        <span class="halo-icono"><svg><use href="#i-grid"></use></svg></span>
+        <span class="texto-menu"><strong>Resumen</strong><small>Vista general</small></span>
+      </a>
+
+      <p class="grupo-menu">Gestión comercial</p>
+      <a href="clientes.html" class="enlace-menu" data-menu-page="clientes.html">
+        <span class="halo-icono"><svg><use href="#i-users"></use></svg></span>
+        <span class="texto-menu"><strong>Clientes</strong><small>Contactos y compras</small></span>
+      </a>
+      <a href="productos.html" class="enlace-menu" data-menu-page="productos.html">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Productos</strong><small>Catálogo digital</small></span>
+      </a>
+      <a href="catalogo-admin.html" class="enlace-menu" data-menu-page="catalogo-admin.html">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Catálogo y tienda</strong><small>Publicación de productos</small></span>
+      </a>
+      <a href="canva.html" class="enlace-menu" data-menu-page="canva.html">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span>
+      </a>
+      <a href="proveedores.html" class="enlace-menu" data-menu-page="proveedores.html">
+        <span class="halo-icono"><svg><use href="#i-truck"></use></svg></span>
+        <span class="texto-menu"><strong>Proveedores</strong><small>Compras y renovaciones</small></span>
+      </a>
+      <a href="revendedores.html" class="enlace-menu" data-menu-page="revendedores.html">
+        <span class="halo-icono"><svg><use href="#i-store"></use></svg></span>
+        <span class="texto-menu"><strong>Revendedores</strong><small>Servicios y ganancias</small></span>
+      </a>
+      <a href="inventario.html" class="enlace-menu activo" data-menu-page="inventario.html">
+        <span class="halo-icono"><svg><use href="#i-layers"></use></svg></span>
+        <span class="texto-menu"><strong>Inventario</strong><small>Cuentas y accesos</small></span>
+      <span class="marca-activa"></span></a>
+      <a href="ventas.html" class="enlace-menu" data-menu-page="ventas.html">
+        <span class="halo-icono"><svg><use href="#i-cart"></use></svg></span>
+        <span class="texto-menu"><strong>Ventas</strong><small>Pedidos y facturación</small></span>
+      </a>
+
+      <p class="grupo-menu">Operaciones</p>
+      <a href="pagos.html" class="enlace-menu" data-menu-page="pagos.html">
+        <span class="halo-icono"><svg><use href="#i-wallet"></use></svg></span>
+        <span class="texto-menu"><strong>Pagos</strong><small>Movimientos recibidos</small></span>
+      </a>
+      <a href="entregas.html" class="enlace-menu" data-menu-page="entregas.html">
+        <span class="halo-icono"><svg><use href="#i-send"></use></svg></span>
+        <span class="texto-menu"><strong>Entregas</strong><small>Archivos y credenciales</small></span>
+      </a>
+      <a href="suscripciones.html" class="enlace-menu" data-menu-page="suscripciones.html">
+        <span class="halo-icono"><svg><use href="#i-clock"></use></svg></span>
+        <span class="texto-menu"><strong>Suscripciones</strong><small>Vencimientos</small></span>
+      </a>
+      <a href="renovaciones.html" class="enlace-menu" data-menu-page="renovaciones.html">
+        <span class="halo-icono"><svg><use href="#i-bell"></use></svg></span>
+        <span class="texto-menu"><strong>Renovaciones</strong><small>Respuestas de clientes</small></span>
+      </a>
+
+      <p class="grupo-menu">Inteligencia</p>
+      <a href="#" class="enlace-menu" data-pagina="Reportes">
+        <span class="halo-icono"><svg><use href="#i-chart"></use></svg></span>
+        <span class="texto-menu"><strong>Reportes</strong><small>Análisis de resultados</small></span>
+      </a>
+      <a href="#" class="enlace-menu" data-pagina="Usuarios">
+        <span class="halo-icono"><svg><use href="#i-shield"></use></svg></span>
+        <span class="texto-menu"><strong>Usuarios</strong><small>Accesos y permisos</small></span>
+      </a>
+      <a href="#" class="enlace-menu" data-pagina="Configuración">
+        <span class="halo-icono"><svg><use href="#i-settings"></use></svg></span>
+        <span class="texto-menu"><strong>Configuración</strong><small>Ajustes del sistema</small></span>
+      </a>
+    </nav>
+<div class="usuario-menu"><div class="avatar">A</div><div class="usuario-copy"><strong>Administrador</strong><small>Cuenta principal</small></div><button id="botonCerrarSesion" class="boton-icono boton-salir"><svg><use href="#i-logout"></use></svg></button></div>
+</aside>
+
+<main class="contenido-principal">
+<header class="barra-superior"><div class="cabecera-izquierda"><button id="botonAbrirMenu" class="boton-icono boton-menu-movil"><svg><use href="#i-menu"></use></svg></button><div><span class="sobrelinea">CUENTAS Y ACCESOS</span><h1>Inventario</h1></div></div><div class="cabecera-derecha"><span id="estadoConexion" class="estado-conexion local">Comprobando conexión...</span><button id="botonActualizar" class="boton-icono accion-cabecera"><svg><use href="#i-refresh"></use></svg></button></div></header>
+
+<section class="modulo-inventario">
+<section class="cabecera-inventario"><div><span class="sobrelinea">CONTROL CENTRAL</span><h2>Inventario <span>digital</span></h2><p>Controla cuentas completas, pantallas, perfiles, accesos disponibles y vencimientos de proveedores.</p></div><button id="botonNuevaCuenta" class="boton-nuevo-socio"><svg><use href="#i-plus"></use></svg> Nueva cuenta</button></section>
+
+<section class="kpis-socios">
+<article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-layers"></use></svg></span><p>Total cuentas</p><h3 id="kpiTotal">0</h3><small>Registros del inventario</small></article>
+<article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-box"></use></svg></span><p>Disponibles</p><h3 id="kpiDisponibles">0</h3><small>Cuentas listas para vender</small></article>
+<article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-users"></use></svg></span><p>Cupos libres</p><h3 id="kpiCupos">0</h3><small>Pantallas o perfiles libres</small></article>
+<article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-clock"></use></svg></span><p>Por vencer</p><h3 id="kpiPorVencer">0</h3><small>Dentro de 3 días</small></article>
+</section>
+
+<section class="panel-socios">
+<div class="barra-herramientas-socios">
+<label class="buscador-socios"><svg><use href="#i-search"></use></svg><input id="buscarCuenta" type="search" placeholder="Buscar plataforma, usuario, producto o proveedor..."></label>
+<select id="filtroEstado" class="filtro-socios"><option value="TODOS">Todos los estados</option><option>DISPONIBLE</option><option>ASIGNADA</option><option>POR_VENCER</option><option>VENCIDA</option><option>SUSPENDIDA</option><option>CORTADA</option><option>INACTIVA</option></select>
+<select id="filtroTipo" class="filtro-socios"><option value="TODOS">Todos los tipos</option><option>CUENTA_COMPLETA</option><option>PANTALLA</option><option>PERFIL</option><option>ACCESO</option></select>
+</div>
+<div class="tabla-socios-contenedor">
+<table class="tabla-socios tabla-inventario"><thead><tr><th>Producto</th><th>Cuenta</th><th>Tipo</th><th>Cupos</th><th>Proveedor</th><th>Compra</th><th>Vencimiento</th><th>Costo</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tablaInventarioBody"></tbody></table>
+<div id="cargandoInventario" class="estado-tabla"><div class="cargando-puntos"><span></span><span></span><span></span></div><p>Cargando inventario...</p></div>
+<div id="estadoVacio" class="estado-tabla" hidden><span class="estado-tabla-icono"><svg><use href="#i-layers"></use></svg></span><h3>No hay cuentas registradas</h3><p>Agrega la primera cuenta digital.</p></div>
+</div>
+</section>
+</section>
+</main>
+
+<div id="modalCuenta" class="modal-fondo" aria-hidden="true">
+<section class="modal-socio modal-inventario"><header class="modal-cabecera"><div><span class="sobrelinea">FICHA DE INVENTARIO</span><h2 id="tituloModal">Nueva cuenta</h2></div><button id="botonCerrarModal" class="modal-cerrar"><svg><use href="#i-close"></use></svg></button></header>
+<form id="formularioCuenta" class="formulario-socio">
+<section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Producto y proveedor</h3><div class="cuadricula-formulario">
+<div class="campo-formulario ancho-2"><label>Producto <span>*</span></label><select id="productoId" required></select></div>
+<div class="campo-formulario ancho-2"><label>Proveedor privado</label><select id="proveedorId"></select></div>
+<div class="campo-formulario"><label>Plataforma</label><input id="plataforma"></div>
+<div class="campo-formulario"><label>Tipo de cuenta</label><select id="tipoCuenta"><option>CUENTA_COMPLETA</option><option>PANTALLA</option><option>PERFIL</option><option>ACCESO</option></select></div>
+</div></section>
+<section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Credenciales</h3><div class="cuadricula-formulario">
+<div class="campo-formulario ancho-2"><label>Usuario o correo <span>*</span></label><input id="usuarioCuenta" required></div>
+<div class="campo-formulario ancho-2"><label>Contraseña</label><input id="contrasenaCuenta"></div>
+<div class="campo-formulario ancho-2"><label>Correo de recuperación</label><input id="correoRecuperacion"></div>
+<div class="campo-formulario ancho-2"><label>Teléfono de recuperación</label><input id="telefonoRecuperacion"></div>
+<div class="campo-formulario"><label>Perfil</label><input id="perfil"></div>
+<div class="campo-formulario"><label>PIN</label><input id="pin"></div>
+</div></section>
+<section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Capacidad y vigencia</h3><div class="cuadricula-formulario">
+<div class="campo-formulario"><label>Cupos totales</label><input id="pantallasTotales" type="number" min="1" value="1"></div>
+<div class="campo-formulario"><label>Cupos disponibles</label><input id="pantallasDisponibles" type="number" min="0" value="1"></div>
+<div class="campo-formulario"><label>Fecha de compra</label><input id="fechaCompra" type="date"></div>
+<div class="campo-formulario"><label>Fecha de vencimiento</label><input id="fechaVencimiento" type="date"></div>
+<div class="campo-formulario"><label>Costo</label><input id="costo" type="number" min="0" step="0.01" value="0"></div>
+<div class="campo-formulario"><label>Moneda</label><select id="moneda"><option>USD</option><option>VES</option><option>COP</option></select></div>
+<div class="campo-formulario"><label>Estado</label><select id="estado"><option>DISPONIBLE</option><option>ASIGNADA</option><option>POR_VENCER</option><option>VENCIDA</option><option>SUSPENDIDA</option><option>CORTADA</option><option>INACTIVA</option></select></div>
+<div class="campo-formulario ancho-3"><label>Notas internas</label><textarea id="notas"></textarea></div>
+</div></section>
+<div class="modal-acciones"><button id="botonCancelar" class="boton-cancelar" type="button">Cancelar</button><button id="botonGuardar" class="boton-guardar" type="submit">Guardar cuenta</button></div>
+</form></section></div>
+
+<div id="modalDetalle" class="modal-fondo" aria-hidden="true"><section class="modal-socio modal-detalle-inventario"><header class="modal-cabecera"><div><span class="sobrelinea">INFORMACIÓN ADMINISTRATIVA</span><h2 id="tituloDetalle">Cuenta digital</h2></div><button id="botonCerrarDetalle" class="modal-cerrar"><svg><use href="#i-close"></use></svg></button></header><div id="contenidoDetalle" class="contenido-detalle-inventario"></div></section></div>
+<div id="mensajePanel" class="mensaje-flotante"></div>
+<script src="js/configuracion.js"></script><script src="js/inventario.js"></script>
+</body></html>

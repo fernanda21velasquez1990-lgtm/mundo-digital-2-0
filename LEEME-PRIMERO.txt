@@ -1,0 +1,25 @@
+MUNDO DIGITAL 2.0 — ACTUALIZACIÓN COMPLETA CORREGIDA
+
+Esta carpeta contiene todos los archivos completos y corregidos de la página.
+
+IMPORTANTE:
+- No se incluye js/configuracion.js para no borrar tu URL de Apps Script ni tu API_KEY_SOCIOS, que ya están funcionando.
+- Debes copiar TODO el contenido de esta carpeta dentro de tu carpeta actual mundo-digital-2-0-futurista.
+- Cuando Windows pregunte, selecciona "Reemplazar los archivos en el destino".
+- Tu archivo actual js/configuracion.js permanecerá intacto.
+
+APPS SCRIPT:
+1. Abre Google Sheets > Extensiones > Apps Script.
+2. Abre el archivo donde tienes el módulo anterior de proveedores/revendedores.
+3. Borra todo el contenido de ese módulo.
+4. Copia y pega TODO el contenido de:
+   apps-script/REEMPLAZAR-MODULO-SOCIOS-COMPLETO.gs
+5. Guarda.
+6. Ejecuta repararProveedoresYRevendedoresMD20.
+7. Implementar > Administrar implementaciones > Editar > Nueva versión > Implementar.
+
+PÁGINA:
+1. Vuelve a proveedores.html.
+2. Presiona Ctrl + F5.
+3. Crea un registro de prueba.
+4. Debe aparecer en la página y en la fila 2 de PROVEEDORES.

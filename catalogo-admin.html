@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Administración del catálogo público de Mundo Digital 2.0">
+  <title>Mundo Digital 2.0 | Catálogo y tienda</title>
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/socios.css">
+  <link rel="stylesheet" href="css/catalogo-admin.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5ZM2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 3h2l2.4 11.3a2 2 0 0 0 2 1.7H18a2 2 0 0 0 2-1.6L21 7H6M10 21h.01M18 21h.01"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v10a2 2 0 0 1-2 2H5"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7Z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 4.2A11 11 0 0 1 12 4c6 0 10 8 10 8a18 18 0 0 1-2.1 3.1M6.6 6.6C3.7 8.4 2 12 2 12s4 8 10 8a9 9 0 0 0 4.1-1"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3 6 7 .9-5 4.8 1.2 6.8L12 17.3 5.8 20.5 7 13.7 2 8.9 9 8l3-6Z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 9h4l3 4v4h-7z"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M5 13v8h14v-8M3 9c0 2 4 2 4 0 0 2 4 2 4 0 0 2 4 2 4 0 0 2 4 2 4 0"/></symbol>
+  </svg>
+
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div id="capaOscura" class="capa-oscura"></div>
+
+  <aside id="menuLateral" class="menu-lateral">
+    <div class="marca-menu">
+      <a class="marca" href="dashboard.html">
+        <span class="marca-orbita"><span>MD</span></span>
+        <span class="marca-copy"><strong>Mundo Digital</strong><small>CONTROL CENTER 2.0</small></span>
+      </a>
+      <button id="botonCerrarMenu" class="boton-icono cerrar-menu" type="button">
+        <svg><use href="#i-close"></use></svg>
+      </button>
+    </div>
+
+    <div class="estado-sistema">
+      <span class="pulso"></span>
+      <div><strong>Sistema operativo</strong><small>Servicios en línea</small></div>
+      <span class="latencia">24 ms</span>
+    </div>
+
+    <nav class="navegacion">
+      <p class="grupo-menu">Centro de control</p>
+      <a href="dashboard.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-grid"></use></svg></span>
+        <span class="texto-menu"><strong>Resumen</strong><small>Vista general</small></span>
+      </a>
+
+      <p class="grupo-menu">Gestión comercial</p>
+      <a href="clientes.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-users"></use></svg></span>
+        <span class="texto-menu"><strong>Clientes</strong><small>Contactos y compras</small></span>
+      </a>
+      <a href="productos.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Productos</strong><small>Base general</small></span>
+      </a>
+      <a href="catalogo-admin.html" class="enlace-menu activo">
+        <span class="halo-icono"><svg><use href="#i-store"></use></svg></span>
+        <span class="texto-menu"><strong>Catálogo y tienda</strong><small>Publicación de productos</small></span>
+        <span class="marca-activa"></span>
+      </a>
+      <a href="canva.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+        <span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span>
+      </a>
+      <a href="proveedores.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-truck"></use></svg></span>
+        <span class="texto-menu"><strong>Proveedores</strong><small>Compras y renovaciones</small></span>
+      </a>
+      <a href="revendedores.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-store"></use></svg></span>
+        <span class="texto-menu"><strong>Revendedores</strong><small>Servicios y ganancias</small></span>
+      </a>
+      <a href="inventario.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-layers"></use></svg></span>
+        <span class="texto-menu"><strong>Inventario</strong><small>Cuentas y accesos</small></span>
+      </a>
+      <a href="ventas.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-cart"></use></svg></span>
+        <span class="texto-menu"><strong>Ventas</strong><small>Pedidos y facturación</small></span>
+      </a>
+
+      <p class="grupo-menu">Operaciones</p>
+      <a href="pagos.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-wallet"></use></svg></span>
+        <span class="texto-menu"><strong>Pagos</strong><small>Movimientos recibidos</small></span>
+      </a>
+      <a href="alertas-pagos.html">Alertas de pagos</a><a href="entregas.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-send"></use></svg></span>
+        <span class="texto-menu"><strong>Entregas</strong><small>Archivos y credenciales</small></span>
+      </a>
+      <a href="suscripciones.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-clock"></use></svg></span>
+        <span class="texto-menu"><strong>Suscripciones</strong><small>Vencimientos</small></span>
+      </a>
+      <a href="renovaciones.html" class="enlace-menu">
+        <span class="halo-icono"><svg><use href="#i-bell"></use></svg></span>
+        <span class="texto-menu"><strong>Renovaciones</strong><small>Respuestas de clientes</small></span>
+      </a>
+
+      <p class="grupo-menu">Inteligencia</p>
+      <a href="#" class="enlace-menu" data-pagina="Reportes">
+        <span class="halo-icono"><svg><use href="#i-chart"></use></svg></span>
+        <span class="texto-menu"><strong>Reportes</strong><small>Análisis de resultados</small></span>
+      </a>
+      <a href="#" class="enlace-menu" data-pagina="Usuarios">
+        <span class="halo-icono"><svg><use href="#i-shield"></use></svg></span>
+        <span class="texto-menu"><strong>Usuarios</strong><small>Accesos y permisos</small></span>
+      </a>
+      <a href="#" class="enlace-menu" data-pagina="Configuración">
+        <span class="halo-icono"><svg><use href="#i-settings"></use></svg></span>
+        <span class="texto-menu"><strong>Configuración</strong><small>Ajustes del sistema</small></span>
+      </a>
+    </nav>
+
+    <div class="usuario-menu">
+      <div class="avatar">A</div>
+      <div class="usuario-copy"><strong>Administrador</strong><small>Cuenta principal</small></div>
+      <button id="botonCerrarSesion" class="boton-icono boton-salir" type="button">
+        <svg><use href="#i-logout"></use></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="contenido-principal">
+    <header class="barra-superior">
+      <div class="cabecera-izquierda">
+        <button id="botonAbrirMenu" class="boton-icono boton-menu-movil" type="button">
+          <svg><use href="#i-menu"></use></svg>
+        </button>
+        <div>
+          <span class="sobrelinea">GESTIÓN COMERCIAL</span>
+          <h1>Catálogo y tienda</h1>
+        </div>
+      </div>
+      <div class="cabecera-derecha">
+        <a class="boton-vista-tienda" href="configuracion-tienda.html"><svg><use href="#i-settings"></use></svg><span>Tasa y pagos</span></a>
+        <a class="boton-vista-tienda" href="tienda.html" target="_blank" rel="noopener">
+          <svg><use href="#i-eye"></use></svg>
+          <span>Ver tienda pública</span>
+        </a>
+        <button id="botonActualizar" class="boton-icono accion-cabecera" type="button" aria-label="Actualizar">
+          <svg><use href="#i-refresh"></use></svg>
+        </button>
+        <button id="botonNuevoProducto" class="boton-principal" type="button">
+          <svg><use href="#i-plus"></use></svg> Nuevo producto
+        </button>
+      </div>
+    </header>
+
+    <section class="catalogo-admin">
+      <section class="hero-catalogo">
+        <div>
+          <span class="insignia"><svg><use href="#i-store"></use></svg> Fase 5 · Parte 1</span>
+          <h2>Decide qué productos verá el cliente.</h2>
+          <p>Los cambios realizados aquí se guardan en PRODUCTOS. También puedes editar directamente Google Sheets y después actualizar esta página.</p>
+        </div>
+        <div class="estado-integracion">
+          <span id="puntoConexion" class="punto-estado"></span>
+          <div>
+            <strong id="estadoConexion">Conectando con Google Sheets...</strong>
+            <small>Fuente principal: pestaña PRODUCTOS</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="rejilla-kpis">
+        <article class="tarjeta-kpi-catalogo">
+          <span>Total productos</span><strong id="kpiTotal">0</strong>
+        </article>
+        <article class="tarjeta-kpi-catalogo">
+          <span>Publicados</span><strong id="kpiPublicados">0</strong>
+        </article>
+        <article class="tarjeta-kpi-catalogo">
+          <span>Destacados</span><strong id="kpiDestacados">0</strong>
+        </article>
+        <article class="tarjeta-kpi-catalogo">
+          <span>No disponibles</span><strong id="kpiAgotados">0</strong>
+        </article>
+      </section>
+
+      <section class="barra-catalogo">
+        <label class="busqueda-catalogo">
+          <svg><use href="#i-search"></use></svg>
+          <input id="buscarCatalogo" type="search" placeholder="Buscar producto, categoría o etiqueta...">
+        </label>
+        <select id="filtroCategoria" aria-label="Filtrar por categoría">
+          <option value="TODAS">Todas las categorías</option>
+        </select>
+        <select id="filtroPublicacion" aria-label="Filtrar por publicación">
+          <option value="TODOS">Todos</option>
+          <option value="SI">Publicados</option>
+          <option value="NO">Sin publicar</option>
+        </select>
+        <select id="filtroDisponibilidad" aria-label="Filtrar por disponibilidad">
+          <option value="TODAS">Toda disponibilidad</option>
+          <option value="DISPONIBLE">Disponible</option>
+          <option value="POCOS_CUPOS">Pocos cupos</option>
+          <option value="AGOTADO">Agotado</option>
+          <option value="PROXIMAMENTE">Próximamente</option>
+        </select>
+      </section>
+
+      <div id="cargandoCatalogo" class="estado-catalogo">Cargando productos...</div>
+      <div id="estadoVacio" class="estado-catalogo" hidden>No hay productos que coincidan con los filtros.</div>
+      <section id="rejillaCatalogo" class="rejilla-productos-catalogo"></section>
+    </section>
+  </main>
+
+  <div id="modalCatalogo" class="modal-catalogo" aria-hidden="true">
+    <section class="dialogo-catalogo" role="dialog" aria-modal="true" aria-labelledby="tituloModal">
+      <header class="cabecera-modal-catalogo">
+        <div>
+          <span>PUBLICACIÓN DEL PRODUCTO</span>
+          <h2 id="tituloModal">Nuevo producto</h2>
+        </div>
+        <button id="botonCerrarModal" class="boton-icono" type="button">
+          <svg><use href="#i-close"></use></svg>
+        </button>
+      </header>
+
+      <form id="formularioCatalogo" class="formulario-catalogo">
+        <section class="seccion-formulario">
+          <h3>Información general</h3>
+          <div class="campos-dos-columnas">
+            <label class="campo ancho-completo">
+              <span>Nombre del producto *</span>
+              <input id="nombre" type="text" required maxlength="160" placeholder="Ejemplo: Agenda para maestras 2026 - 2027">
+            </label>
+            <label class="campo">
+              <span>Categoría *</span>
+              <select id="categoriaId" required></select>
+            </label>
+            <label class="campo">
+              <span>Estado interno</span>
+              <select id="estado">
+                <option value="ACTIVO">ACTIVO</option>
+                <option value="INACTIVO">INACTIVO</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Tipo de producto</span>
+              <select id="tipoProducto">
+                <option value="DIGITAL">DIGITAL</option>
+                <option value="SUSCRIPCION">SUSCRIPCIÓN</option>
+                <option value="SERVICIO">SERVICIO</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Tipo de entrega</span>
+              <select id="tipoEntrega">
+                <option value="ARCHIVO">ARCHIVO / PDF</option>
+                <option value="CURSO">CURSO</option>
+                <option value="ENLACE">ENLACE</option>
+                <option value="CUENTA">CUENTA</option>
+                <option value="PERFIL">PERFIL</option>
+                <option value="CANVA">CANVA</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Duración en días</span>
+              <input id="duracionDias" type="number" min="0" step="1" value="0">
+            </label>
+            <label class="campo">
+              <span>Controlar stock</span>
+              <select id="controlarStock">
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="seccion-formulario">
+          <h3>Presentación en la tienda</h3>
+          <div class="campos-dos-columnas">
+            <label class="campo ancho-completo">
+              <span>Descripción corta *</span>
+              <textarea id="descripcionCorta" rows="3" maxlength="280" required placeholder="Resumen que aparecerá en la tarjeta del producto."></textarea>
+            </label>
+            <label class="campo ancho-completo">
+              <span>Descripción completa</span>
+              <textarea id="descripcionCompleta" rows="6" placeholder="Explica qué incluye, para quién es y cómo se entrega."></textarea>
+            </label>
+            <label class="campo ancho-completo">
+              <span>Imagen del producto</span>
+              <input id="imagenUrl" type="url" placeholder="https://...">
+              <small>Por ahora se utiliza una URL pública. La carga directa de imágenes se agregará posteriormente.</small>
+            </label>
+            <div class="vista-imagen ancho-completo">
+              <div id="vistaImagenCatalogo"><svg><use href="#i-box"></use></svg></div>
+              <div>
+                <p>Vista previa de la imagen</p>
+                <small id="estadoVistaImagenCatalogo" class="estado-vista-imagen">
+                  Agrega una URL pública para mostrar la imagen.
+                </small>
+              </div>
+            </div>
+            <label class="campo">
+              <span>Slug o dirección corta</span>
+              <input id="slugProducto" type="text" placeholder="agenda-para-maestras">
+            </label>
+            <label class="campo">
+              <span>Etiquetas públicas</span>
+              <input id="etiquetasPublicas" type="text" placeholder="maestras, agenda, pdf">
+            </label>
+          </div>
+        </section>
+
+        <section class="seccion-formulario">
+          <h3>Precio y disponibilidad</h3>
+          <div class="campos-dos-columnas">
+            <label class="campo">
+              <span>Precio público *</span>
+              <input id="precioPublico" type="number" min="0" step="0.01" required>
+            </label>
+            <label class="campo">
+              <span>Moneda</span>
+              <select id="moneda">
+                <option value="USD">USD</option>
+                <option value="VES">VES</option>
+                <option value="COP">COP</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Precio anterior</span>
+              <input id="precioAnterior" type="number" min="0" step="0.01" value="0">
+            </label>
+            <label class="campo">
+              <span>Mostrar como oferta</span>
+              <select id="oferta">
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Disponibilidad</span>
+              <select id="disponibilidad">
+                <option value="DISPONIBLE">DISPONIBLE</option>
+                <option value="POCOS_CUPOS">POCOS CUPOS</option>
+                <option value="AGOTADO">AGOTADO</option>
+                <option value="PROXIMAMENTE">PRÓXIMAMENTE</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Orden en el catálogo</span>
+              <input id="ordenCatalogo" type="number" min="1" step="1" value="999">
+            </label>
+          </div>
+        </section>
+
+        <section class="seccion-formulario">
+          <h3>Entrega y publicación</h3>
+          <div class="campos-dos-columnas">
+            <label class="campo ancho-completo">
+              <span>Archivo o enlace privado</span>
+              <input id="archivoId" type="url" placeholder="Enlace de Drive, plataforma o acceso">
+              <small>Este enlace nunca se mostrará en el catálogo público.</small>
+            </label>
+            <label class="campo">
+              <span>Publicar en el catálogo</span>
+              <select id="publicarCatalogo">
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Producto destacado</span>
+              <select id="destacado">
+                <option value="NO">NO</option>
+                <option value="SI">SI</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Lo vende el administrador</span>
+              <select id="vendeAdmin">
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </select>
+            </label>
+            <label class="campo">
+              <span>Lo venden los revendedores</span>
+              <select id="vendeRevendedor">
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <footer class="pie-modal-catalogo">
+          <button id="botonCancelar" class="boton-secundario" type="button">Cancelar</button>
+          <button id="botonGuardar" class="boton-principal" type="submit">
+            Guardar producto
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+
+  <div id="mensajePanel" class="mensaje-flotante" role="status" aria-live="polite"></div>
+
+  <script src="js/configuracion.js"></script>
+  <script src="js/catalogo-admin-imagenes-20260730.js?v=20260730002"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN DEL BUCLE DE TELEGRAM
+
+PROBLEMA
+El bot repetía:
+Ocurrió un error al procesar esta opción...
+
+CAUSA
+El manejador global intentaba enviar otro mensaje por Telegram cuando
+una acción fallaba. Si esa respuesta también fallaba, Telegram podía
+volver a entregar la actualización y mantener el ciclo.
+
+CORRECCIÓN
+- El manejador global ya no envía mensajes.
+- Los errores se registran con try/catch y nunca se propagan.
+- El webhook siempre termina respondiendo OK.
+- Se agregó una función de emergencia para detener el webhook y
+  eliminar todos los updates pendientes.
+- Se agregó una función para reactivar el webhook limpio.
+
+INSTALACIÓN Y DETENCIÓN INMEDIATA
+1. Reemplaza Código.gs completo.
+2. Guarda con Ctrl + S.
+3. Antes de actualizar la implementación, ejecuta:
+   detenerBucleTelegramRevendedoresMD20
+4. Espera 10 segundos. Los mensajes deben detenerse.
+5. Actualiza la implementación con Nueva versión.
+6. Ejecuta:
+   reactivarWebhookTelegramRevendedoresMD20
+7. En Telegram escribe menu una sola vez.
+
+No vuelvas a pulsar los botones hasta comprobar que el mensaje
+repetido se detuvo.

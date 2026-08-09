@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acceso a Mundo Digital 2.0">
+  <title>Mundo Digital 2.0 | Iniciar sesión</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </svg>
+
+  <div class="orbe orbe-rojo"></div>
+  <div class="orbe orbe-naranja"></div>
+
+  <main class="pagina-login">
+    <section class="lado-marca">
+      <div class="marca-login">
+        <span class="logo-login">MD</span>
+        <div><strong>Mundo Digital <b>2.0</b></strong><small>Plataforma administrativa</small></div>
+      </div>
+
+      <div class="mensaje-principal">
+        <span class="etiqueta">CONTROL CENTER</span>
+        <h1>Tu negocio digital<br><span>bajo control.</span></h1>
+        <p>Gestiona ventas, clientes, productos, pagos y entregas desde una experiencia rápida, moderna y preparada para crecer.</p>
+        <div class="beneficios">
+          <article><span><svg><use href="#i-check"></use></svg></span><div><strong>Información centralizada</strong><small>Todo tu negocio en una sola vista.</small></div></article>
+          <article><span><svg><use href="#i-check"></use></svg></span><div><strong>Control de operaciones</strong><small>Ventas, pagos y entregas organizadas.</small></div></article>
+          <article><span><svg><use href="#i-check"></use></svg></span><div><strong>Acceso seguro</strong><small>Preparado para usuarios y permisos.</small></div></article>
+        </div>
+      </div>
+
+      <p class="firma">MUNDO DIGITAL 2.0 · VERSIÓN 1.0</p>
+    </section>
+
+    <section class="lado-formulario">
+      <div class="tarjeta-login">
+        <div class="linea-brillo"></div>
+        <div class="encabezado-login">
+          <span>ACCESO AL SISTEMA</span>
+          <h2>Bienvenido</h2>
+          <p>Ingresa tus datos para abrir el centro de control.</p>
+        </div>
+
+        <div id="mensaje" class="mensaje" role="alert" aria-live="polite"></div>
+
+        <form id="formularioLogin" novalidate>
+          <label class="grupo-campo" for="usuario">
+            <span>Usuario o correo</span>
+            <div class="campo"><svg><use href="#i-user"></use></svg><input id="usuario" name="usuario" type="text" placeholder="Escribe tu usuario" autocomplete="username"></div>
+          </label>
+
+          <label class="grupo-campo" for="contrasena">
+            <span>Contraseña</span>
+            <div class="campo"><svg><use href="#i-lock"></use></svg><input id="contrasena" name="contrasena" type="password" placeholder="Escribe tu contraseña" autocomplete="current-password"><button id="botonMostrarContrasena" type="button" aria-label="Mostrar contraseña"><svg><use href="#i-eye"></use></svg></button></div>
+          </label>
+
+          <div class="opciones">
+            <label><input id="recordarme" type="checkbox"> Recordarme</label>
+            <button id="botonRecuperar" type="button">¿Olvidaste tu contraseña?</button>
+          </div>
+
+          <button id="botonIngresar" class="boton-ingresar" type="submit"><span id="textoBoton">Entrar a la plataforma</span><svg><use href="#i-arrow"></use></svg></button>
+        </form>
+
+        <div class="pie-tarjeta"><i></i> Conexión segura con Mundo Digital 2.0</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+MUNDO DIGITAL 2.0 — TELEGRAM REVENDEDORES CON MOTOR DE AULA MÁGICA
+
+CAMBIO PRINCIPAL
+Se reemplazó la lógica de callback_query por el sistema comprobado de Aula Mágica:
+- teclado permanente reply_keyboard;
+- los botones envían mensajes de texto;
+- normalización de texto a comandos;
+- vinculación por /vincular CODIGO;
+- webhook siempre responde OK;
+- sin ciclos de mensajes de error.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta detenerBucleTelegramRevendedoresMD20 una vez.
+5. Actualiza la implementación con Nueva versión.
+6. Abre telegram-revendedores.html y presiona Ctrl + F5.
+7. Pulsa Registrar y verificar webhook.
+8. Busca a Carlos y pulsa Generar código.
+9. Copia el comando /vincular ABC123.
+10. Abre el bot de Carlos, pega el comando y envíalo.
+11. Debe aparecer el teclado permanente.
+
+IMPORTANTE
+Carlos debe vincularse nuevamente porque el sistema anterior usaba enlace /start y el nuevo usa código de seis caracteres.
+El proyecto Aula Mágica adjunto no fue modificado.

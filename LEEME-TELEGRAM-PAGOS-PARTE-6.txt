@@ -1,0 +1,46 @@
+MUNDO DIGITAL 2.0 — FASE 5 · PARTE 6
+ALERTAS Y APROBACIÓN DESDE TELEGRAM
+
+FUNCIONES
+- Envía automáticamente el comprobante nuevo a Telegram.
+- Botón Ver comprobante.
+- Botón Confirmar pago.
+- Botón Rechazar pago.
+- Motivos rápidos de rechazo.
+- Botón Ver detalles.
+- Comando /pagos para consultar pagos pendientes.
+- Comando /rechazar PAGO_ID motivo para rechazo personalizado.
+- Usa resolverAlertaPagoTiendaMD20_, la misma función del panel.
+- Actualiza PAGOS, VENTAS, PEDIDOS_TIENDA, ENTREGAS y NOTIFICACIONES.
+
+ARCHIVO NUEVO
+telegram-pagos.html
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Actualiza la implementación con Nueva versión.
+5. Abre telegram-pagos.html.
+6. Coloca el token del bot.
+7. Coloca el Chat ID del administrador.
+8. Pulsa Guardar configuración.
+9. Pulsa Enviar prueba.
+10. Pulsa Registrar webhook.
+11. Pulsa Enviar pagos pendientes para comprobar las alertas anteriores.
+
+IMPORTANTE
+El token se guarda en Script Properties de Apps Script.
+No se guarda en Google Sheets ni en los archivos públicos.
+
+CÓMO CREAR EL BOT
+1. Abre @BotFather.
+2. Escribe /newbot.
+3. Define nombre y usuario.
+4. Copia el token.
+5. Escribe un mensaje al bot antes de probarlo.
+
+COMANDOS
+/start
+/pagos
+/rechazar PAGO_ID motivo

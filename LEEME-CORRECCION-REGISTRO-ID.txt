@@ -1,0 +1,41 @@
+MUNDO DIGITAL 2.0 — CORRECCIÓN REGISTRO_ID
+
+PROBLEMA ENCONTRADO
+La pestaña REVENDEDORES usa:
+REGISTRO_ID
+
+Ejemplo real:
+REV-2709C51B77
+
+El código anterior buscaba principalmente:
+REVENDEDOR_ID
+ID_REVENDEDOR
+SOCIO_ID
+VENDEDOR_ID
+ID
+
+CORRECCIÓN
+Ahora REGISTRO_ID es reconocido como identificador principal del revendedor.
+
+RESULTADO ESPERADO
+La página telegram-revendedores.html debe mostrar:
+carlos bajon
+REV-2709C51B77
+584144895281
+
+y permitir:
+Generar código
+/vincular ABC123
+
+INSTALACIÓN
+1. Reemplaza la carpeta local por este ZIP.
+2. En el proyecto independiente Mundo Digital 2.0 - Telegram:
+   - deja solo Telegram.gs
+   - reemplázalo por TELEGRAM-APPS-SCRIPT/Telegram.gs
+3. Ctrl + S
+4. Implementar > Administrar implementaciones > Lápiz > Nueva versión > Implementar
+5. Abre telegram-revendedores.html
+6. Ctrl + F5
+7. Pulsa Cargar revendedores
+8. Carlos debe aparecer.
+9. Pulsa Generar código.

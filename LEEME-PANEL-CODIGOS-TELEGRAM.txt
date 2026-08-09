@@ -1,0 +1,21 @@
+MUNDO DIGITAL 2.0 — PANEL DE CÓDIGOS TELEGRAM
+
+1. Reemplaza tu carpeta local por este ZIP.
+2. En el proyecto independiente "Mundo Digital 2.0 - Telegram":
+   - deja UN SOLO archivo Telegram.gs
+   - reemplázalo por TELEGRAM-APPS-SCRIPT/Telegram.gs
+3. Guarda.
+4. Publica Nueva versión.
+5. Ejecuta prepararTelegramUnificadoMD20.
+6. Ejecuta mostrarClavePanelTelegramMD20.
+7. Copia del registro:
+   - clavePanel
+   - webAppUrl
+8. Abre localmente telegram-revendedores.html
+9. Pega la URL /exec y la clave privada.
+10. Guarda configuración.
+11. Pulsa Cargar revendedores.
+12. En Carlos pulsa Generar código.
+13. Copia /vincular ABC123 y envíalo en Telegram.
+
+No se modifica Codigo.gs de la plataforma.

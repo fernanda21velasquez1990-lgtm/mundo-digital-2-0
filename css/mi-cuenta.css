@@ -1,0 +1,39 @@
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{color-scheme:dark;font-family:Inter,Segoe UI,Arial,sans-serif}
+body{min-height:100vh;background:#09090c;color:#fff;overflow-x:hidden}
+.fondo-orbe{position:fixed;border-radius:50%;filter:blur(90px);opacity:.16;pointer-events:none}
+.orbe-1{width:430px;height:430px;background:#ff4d00;top:-170px;right:-100px}
+.orbe-2{width:370px;height:370px;background:#7137ff;bottom:-170px;left:-130px}
+.portal{width:min(1120px,calc(100% - 28px));margin:auto;padding:25px 0 45px;position:relative}
+.portal-header{display:flex;align-items:center;gap:13px;padding:8px 3px 25px}
+.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#ff1744,#ff6d00);box-shadow:0 12px 35px rgba(255,77,0,.22);font-weight:900}
+.portal-header small,.etiqueta{color:#ff8c47;font-size:9px;font-weight:900;letter-spacing:1.8px}
+.portal-header h1{font-size:20px;margin-top:4px}
+.bienvenida{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:30px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:radial-gradient(circle at 90% 10%,rgba(255,106,0,.17),transparent 32%),linear-gradient(145deg,#15151b,#101014)}
+.bienvenida h2{font-size:30px;margin:8px 0}.bienvenida h2 span{color:#ff7a25}.bienvenida p{max-width:660px;color:#a0a0aa;font-size:13px;line-height:1.7}
+.boton-soporte{padding:13px 17px;border:1px solid rgba(74,222,128,.35);border-radius:13px;background:rgba(74,222,128,.08);color:#7cf0a8;text-decoration:none;font-weight:800;white-space:nowrap}
+.resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:18px 0}
+.resumen article{padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:#131318}
+.resumen span{color:#8f8f99;font-size:10px}.resumen strong{display:block;margin-top:8px;font-size:27px}
+.titulo-seccion{margin:28px 0 14px}.titulo-seccion h3{font-size:21px;margin-top:5px}
+.lista-servicios{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.servicio{padding:20px;border:1px solid rgba(255,255,255,.09);border-radius:19px;background:linear-gradient(145deg,#15151b,#111115)}
+.servicio-cabecera{display:flex;justify-content:space-between;gap:15px}
+.servicio h4{font-size:17px}.servicio .subtitulo{margin-top:6px;color:#9999a4;font-size:11px}
+.estado{display:inline-flex;height:max-content;padding:7px 10px;border-radius:999px;font-size:9px;font-weight:900}
+.estado.activa{background:#123d2a;color:#9ef0bd}.estado.por_vencer{background:#4a2d08;color:#ffd08a}.estado.vencida,.estado.cortada,.estado.cancelada{background:#4a1418;color:#ffadb3}
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0}
+.dato{padding:12px;border-radius:12px;background:#1a1a20}.dato span{display:block;color:#85858f;font-size:9px}.dato strong{display:block;margin-top:6px;font-size:12px;word-break:break-word}
+.acciones{display:flex;gap:9px;flex-wrap:wrap;padding-top:15px;border-top:1px solid rgba(255,255,255,.08)}
+.acciones button{flex:1;min-width:130px;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
+.renovar{border:1px solid rgba(74,222,128,.38);background:rgba(74,222,128,.09);color:#86f0ac}
+.no-renovar{border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.08);color:#ff9cab}
+.respuesta{margin-top:12px;padding:11px;border-radius:11px;background:#202027;color:#bdbdc5;font-size:11px;text-align:center}
+.estado-portal,.sin-servicios{text-align:center;padding:85px 20px;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:#121217}
+.spinner{width:42px;height:42px;margin:0 auto 18px;border:4px solid #28282f;border-top-color:#ff6d00;border-radius:50%;animation:girar .8s linear infinite}
+@keyframes girar{to{transform:rotate(360deg)}}.estado-portal h2{font-size:20px}.estado-portal p,.sin-servicios p{margin-top:8px;color:#90909a;font-size:12px}
+.icono-estado{width:48px;height:48px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:#4a1418;color:#ff9ca3;font-size:24px;font-weight:900}
+.portal-footer{margin-top:30px;padding:20px;text-align:center;color:#7f7f89;font-size:10px;line-height:1.7}
+.mensaje{position:fixed;right:20px;bottom:20px;max-width:360px;padding:14px 17px;border-radius:13px;background:#123d2a;color:#9ef0bd;box-shadow:0 15px 40px rgba(0,0,0,.4);font-size:12px;font-weight:700;opacity:0;transform:translateY(20px);pointer-events:none;transition:.25s}.mensaje.visible{opacity:1;transform:none}.mensaje.error{background:#4a1418;color:#ffadb3}
+@media(max-width:750px){.bienvenida{align-items:flex-start;flex-direction:column}.resumen,.lista-servicios{grid-template-columns:1fr}.datos{grid-template-columns:1fr}.bienvenida h2{font-size:25px}}

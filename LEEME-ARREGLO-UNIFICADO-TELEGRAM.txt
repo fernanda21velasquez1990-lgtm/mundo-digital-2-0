@@ -1,0 +1,74 @@
+MUNDO DIGITAL 2.0 — ARREGLO UNIFICADO DEL BOT DE REVENDEDORES
+
+ESTE PAQUETE INCLUYE TODO EN UNA SOLA INSTALACIÓN
+
+1. BOTONES FUNCIONALES
+- Mi resumen
+- Mi tienda
+- Mis ventas
+- Mis pagos
+- Mis clientes
+- Mis ganancias
+- Mis diamantes
+- Soporte
+
+2. CORRECCIÓN DEL BUCLE DE TELEGRAM
+- El manejador global no envía mensajes de error.
+- Los errores no se vuelven a lanzar.
+- El webhook siempre responde OK.
+- Se eliminan actualizaciones pendientes.
+- Se controla update_id para evitar duplicados.
+- Se puede detener y reactivar el webhook de forma limpia.
+
+3. SEGURIDAD
+- Cada revendedor consulta únicamente su REVENDEDOR_ID.
+- Carlos conserva su vinculación.
+- No es necesario generar otro enlace privado.
+
+INSTALACIÓN CORRECTA
+
+PASO 1
+Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+
+PASO 2
+Reemplaza Código.gs completo en Google Apps Script.
+
+PASO 3
+Guarda con Ctrl + S.
+
+PASO 4
+Ejecuta:
+detenerBucleTelegramRevendedoresMD20
+
+Espera 10 segundos.
+
+PASO 5
+Actualiza la implementación:
+Implementar
+Administrar implementaciones
+Lápiz
+Nueva versión
+Implementar
+
+PASO 6
+Ejecuta:
+reactivarWebhookTelegramRevendedoresMD20
+
+PASO 7
+Abre telegram-revendedores.html.
+Presiona Ctrl + F5.
+Pulsa Diagnosticar webhook.
+
+Debe mostrar:
+Webhook correcto
+Último error: Sin errores
+
+PASO 8
+En Telegram escribe:
+menu
+
+Prueba los botones uno por uno.
+
+IMPORTANTE
+No vuelvas a pegar códigos de paquetes anteriores después de instalar este.
+Este paquete reemplaza las correcciones anteriores de botones y bucle.

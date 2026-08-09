@@ -1,0 +1,23 @@
+MUNDO DIGITAL 2.0 — MOTOR AULA SIN BUCLE
+
+CORRECCIONES
+- Bloquea cada update_id antes de procesarlo.
+- Ignora el mismo comando /vincular repetido durante 5 minutos.
+- Si la cuenta ya quedó vinculada, muestra el menú y no dice que el código no existe.
+- El webhook recibe únicamente mensajes normales.
+- Elimina toda la cola pendiente antes de reactivarse.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo en Apps Script.
+3. Guarda con Ctrl + S.
+4. Ejecuta repararTelegramRevendedoresAulaMD20.
+5. Espera a que termine.
+6. Crea una Nueva versión de la implementación.
+7. Ejecuta repararTelegramRevendedoresAulaMD20 nuevamente.
+8. No generes otro código para Carlos: ya aparece vinculado.
+9. En Telegram pulsa Mi resumen una sola vez.
+
+IMPORTANTE
+La primera ejecución detiene la cola del webhook actual. La segunda,
+después de publicar la Nueva versión, registra el código corregido.

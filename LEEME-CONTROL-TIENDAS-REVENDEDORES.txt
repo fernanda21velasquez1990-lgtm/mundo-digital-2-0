@@ -1,0 +1,36 @@
+MUNDO DIGITAL 2.0 — CONTROL DE TIENDAS DE REVENDEDORES
+
+FUNCIÓN NUEVA
+Cada revendedor tiene un botón en revendedores.html:
+
+- Botón verde: tienda activa.
+- Botón rojo: tienda apagada.
+
+Al apagarla:
+- El revendedor continúa registrado.
+- Sus ventas anteriores no se eliminan.
+- Su enlace tienda.html?vendedor=REV-XXXX deja de mostrar productos.
+- No puede registrar compras nuevas desde ese enlace.
+- La tienda muestra que fue desactivada temporalmente.
+
+Al activarla:
+- El enlace vuelve a funcionar.
+- Los productos habilitados para revendedores vuelven a aparecer.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta una sola vez:
+   prepararControlTiendasRevendedoresMD20
+5. Actualiza la implementación con Nueva versión.
+6. Abre revendedores.html y presiona Ctrl + F5.
+
+PRUEBA
+1. Busca un revendedor.
+2. Pulsa el botón de tienda.
+3. Confirma Apagar.
+4. Abre:
+   tienda.html?vendedor=ID_DEL_REVENDEDOR
+5. Debe indicar que la tienda fue desactivada.
+6. Regresa al panel y pulsa nuevamente para activarla.

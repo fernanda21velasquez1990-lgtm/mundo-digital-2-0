@@ -1,0 +1,27 @@
+MUNDO DIGITAL 2.0 — CÓDIGO DE TELEGRAM VISIBLE
+
+CORRECCIÓN
+La ventana emergente fue eliminada.
+Ahora el código aparece directamente debajo del revendedor, igual que
+en el módulo Telegram de Aula Mágica.
+
+LA TARJETA MUESTRA
+- Código grande de seis caracteres.
+- Comando /vincular CODIGO.
+- Copiar comando.
+- Abrir Telegram.
+- Generar otro código.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Actualiza la implementación con Nueva versión.
+5. Abre telegram-revendedores.html.
+6. Presiona Ctrl + F5.
+7. Pulsa Generar código debajo de Carlos.
+
+IMPORTANTE
+Si aparece el mensaje:
+Apps Script no devolvió el código
+significa que no se creó la Nueva versión de la implementación.

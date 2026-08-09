@@ -1,0 +1,89 @@
+:root{--bg:#070707;--panel:#121215;--line:rgba(255,255,255,.08);--text:#f7f7f8;--muted:#90919a;--red:#ff2135;--orange:#ff7200;--green:#25d47a;--gradient:linear-gradient(135deg,var(--red),var(--orange))}
+*{box-sizing:border-box;margin:0;padding:0}html,body{min-height:100%}body{min-height:100vh;overflow-x:hidden;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 20%,rgba(255,33,53,.12),transparent 28%),radial-gradient(circle at 85% 82%,rgba(255,114,0,.11),transparent 28%),var(--bg)}button,input{font:inherit}svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.svg-sprite{position:absolute;width:0;height:0;overflow:hidden}.orbe{position:fixed;z-index:-1;border-radius:50%;filter:blur(130px);opacity:.25}.orbe-rojo{width:340px;height:340px;left:-160px;top:-120px;background:var(--red)}.orbe-naranja{width:360px;height:360px;right:-180px;bottom:-160px;background:var(--orange)}
+.pagina-login{display:grid;grid-template-columns:1.12fr .88fr;min-height:100vh}.lado-marca{position:relative;min-height:100vh;padding:40px 60px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;border-right:1px solid var(--line)}.lado-marca::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(90deg,#000,transparent 90%)}.marca-login,.mensaje-principal,.firma{position:relative;z-index:1}.marca-login{display:flex;align-items:center;gap:14px}.logo-login{position:relative;width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:var(--gradient);font-size:14px;font-weight:900;box-shadow:0 16px 38px rgba(255,33,53,.25)}.logo-login::after{content:"";position:absolute;inset:-5px;border:1px solid rgba(255,114,0,.3);border-radius:20px;transform:rotate(8deg)}.marca-login>div{display:flex;flex-direction:column;gap:4px}.marca-login strong{font-size:17px}.marca-login b{color:var(--orange)}.marca-login small{color:var(--muted);font-size:9px}.mensaje-principal{max-width:690px;padding:60px 0}.etiqueta{display:inline-flex;padding:8px 12px;border:1px solid rgba(255,114,0,.18);border-radius:99px;background:rgba(255,114,0,.07);color:#ff9b51;font-size:8px;font-weight:900;letter-spacing:1.4px}.mensaje-principal h1{margin-top:22px;font-size:clamp(48px,6vw,78px);line-height:1;letter-spacing:-3px}.mensaje-principal h1 span{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}.mensaje-principal>p{max-width:580px;margin-top:20px;color:#aaaab1;font-size:14px;line-height:1.75}.beneficios{display:grid;gap:11px;max-width:570px;margin-top:30px}.beneficios article{padding:13px 15px;display:grid;grid-template-columns:37px 1fr;align-items:center;gap:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);backdrop-filter:blur(12px)}.beneficios article>span{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;color:#ff9b51;background:rgba(255,114,0,.09)}.beneficios article>div{display:flex;flex-direction:column;gap:4px}.beneficios strong{font-size:11px}.beneficios small{font-size:9px;color:var(--muted)}.firma{font-size:8px;letter-spacing:1.1px;color:#4f5058}
+.lado-formulario{min-height:100vh;padding:38px;display:grid;place-items:center}.tarjeta-login{position:relative;width:100%;max-width:465px;padding:40px;overflow:hidden;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012)),rgba(17,17,20,.9);box-shadow:0 28px 90px rgba(0,0,0,.48);backdrop-filter:blur(24px)}.linea-brillo{position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:var(--gradient)}.encabezado-login span{font-size:8px;letter-spacing:1.5px;color:var(--orange);font-weight:900}.encabezado-login h2{margin-top:10px;font-size:34px;letter-spacing:-1px}.encabezado-login p{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.6}.mensaje{display:none;margin:20px 0 0;padding:12px 14px;border-radius:11px;font-size:10px;line-height:1.5}.mensaje.visible{display:block}.mensaje.error{color:#ffb3ba;border:1px solid rgba(255,33,53,.28);background:rgba(255,33,53,.08)}.mensaje.exito{color:#9af0bf;border:1px solid rgba(37,212,122,.25);background:rgba(37,212,122,.08)}.mensaje.informacion{color:#ffd0ae;border:1px solid rgba(255,114,0,.25);background:rgba(255,114,0,.08)}form{margin-top:26px}.grupo-campo{display:block;margin-bottom:18px}.grupo-campo>span{display:block;margin-bottom:8px;color:#c6c6cb;font-size:10px;font-weight:750}.campo{height:54px;padding:0 13px;display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:13px;background:#1a1a1e;transition:.2s ease}.campo:focus-within{border-color:rgba(255,114,0,.5);box-shadow:0 0 0 4px rgba(255,114,0,.07)}.campo>svg{flex:0 0 auto;color:var(--orange);font-size:16px}.campo input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:11px}.campo input::placeholder{color:#60616a}.campo button{width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:var(--orange);cursor:pointer}.campo button:hover{background:rgba(255,114,0,.08)}.opciones{display:flex;justify-content:space-between;gap:12px;margin:-2px 0 22px}.opciones label{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:9px}.opciones input{accent-color:var(--orange)}.opciones button{border:0;background:transparent;color:#ff9b51;font-size:9px;cursor:pointer}.boton-ingresar{width:100%;height:52px;display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:13px;background:var(--gradient);color:#fff;font-size:11px;font-weight:900;box-shadow:0 14px 34px rgba(255,33,53,.23);cursor:pointer;transition:.2s ease}.boton-ingresar:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(255,114,0,.26)}.boton-ingresar:disabled{opacity:.65;cursor:not-allowed}.boton-ingresar svg{font-size:15px}.pie-tarjeta{margin-top:26px;padding-top:20px;display:flex;align-items:center;justify-content:center;gap:7px;border-top:1px solid var(--line);color:#5b5c64;font-size:8px}.pie-tarjeta i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(37,212,122,.6)}
+@media(max-width:960px){.pagina-login{grid-template-columns:1fr}.lado-marca{min-height:auto;padding:28px 25px 35px;border-right:0;border-bottom:1px solid var(--line)}.mensaje-principal{padding:55px 0 15px}.mensaje-principal h1{font-size:clamp(42px,10vw,66px)}.firma{display:none}.lado-formulario{min-height:auto;padding:42px 18px}}@media(max-width:560px){.lado-marca{padding:22px 17px 28px}.mensaje-principal{padding-top:42px}.mensaje-principal h1{font-size:42px;letter-spacing:-2px}.beneficios article{grid-template-columns:34px 1fr}.lado-formulario{padding:30px 14px}.tarjeta-login{padding:29px 20px;border-radius:20px}.opciones{align-items:flex-start;flex-direction:column}}
+
+/* =====================================================
+   MEJORA DE LEGIBILIDAD — INICIO DE SESIÓN
+   Versión 1.1
+===================================================== */
+.marca-login strong { font-size: 20px; }
+.marca-login small { font-size: 11px; }
+.etiqueta { font-size: 10px; }
+.mensaje-principal > p { font-size: 17px; }
+.beneficios strong { font-size: 14px; }
+.beneficios small { font-size: 11px; line-height: 1.4; }
+.firma { font-size: 10px; }
+.encabezado-login span { font-size: 10px; }
+.encabezado-login p { font-size: 14px; }
+.mensaje { font-size: 13px; }
+.grupo-campo > span { font-size: 13px; }
+.campo input { font-size: 14px; }
+.opciones label,
+.opciones button { font-size: 12px; }
+.boton-ingresar { font-size: 14px; }
+.pie-tarjeta { font-size: 10px; }
+
+/* =====================================================
+   LEGIBILIDAD MEJORADA AL MÁXIMO — LOGIN
+   Versión 1.2
+===================================================== */
+.marca-login strong { font-size: 22px; }
+.marca-login small { font-size: 12px; }
+.etiqueta { font-size: 11px; }
+.mensaje-principal h1 { font-size: clamp(52px, 6vw, 84px); }
+.mensaje-principal > p { font-size: 18px; line-height: 1.8; }
+.beneficios strong { font-size: 15px; }
+.beneficios small { font-size: 12px; line-height: 1.5; }
+.firma { font-size: 11px; }
+.encabezado-login span { font-size: 11px; }
+.encabezado-login h2 { font-size: 38px; }
+.encabezado-login p { font-size: 15px; }
+.mensaje { font-size: 14px; }
+.grupo-campo > span { font-size: 14px; }
+.campo input { font-size: 15px; }
+.opciones label,
+.opciones button { font-size: 13px; }
+.boton-ingresar { height: 56px; font-size: 15px; }
+.pie-tarjeta { font-size: 11px; }
+
+@media(max-width:960px){
+  .mensaje-principal h1{font-size:clamp(46px,10vw,72px)}
+  .mensaje-principal>p{font-size:16px}
+}
+@media(max-width:560px){
+  .mensaje-principal h1{font-size:46px}
+  .encabezado-login h2{font-size:34px}
+  .mensaje-principal>p{font-size:15px}
+}
+
+/* =====================================================
+   LEGIBILIDAD EXTRA GRANDE — INICIO DE SESIÓN V1.2
+===================================================== */
+html { font-size: 18px; }
+.marca-login strong { font-size: 24px; }
+.marca-login small { font-size: 13px; }
+.etiqueta { font-size: 12px; }
+.mensaje-principal h1 { font-size: clamp(48px, 5vw, 72px); }
+.mensaje-principal > p { font-size: 20px; line-height: 1.7; }
+.beneficios strong { font-size: 17px; }
+.beneficios small { font-size: 13px; line-height: 1.5; }
+.firma { font-size: 12px; }
+.encabezado-login span { font-size: 12px; }
+.encabezado-login h2 { font-size: 38px; }
+.encabezado-login p { font-size: 17px; }
+.mensaje { font-size: 15px; }
+.grupo-campo > span { font-size: 15px; }
+.campo input { font-size: 17px; }
+.opciones label,
+.opciones button { font-size: 14px; }
+.boton-ingresar { font-size: 17px; }
+.pie-tarjeta { font-size: 12px; }
+
+@media (max-width: 620px) {
+  html { font-size: 16px; }
+  .mensaje-principal h1 { font-size: 39px; }
+  .mensaje-principal > p { font-size: 17px; }
+  .encabezado-login h2 { font-size: 32px; }
+}

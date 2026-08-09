@@ -1,0 +1,42 @@
+MUNDO DIGITAL 2.0 — FASE 5 · PARTE 4
+TASA DEL DÍA, MÉTODOS DE PAGO Y COMPROBANTES
+
+INCLUYE
+- Página administrativa configuracion-tienda.html.
+- Tasa manual USD a bolívares.
+- Franja de tasa en la tienda.
+- Precio en USD y Bs.
+- Datos públicos por método de pago.
+- Monto exacto según moneda del método.
+- Referencia, banco de origen, titular y fecha.
+- Carga de JPG, PNG, WEBP o PDF.
+- Carpeta privada de Google Drive.
+- PAGOS cambia a EN_REVISION.
+- PEDIDOS_TIENDA cambia a EN_REVISION.
+- Notificación administrativa de prioridad ALTA.
+
+INSTALACIÓN
+1. Reemplaza la carpeta completa mundo-digital-2-0-futurista.
+2. Reemplaza Código.gs completo.
+3. Guarda con Ctrl + S.
+4. Ejecuta una sola vez prepararPagosTiendaMD20.
+5. Autoriza el acceso a Google Drive.
+6. Actualiza la implementación con Nueva versión.
+7. Abre configuracion-tienda.html.
+8. Coloca la tasa del día.
+9. Completa Pago móvil, Binance, PayPal y transferencia.
+10. Guarda los cambios.
+11. Abre tienda.html y presiona Ctrl + F5.
+
+PRUEBA
+- Crea un pedido.
+- Selecciona Pago móvil.
+- Deben aparecer banco, titular, documento y teléfono.
+- El monto debe aparecer en Bs según la tasa.
+- Carga un comprobante.
+- Debe quedar EN_REVISION en PAGOS y PEDIDOS_TIENDA.
+- NOTIFICACIONES debe recibir un nuevo pago por revisar.
+
+LÍMITE
+El comprobante puede pesar entre 1 y 8 MB según la configuración.
+La confirmación administrativa y Telegram continúan en la siguiente parte.
