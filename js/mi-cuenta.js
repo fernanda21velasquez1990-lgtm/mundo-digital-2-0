@@ -127,8 +127,19 @@ async function cargar(telefono,token){
   try{
     const d=await getPortal(sesion.telefono,sesion.token);
     const servicios=d.servicios||[];
-    console.log("Portal versión:", d.portalVersion || "sin-version", "Servicios:", servicios.length);
+    console.log("Portal versión:", d.portalVersion || "sin-version", "Servicios:", servicios.length, d.diagnostico || {});
     E.nombre.textContent=d.cliente?.nombreCompleto||"cliente";
+
+    const diag=document.querySelector("#diagnosticoPortal");
+    if(diag){
+      const x=d.diagnostico||{};
+      diag.hidden=false;
+      diag.textContent=
+        "Versión servidor: " + (d.portalVersion||"ANTIGUA / SIN MARCADOR") +
+        " | Cliente: " + (x.clienteId||d.cliente?.id||"-") +
+        " | Entregas encontradas: " + (x.entregasEncontradas ?? "sin dato") +
+        " | Servicios construidos: " + (x.serviciosConstruidos ?? servicios.length);
+    }
     const numero=String(d.soporteWhatsapp||"").replace(/\D/g,"");
     E.soporte.href=numero?`https://wa.me/${numero}?text=${encodeURIComponent("Hola, necesito ayuda con mis servicios de Mundo Digital 2.0.")}`:"#";
     E.activos.textContent=servicios.filter(x=>x.estado==="ACTIVA"||x.estado==="ACTIVO").length;
