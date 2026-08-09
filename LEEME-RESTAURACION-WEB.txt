@@ -1,0 +1,53 @@
+MUNDO DIGITAL 2.0 — RESTAURACIÓN WEB COMPLETA ESTABLE
+
+OBJETIVO:
+Volver a la versión web completa que ya funcionaba antes de los cambios recientes.
+
+SE RESTAURAN JUNTOS:
+- Clientes
+- Productos
+- Catálogo / Tienda
+- Ventas
+- Pagos
+- Entregas
+- Suscripciones
+- Renovaciones
+- Mi cuenta
+- CSS
+- JS
+- Configuración original de esa versión
+
+MUY IMPORTANTE:
+NO SE INCLUYE apps-script/
+NO SE INCLUYE api/
+
+Por eso:
+- NO reemplaces Código.gs.
+- NO reemplaces TelegramAdmin.gs.
+- El puente de Telegram/Vercel que ya tienes en api/ no se borra.
+
+PASOS:
+1. Haz una copia de seguridad de tu carpeta local actual.
+2. Extrae este ZIP dentro de:
+   C:\Users\Usuario\Desktop\mundo-digital-2-0\mundo-digital-2-0-futurista
+   (o exactamente la carpeta donde ves clientes.html, productos.html, tienda.html y js/)
+3. Acepta "Reemplazar los archivos en el destino".
+4. NO borres la carpeta api si ya existe.
+5. Abre VS Code en esa misma carpeta.
+6. Ejecuta:
+   git status
+   git add .
+   git commit -m "Restaura web completa estable"
+   git push
+7. Espera Vercel Ready.
+8. Abre primero /clientes y Ctrl+F5.
+9. Luego /productos y Ctrl+F5.
+10. Luego /tienda y Ctrl+F5.
+
+RESULTADO ESPERADO:
+- Clientes vuelve a mostrar los registros existentes.
+- Productos vuelve a mostrar PRO-000001.
+- Tienda vuelve a mostrar los productos publicados.
+
+NO TOCAR APPS SCRIPT EN ESTA PRUEBA.
+NO TOCAR TELEGRAM EN ESTA PRUEBA.
