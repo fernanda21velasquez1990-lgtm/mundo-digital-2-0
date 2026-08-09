@@ -40,7 +40,7 @@ function bloquear(valor){
 
 async function get(action){
   const cfg=configuracion();
-  if(!cfg.url)throw new Error("Falta APPS_SCRIPT_URL en configuracion.js.");
+  if(!cfg.url)throw new Error("Falta APPS_SCRIPT_URL en configuracion-estable.js.");
 
   const url=new URL(cfg.url);
   url.searchParams.set("action",action);
@@ -54,7 +54,7 @@ async function get(action){
 
 async function post(action,registro={}){
   const cfg=configuracion();
-  if(!cfg.url)throw new Error("Falta APPS_SCRIPT_URL en configuracion.js.");
+  if(!cfg.url)throw new Error("Falta APPS_SCRIPT_URL en configuracion-estable.js.");
 
   const respuesta=await fetch(cfg.url,{
     method:"POST",

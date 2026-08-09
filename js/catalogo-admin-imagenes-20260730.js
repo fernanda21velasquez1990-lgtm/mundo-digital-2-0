@@ -88,10 +88,10 @@ function mensaje(texto,tipo="exito"){
 
 function validarConfiguracion(){
   if(!cfg.APPS_SCRIPT_URL){
-    throw new Error("Falta APPS_SCRIPT_URL en js/configuracion.js.");
+    throw new Error("Falta APPS_SCRIPT_URL en js/configuracion-estable.js.");
   }
   if(!cfg.API_KEY_SOCIOS){
-    throw new Error("Falta API_KEY_SOCIOS en js/configuracion.js.");
+    throw new Error("Falta API_KEY_SOCIOS en js/configuracion-estable.js.");
   }
 }
 

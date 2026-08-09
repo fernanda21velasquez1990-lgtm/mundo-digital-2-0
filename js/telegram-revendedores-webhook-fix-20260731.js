@@ -38,10 +38,10 @@ function cerrarModalEnlace(){
 
 function apiValida(){
   if(!config.APPS_SCRIPT_URL){
-    throw new Error("Falta APPS_SCRIPT_URL en configuracion.js.");
+    throw new Error("Falta APPS_SCRIPT_URL en configuracion-estable.js.");
   }
   if(!config.API_KEY_SOCIOS){
-    throw new Error("Falta API_KEY_SOCIOS en configuracion.js.");
+    throw new Error("Falta API_KEY_SOCIOS en configuracion-estable.js.");
   }
 }
 

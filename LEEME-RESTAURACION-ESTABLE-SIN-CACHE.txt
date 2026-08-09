@@ -1,0 +1,39 @@
+MUNDO DIGITAL 2.0 — RESTAURACIÓN ESTABLE SIN CACHÉ
+
+OBJETIVO:
+Volver a la misma combinación WEB + conexión de Apps Script que usaba
+la versión estable antes de los cambios recientes.
+
+IMPORTANTE:
+- NO toca Código.gs.
+- NO toca TelegramAdmin.gs.
+- NO toca api/.
+- Usa la URL y clave originales de la versión estable.
+- Renombra la configuración a:
+  js/configuracion-estable.js
+  para evitar que Chrome/Vercel reutilicen configuracion.js en caché.
+
+PASOS:
+1. Haz copia de seguridad de la carpeta actual.
+2. Extrae este ZIP dentro de la carpeta raíz de la web
+   donde están clientes.html, productos.html, tienda.html, js/, css/.
+3. Acepta reemplazar archivos.
+4. NO borres api/.
+5. En VS Code:
+   git status
+   git add .
+   git commit -m "Restaura conexion estable original sin cache"
+   git push
+6. Espera Vercel Ready.
+7. Abre /clientes?restablecido=1
+8. Presiona Ctrl+F5.
+9. Deben aparecer los 2 clientes.
+10. Abre /productos?restablecido=1
+11. Presiona Ctrl+F5.
+12. Debe aparecer PRO-000001.
+13. Abre /tienda?restablecido=1
+
+NO HACER EN ESTA PRUEBA:
+- No reemplazar Código.gs.
+- No publicar Apps Script nuevo.
+- No tocar Telegram.
