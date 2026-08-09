@@ -1,0 +1,9 @@
+{
+  "base": "fase-5-alertas-confirmacion-parte-5",
+  "spreadsheet_id": "1FQyMHtJOnOomg1BPDZKUHxyMbyfjlkCOZJWvuL12zeY",
+  "apps_script_url": "https://script.google.com/macros/s/AKfycbzlbNSOhEnIMk2kC9kg4yw1NdEtU9He_X0sAzb4-w7EWMVAF4EAU9_8327Zs45czbCM/exec",
+  "getActiveSpreadsheet_replaced": 95,
+  "frontend_files_validated": true,
+  "backend_syntax_validated": true,
+  "telegram_bridge_preserved": true
+}

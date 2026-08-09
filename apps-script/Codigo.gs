@@ -1,5 +1,19 @@
 /**
  * =========================================================
+ * MUNDO DIGITAL 2.0 — CONEXIÓN ESTABLE FASE 5
+ * Mantiene las acciones/respuestas originales de Fase 5.
+ * Solo fija la base real y sincroniza la clave usada por la web.
+ * =========================================================
+ */
+const MD20_SPREADSHEET_ID_ESTABLE = '1FQyMHtJOnOomg1BPDZKUHxyMbyfjlkCOZJWvuL12zeY';
+const MD20_API_KEY_ESTABLE = 'c6beff9d014d4e9d840f4d8f86a39680d18092ef5e1c4891abda044336002241';
+
+function md20LibroEstable_() {
+  return SpreadsheetApp.openById(MD20_SPREADSHEET_ID_ESTABLE);
+}
+
+/**
+ * =========================================================
  * MUNDO DIGITAL 2.0
  * CREACIÓN COMPLETA DE LA BASE DE DATOS
  * =========================================================
@@ -29,7 +43,7 @@
  * Esta es la función que debes ejecutar.
  */
 function crearBaseDeDatosMundoDigital20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
 
   libro.toast(
     "Preparando pestañas y configuraciones...",
@@ -2011,7 +2025,7 @@ function eliminarHojaInicialVacia_(libro) {
   });
 }
 function mostrarLineasYBordesMundoDigital20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   const hojas = libro.getSheets();
 
   hojas.forEach((hoja) => {
@@ -2083,7 +2097,7 @@ function mostrarLineasYBordesMundoDigital20() {
  * Ejecuta solamente esta función.
  */
 function mejorarDisenoProfesionalMundoDigital20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
 
   const colores = {
     negro: "#101014",
@@ -2948,7 +2962,7 @@ function moverPortadaAlInicio_(libro) {
  */
 function crearPrimerAdministradorMundoDigital20() {
   const ui = SpreadsheetApp.getUi();
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   const hojaUsuarios = libro.getSheetByName("USUARIOS");
 
   try {
@@ -3545,7 +3559,7 @@ const MD20_SOCIOS = {
 };
 
 function prepararProveedoresYRevendedoresMD20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   const apiKey = obtenerOCrearApiKeySocios_();
 
   prepararHojaSocios_(libro, 'PROVEEDOR');
@@ -3673,13 +3687,7 @@ function guardarConfig_(hoja, clave, valor, descripcion) {
 }
 
 function obtenerOCrearApiKeySocios_() {
-  const props = PropertiesService.getScriptProperties();
-  let key = props.getProperty('MD20_API_KEY_SOCIOS');
-  if (!key) {
-    key = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
-    props.setProperty('MD20_API_KEY_SOCIOS', key);
-  }
-  return key;
+  return MD20_API_KEY_ESTABLE;
 }
 
 /** API WEB — SISTEMA COMPLETO CON PORTAL PÚBLICO POR TOKEN */
@@ -3799,7 +3807,7 @@ function validarTipoSocio_(tipo) {
 }
 
 function listarSocios_(tipo) {
-  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_SOCIOS.HOJAS[tipo]);
+  const hoja = md20LibroEstable_().getSheetByName(MD20_SOCIOS.HOJAS[tipo]);
   if (!hoja || hoja.getLastRow() <= 1) return [];
   const valores = hoja.getRange(2, 1, hoja.getLastRow() - 1, MD20_SOCIOS.ENCABEZADOS.length).getValues();
   return valores.filter(f => f[0] && f[14] !== 'INACTIVO').map(filaARegistro_);
@@ -3817,7 +3825,7 @@ function filaARegistro_(fila) {
 }
 
 function guardarSocio_(tipo, registro) {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   const hoja = libro.getSheetByName(MD20_SOCIOS.HOJAS[tipo]);
   if (!hoja) throw new Error('La pestaña todavía no está preparada.');
 
@@ -3849,7 +3857,7 @@ function guardarSocio_(tipo, registro) {
 }
 
 function desactivarSocio_(tipo, id) {
-  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_SOCIOS.HOJAS[tipo]);
+  const hoja = md20LibroEstable_().getSheetByName(MD20_SOCIOS.HOJAS[tipo]);
   const fila = buscarFilaPorId_(hoja, String(id || ''));
   if (!fila) throw new Error('No se encontró el registro.');
   hoja.getRange(fila, 15).setValue('INACTIVO');
@@ -3952,7 +3960,7 @@ function onEdit(e) {
  * - Evita que los próximos registros terminen en la fila 1001.
  */
 function repararProveedoresYRevendedoresMD20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   ['PROVEEDORES', 'REVENDEDORES'].forEach(nombre => repararHojaSocios_(libro.getSheetByName(nombre)));
   SpreadsheetApp.flush();
   SpreadsheetApp.getUi().alert(
@@ -4015,7 +4023,7 @@ const MD20_CLIENTES = {
 };
 
 function prepararModuloClientesMD20() {
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   let hoja = libro.getSheetByName(MD20_CLIENTES.HOJA);
   if (!hoja) hoja = libro.insertSheet(MD20_CLIENTES.HOJA);
 
@@ -4085,7 +4093,7 @@ function prepararModuloClientesMD20() {
 }
 
 function listarClientesMD20_() {
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName(MD20_CLIENTES.HOJA);
   if (!hoja || hoja.getLastRow()<=1) return [];
 
@@ -4111,7 +4119,7 @@ function filaClienteARegistroMD20_(fila) {
 }
 
 function guardarClienteMD20_(registro) {
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName(MD20_CLIENTES.HOJA);
   if (!hoja) throw new Error('La pestaña CLIENTES no está preparada.');
 
@@ -4150,7 +4158,7 @@ function guardarClienteMD20_(registro) {
 }
 
 function desactivarClienteMD20_(id) {
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CLIENTES.HOJA);
+  const hoja=md20LibroEstable_().getSheetByName(MD20_CLIENTES.HOJA);
   const fila=buscarFilaClienteMD20_(hoja,String(id||''));
   if (!fila) throw new Error('No se encontró el cliente.');
   hoja.getRange(fila,16).setValue('INACTIVO');
@@ -4158,7 +4166,7 @@ function desactivarClienteMD20_(id) {
 }
 
 function obtenerHistorialClienteMD20_(clienteId) {
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('VENTAS');
+  const hoja=md20LibroEstable_().getSheetByName('VENTAS');
   if (!hoja || hoja.getLastRow()<=1 || !clienteId) return [];
   const valores=hoja.getRange(2,1,hoja.getLastRow()-1,18).getValues();
   return valores.filter(f=>String(f[2]||'')===String(clienteId)).map(f=>({
@@ -4236,18 +4244,18 @@ function convertirFechaClienteMD20_(valor) {
  * =========================================================
  */
 function prepararModuloProductosMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),h=l.getSheetByName('PRODUCTOS');
+  const l=md20LibroEstable_(),h=l.getSheetByName('PRODUCTOS');
   if(!h)throw new Error('No existe la pestaña PRODUCTOS.');
   aplicarValidaciones_(l);aplicarFormatosEspeciales_(l);
   SpreadsheetApp.getUi().alert('Productos listos','La pestaña PRODUCTOS quedó conectada con la página.',SpreadsheetApp.getUi().ButtonSet.OK);
 }
 function listarCategoriasMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CATEGORIAS');
+  const h=md20LibroEstable_().getSheetByName('CATEGORIAS');
   if(!h||h.getLastRow()<=1)return[];
   return h.getRange(2,1,h.getLastRow()-1,8).getValues().filter(f=>f[0]&&f[6]!=='INACTIVO').map(f=>({id:String(f[0]),nombre:String(f[1]),descripcion:String(f[2]||''),icono:String(f[3]||''),color:String(f[4]||'')}));
 }
 function listarProductosMD20_(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),h=l.getSheetByName('PRODUCTOS');
+  const l=md20LibroEstable_(),h=l.getSheetByName('PRODUCTOS');
   if(!h||h.getLastRow()<=1)return[];
   const cats={};listarCategoriasMD20_().forEach(c=>cats[c.id]=c.nombre);
   return h.getRange(2,1,h.getLastRow()-1,18).getValues().filter(f=>f[0]).map(f=>({
@@ -4260,7 +4268,7 @@ function listarProductosMD20_(){
   }));
 }
 function guardarProductoMD20_(r){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PRODUCTOS');
+  const h=md20LibroEstable_().getSheetByName('PRODUCTOS');
   if(!h)throw new Error('No existe la pestaña PRODUCTOS.');
   const nombre=String(r.nombre||'').trim(),cat=String(r.categoriaId||'').trim();
   if(!nombre)throw new Error('El nombre es obligatorio.');
@@ -4278,7 +4286,7 @@ function guardarProductoMD20_(r){
   SpreadsheetApp.flush();return listarProductosMD20_().find(p=>p.id===id);
 }
 function desactivarProductoMD20_(id){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PRODUCTOS'),f=buscarFilaProductoMD20_(h,String(id||''));
+  const h=md20LibroEstable_().getSheetByName('PRODUCTOS'),f=buscarFilaProductoMD20_(h,String(id||''));
   if(!f)throw new Error('No se encontró el producto.');h.getRange(f,15).setValue('INACTIVO');h.getRange(f,18).setValue(new Date());
 }
 function buscarFilaProductoMD20_(h,id){
@@ -4297,7 +4305,7 @@ function primeraFilaLibreProductoMD20_(h){
  * =========================================================
  */
 function prepararModuloVentasMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet();
+  const l=md20LibroEstable_();
   ['VENTAS','DETALLE_VENTAS','PAGOS','ENTREGAS'].forEach(n=>{
     if(!l.getSheetByName(n))throw new Error('No existe la pestaña '+n+'.');
   });
@@ -4307,7 +4315,7 @@ function prepararModuloVentasMD20(){
 }
 
 function listarMetodosPagoMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('METODOS_PAGO');
+  const h=md20LibroEstable_().getSheetByName('METODOS_PAGO');
   if(!h||h.getLastRow()<=1)return[];
   return h.getRange(2,1,h.getLastRow()-1,13).getValues()
     .filter(f=>f[0]&&String(f[11]||'ACTIVO')==='ACTIVO')
@@ -4315,7 +4323,7 @@ function listarMetodosPagoMD20_(){
 }
 
 function listarVentasMD20_(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),hv=l.getSheetByName('VENTAS'),hd=l.getSheetByName('DETALLE_VENTAS'),hp=l.getSheetByName('PAGOS');
+  const l=md20LibroEstable_(),hv=l.getSheetByName('VENTAS'),hd=l.getSheetByName('DETALLE_VENTAS'),hp=l.getSheetByName('PAGOS');
   if(!hv||hv.getLastRow()<=1)return[];
   const clientes={};listarClientesMD20_().forEach(c=>clientes[c.id]=c);
   const productos={};listarProductosMD20_().forEach(p=>productos[p.id]=p);
@@ -4340,7 +4348,7 @@ function listarVentasMD20_(){
 function crearVentaMD20_(r){
   const lock=LockService.getScriptLock();lock.waitLock(30000);
   try{
-    const l=SpreadsheetApp.getActiveSpreadsheet(),hv=l.getSheetByName('VENTAS'),hd=l.getSheetByName('DETALLE_VENTAS'),hp=l.getSheetByName('PAGOS');
+    const l=md20LibroEstable_(),hv=l.getSheetByName('VENTAS'),hd=l.getSheetByName('DETALLE_VENTAS'),hp=l.getSheetByName('PAGOS');
     if(!hv||!hd||!hp)throw new Error('Las pestañas de ventas no están preparadas.');
     const clienteId=String(r.clienteId||'').trim(),productoId=String(r.productoId||'').trim();
     if(!clienteId||!productoId)throw new Error('Cliente y producto son obligatorios.');
@@ -4363,7 +4371,7 @@ function cambiarEstadoPagoVentaMD20_(ventaId,estado){
   if(!permitido.includes(estado))throw new Error('Estado de pago no válido.');
   const lock=LockService.getScriptLock();lock.waitLock(30000);
   try{
-    const l=SpreadsheetApp.getActiveSpreadsheet(),hv=l.getSheetByName('VENTAS'),hp=l.getSheetByName('PAGOS'),he=l.getSheetByName('ENTREGAS');
+    const l=md20LibroEstable_(),hv=l.getSheetByName('VENTAS'),hp=l.getSheetByName('PAGOS'),he=l.getSheetByName('ENTREGAS');
     const fv=buscarFilaPorValorMD20_(hv,1,String(ventaId||''));if(!fv)throw new Error('No se encontró la venta.');
     const actual=String(hv.getRange(fv,11).getValue()||'');
     if(actual===estado)return listarVentasMD20_().find(v=>v.id===ventaId);
@@ -4389,7 +4397,7 @@ function cambiarEstadoPagoVentaMD20_(ventaId,estado){
 }
 
 function obtenerDetalleVentaMD20_(ventaId){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('DETALLE_VENTAS');
+  const h=md20LibroEstable_().getSheetByName('DETALLE_VENTAS');
   if(!h||h.getLastRow()<=1)return{};
   const filas=h.getRange(2,1,h.getLastRow()-1,14).getValues(),f=filas.find(x=>String(x[1]||'')===String(ventaId));
   return f?{detalleId:String(f[0]||''),productoId:String(f[2]||'')}:{};
@@ -4412,7 +4420,7 @@ function buscarFilaPorValorMD20_(h,columna,valor){
 }
 
 function registrarLogVentaMD20_(accion,registroId,detalle){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('LOGS');
+  const h=md20LibroEstable_().getSheetByName('LOGS');
   if(h)h.appendRow(['LOG-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),new Date(),'ADMINISTRADOR',accion,'VENTAS',registroId,detalle,'OK']);
 }
 
@@ -4435,7 +4443,7 @@ const MD20_SUSCRIPCIONES_EXT = {
 };
 
 function prepararModuloSuscripcionesMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet();
+  const l=md20LibroEstable_();
   let h=l.getSheetByName('SUSCRIPCIONES');
   if(!h)h=l.insertSheet('SUSCRIPCIONES');
   const enc=MD20_SUSCRIPCIONES_EXT.ENCABEZADOS;
@@ -4485,7 +4493,7 @@ function aplicarValidacionSuscripcionesMD20_(h,col,valores){
  * El proveedor se utiliza únicamente en el panel administrativo.
  */
 function listarCuentasDisponiblesMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');
+  const h=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');
   if(!h||h.getLastRow()<=1)return[];
   return h.getRange(2,1,h.getLastRow()-1,21).getValues()
     .filter(f=>f[0]&&['DISPONIBLE','ACTIVA','ACTIVO'].includes(String(f[17]||'DISPONIBLE').toUpperCase()))
@@ -4533,7 +4541,7 @@ function aplicarListasDinamicasSuscripcionesMD20_(libro,hojaSuscripciones){
  */
 function actualizarEstadoCuentaAsignadaMD20_(cuentaId,estado){
   if(!cuentaId)return;
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');
+  const h=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');
   if(!h||h.getLastRow()<=1)return;
   const fila=buscarFilaPorValorMD20_(h,1,String(cuentaId));
   if(!fila)return;
@@ -4542,7 +4550,7 @@ function actualizarEstadoCuentaAsignadaMD20_(cuentaId,estado){
 }
 
 function listarSuscripcionesMD20_(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),h=l.getSheetByName('SUSCRIPCIONES');
+  const l=md20LibroEstable_(),h=l.getSheetByName('SUSCRIPCIONES');
   if(!h||h.getLastRow()<=1)return[];
   const clientes={};listarClientesMD20_().forEach(c=>clientes[c.id]=c);
   const productos={};listarProductosMD20_().forEach(p=>productos[p.id]=p);
@@ -4569,7 +4577,7 @@ function listarSuscripcionesMD20_(){
 function guardarSuscripcionMD20_(r){
   const lock=LockService.getScriptLock();lock.waitLock(30000);
   try{
-    const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SUSCRIPCIONES');
+    const h=md20LibroEstable_().getSheetByName('SUSCRIPCIONES');
     if(!h)throw new Error('La pestaña SUSCRIPCIONES no está preparada.');
     const clienteId=String(r.clienteId||'').trim(),productoId=String(r.productoId||'').trim();
     if(!clienteId||!productoId)throw new Error('Cliente y producto son obligatorios.');
@@ -4606,7 +4614,7 @@ function calcularEstadoSuscripcionMD20_(fecha,actual){
 }
 
 function actualizarEstadosSuscripcionesMD20(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SUSCRIPCIONES');
+  const h=md20LibroEstable_().getSheetByName('SUSCRIPCIONES');
   if(!h||h.getLastRow()<=1)return;
   const filas=h.getRange(2,1,h.getLastRow()-1,MD20_SUSCRIPCIONES_EXT.ENCABEZADOS.length).getValues();
   filas.forEach((f,i)=>{
@@ -4634,7 +4642,7 @@ function actualizarEstadosSuscripcionesMD20(){
  */
 function prepararMenuProductosCuentasMD20(mostrarAlerta) {
   mostrarAlerta = mostrarAlerta !== false;
-  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const libro = md20LibroEstable_();
   const hojaCuentas = libro.getSheetByName('CUENTAS_DIGITALES');
   const hojaProductos = libro.getSheetByName('PRODUCTOS');
 
@@ -4887,7 +4895,7 @@ const MD20_CANVA = {
 };
 
 function prepararPanelCanvaMD20(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const equipos=obtenerOCrearHojaCanvaMD20_(libro,MD20_CANVA.EQUIPOS,MD20_CANVA.ENC_EQUIPOS,'#7D2AE8');
   const cuentas=obtenerOCrearHojaCanvaMD20_(libro,MD20_CANVA.CUENTAS,MD20_CANVA.ENC_CUENTAS,'#00C4CC');
 
@@ -4974,7 +4982,7 @@ function aplicarValidacionCanvaLista_(hoja,col,valores){
 }
 
 function listarEquiposCanvaMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.EQUIPOS);
+  const h=md20LibroEstable_().getSheetByName(MD20_CANVA.EQUIPOS);
   if(!h||h.getLastRow()<=1)return[];
   actualizarTodosLosEquiposCanvaMD20_();
   return h.getRange(2,1,h.getLastRow()-1,MD20_CANVA.ENC_EQUIPOS.length).getValues().filter(f=>f[0]).map(f=>({
@@ -4986,7 +4994,7 @@ function listarEquiposCanvaMD20_(){
 }
 
 function guardarEquipoCanvaMD20_(r){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.EQUIPOS);
+  const h=md20LibroEstable_().getSheetByName(MD20_CANVA.EQUIPOS);
   if(!h)throw new Error('Ejecuta primero prepararPanelCanvaMD20.');
   const nombre=String(r.nombre||'').trim(),capacidad=Number(r.capacidad||0);
   if(!nombre||capacidad<1)throw new Error('Nombre y capacidad son obligatorios.');
@@ -4999,7 +5007,7 @@ function guardarEquipoCanvaMD20_(r){
 }
 
 function listarCuentasCanvaMD20_(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet(),h=libro.getSheetByName(MD20_CANVA.CUENTAS);
+  const libro=md20LibroEstable_(),h=libro.getSheetByName(MD20_CANVA.CUENTAS);
   if(!h||h.getLastRow()<=1)return[];
   const equipos={};listarEquiposCanvaMD20_().forEach(e=>equipos[e.id]=e);
   const revendedores={};listarSocios_('REVENDEDOR').forEach(r=>revendedores[r.id]=[r.nombre,r.apellido].filter(Boolean).join(' '));
@@ -5021,7 +5029,7 @@ function listarCuentasCanvaMD20_(){
 function guardarCuentaCanvaMD20_(r){
   const lock=LockService.getScriptLock();lock.waitLock(30000);
   try{
-    const libro=SpreadsheetApp.getActiveSpreadsheet(),h=libro.getSheetByName(MD20_CANVA.CUENTAS);
+    const libro=md20LibroEstable_(),h=libro.getSheetByName(MD20_CANVA.CUENTAS);
     if(!h)throw new Error('Ejecuta primero prepararPanelCanvaMD20.');
     const nombre=String(r.nombreCompleto||'').trim(),whatsapp=String(r.whatsapp||'').replace(/\D/g,''),correo=String(r.correoCanva||'').trim().toLowerCase(),equipoId=String(r.equipoId||'').trim();
     if(!nombre||!whatsapp||!correo||!equipoId)throw new Error('Nombre, WhatsApp, correo y equipo son obligatorios.');
@@ -5061,13 +5069,13 @@ function obtenerNombreRevendedorCanvaMD20_(id){
 }
 
 function contarCuentasActivasEquipoCanvaMD20_(equipoId){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.CUENTAS);
+  const h=md20LibroEstable_().getSheetByName(MD20_CANVA.CUENTAS);
   if(!h||h.getLastRow()<=1)return 0;
   return h.getRange(2,1,h.getLastRow()-1,20).getValues().filter(f=>String(f[5]||'')===String(equipoId)&&['ACTIVA','POR_VENCER'].includes(calcularEstadoCanvaMD20_(f[10],String(f[19]||'')))).length;
 }
 
 function actualizarTodosLosEquiposCanvaMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.EQUIPOS);
+  const h=md20LibroEstable_().getSheetByName(MD20_CANVA.EQUIPOS);
   if(!h||h.getLastRow()<=1)return;
   const datos=h.getRange(2,1,h.getLastRow()-1,MD20_CANVA.ENC_EQUIPOS.length).getValues();
   datos.forEach((f,i)=>{
@@ -5099,7 +5107,7 @@ function primeraFilaLibreCanvaMD20_(h){
 }
 
 function crearNotificacionCanvaMD20_(id,cliente,equipo,estado,operacion){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const h=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(!h)return;
   h.appendRow(['NOT-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),'ADMINISTRADOR','CANVA',operacion+' de Canva',cliente+' · '+equipo+' · '+estado,'CANVA',id,estado==='POR_VENCER'?'ALTA':'MEDIA','NO',new Date(),'','ACTIVA']);
 }
@@ -5117,7 +5125,7 @@ function obtenerResumenCanvaTelegramMD20_(){
 }
 
 function actualizarEstadosCanvaMD20(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.CUENTAS);
+  const h=md20LibroEstable_().getSheetByName(MD20_CANVA.CUENTAS);
   if(!h||h.getLastRow()<=1)return;
   const datos=h.getRange(2,1,h.getLastRow()-1,MD20_CANVA.ENC_CUENTAS.length).getValues();
   datos.forEach((f,i)=>{
@@ -5179,7 +5187,7 @@ const MD20_PORTAL = {
 };
 
 function prepararPortalClientesMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet();
+  const l=md20LibroEstable_();
   prepararHojaPortalMD20_(l,MD20_PORTAL.HOJA_PORTAL,MD20_PORTAL.ENC_PORTAL,'#673AB7');
   prepararHojaPortalMD20_(l,MD20_PORTAL.HOJA_RESPUESTAS,MD20_PORTAL.ENC_RESPUESTAS,'#00BCD4');
   prepararHojaPortalMD20_(l,MD20_PORTAL.HOJA_ALERTAS,MD20_PORTAL.ENC_ALERTAS,'#FF9800');
@@ -5201,7 +5209,7 @@ function prepararHojaPortalMD20_(libro,nombre,encabezados,color){
 function generarPortalClienteMD20_(clienteId){
   const cliente=listarClientesMD20_().find(c=>c.id===String(clienteId||''));
   if(!cliente)throw new Error('No se encontró el cliente.');
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_PORTAL);
+  const h=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_PORTAL);
   if(!h)throw new Error('Ejecuta primero prepararPortalClientesMD20.');
   const token=Utilities.getUuid().replace(/-/g,'')+Utilities.getUuid().replace(/-/g,'');
   const hash=hashTokenPortalMD20_(token),ahora=new Date(),expira=new Date(ahora);expira.setFullYear(expira.getFullYear()+1);
@@ -5255,7 +5263,7 @@ function responderRenovacionPortalMD20_(c){
   let nombreProducto='',fechaVencimiento='',dias=0;
 
   if(tipo==='SUSCRIPCION'){
-    const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SUSCRIPCIONES'),fila=buscarFilaPorValorMD20_(h,1,servicioId);
+    const h=md20LibroEstable_().getSheetByName('SUSCRIPCIONES'),fila=buscarFilaPorValorMD20_(h,1,servicioId);
     if(!fila)throw new Error('No se encontró la suscripción.');
     if(String(h.getRange(fila,2).getValue()||'')!==acceso.clienteId)throw new Error('El servicio no pertenece a este cliente.');
     h.getRange(fila,26).setValue(respuesta==='RENOVAR'?'DESEA_RENOVAR':'NO_DESEA_RENOVAR');
@@ -5263,7 +5271,7 @@ function responderRenovacionPortalMD20_(c){
     h.getRange(fila,28).setValue(new Date());
     const s=listarSuscripcionesMD20_().find(x=>x.id===servicioId);nombreProducto=s?s.productoNombre:'';fechaVencimiento=s?s.fechaVencimiento:'';dias=s?s.diasRestantes:0;
   }else if(tipo==='CANVA'){
-    const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_CANVA.CUENTAS),fila=buscarFilaPorValorMD20_(h,1,servicioId);
+    const h=md20LibroEstable_().getSheetByName(MD20_CANVA.CUENTAS),fila=buscarFilaPorValorMD20_(h,1,servicioId);
     if(!fila)throw new Error('No se encontró la cuenta de Canva.');
     const cuenta=listarCuentasCanvaMD20_().find(x=>x.id===servicioId);
     const cliente=listarClientesMD20_().find(x=>x.id===acceso.clienteId);
@@ -5273,9 +5281,9 @@ function responderRenovacionPortalMD20_(c){
     nombreProducto='Canva';fechaVencimiento=cuenta.fechaVencimiento;dias=cuenta.diasRestantes;
   }else throw new Error('Tipo de servicio no válido.');
 
-  const hr=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
+  const hr=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
   hr.appendRow(['RES-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),acceso.clienteId,tipo,servicioId,nombreProducto,respuesta,new Date(),'PORTAL_CLIENTE','PENDIENTE','','']);
-  const ha=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_ALERTAS);
+  const ha=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_ALERTAS);
   ha.appendRow(['ALR-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),acceso.clienteId,tipo,servicioId,respuesta==='RENOVAR'?'CLIENTE_DESEA_RENOVAR':'CLIENTE_NO_RENOVARA',fechaVencimiento,dias,'ACTIVA',new Date()]);
   crearNotificacionRespuestaPortalMD20_(acceso.clienteId,nombreProducto,respuesta,servicioId);
   registrarLogVentaMD20_('RESPUESTA_PORTAL',servicioId,'Cliente respondió '+respuesta+'.');
@@ -5284,7 +5292,7 @@ function responderRenovacionPortalMD20_(c){
 
 function validarTokenPortalMD20_(token){
   token=String(token||'').trim();if(token.length<40)throw new Error('El token del portal no es válido.');
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_PORTAL);
+  const h=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_PORTAL);
   if(!h||h.getLastRow()<=1)throw new Error('El portal todavía no está preparado.');
   const hash=hashTokenPortalMD20_(token),datos=h.getRange(2,1,h.getLastRow()-1,10).getValues();
   const i=datos.findIndex(f=>String(f[2]||'')===hash&&String(f[7]||'')==='ACTIVO');
@@ -5301,7 +5309,7 @@ function hashTokenPortalMD20_(token){
 function normalizarTelefonoPortalMD20_(v){return String(v||'').replace(/\D/g,'').replace(/^0+/,'');}
 
 function obtenerWhatsappSoportePortalMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CONFIGURACION');
+  const h=md20LibroEstable_().getSheetByName('CONFIGURACION');
   if(h&&h.getLastRow()>1){
     const d=h.getRange(2,1,h.getLastRow()-1,2).getDisplayValues();
     const fila=d.find(f=>['WHATSAPP_SOPORTE','TELEFONO_SOPORTE'].includes(String(f[0]||'').toUpperCase()));
@@ -5311,7 +5319,7 @@ function obtenerWhatsappSoportePortalMD20_(){
 }
 
 function crearNotificacionRespuestaPortalMD20_(clienteId,producto,respuesta,servicioId){
-  const cliente=listarClientesMD20_().find(c=>c.id===clienteId),h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const cliente=listarClientesMD20_().find(c=>c.id===clienteId),h=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(h)h.appendRow(['NOT-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),'ADMINISTRADOR','RENOVACION','Respuesta del cliente',(cliente?cliente.nombreCompleto:'Cliente')+' respondió '+respuesta+' para '+producto,'PORTAL_CLIENTE',servicioId,'ALTA','NO',new Date(),'','ACTIVA']);
 }
 
@@ -5324,7 +5332,7 @@ function crearNotificacionRespuestaPortalMD20_(clienteId,producto,respuesta,serv
  */
 function listarRespuestasRenovacionMD20_(){
   actualizarEstadosSistemaDiarioMD20();
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
+  const h=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
   if(!h||h.getLastRow()<=1)return[];
   const clientes={};listarClientesMD20_().forEach(c=>clientes[c.id]=c);
   const suscripciones={};listarSuscripcionesMD20_().forEach(s=>suscripciones[s.id]=s);
@@ -5347,7 +5355,7 @@ function listarRespuestasRenovacionMD20_(){
 }
 
 function procesarRespuestaRenovacionMD20_(respuestaId){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
+  const h=md20LibroEstable_().getSheetByName(MD20_PORTAL.HOJA_RESPUESTAS);
   const fila=buscarFilaPorValorMD20_(h,1,String(respuestaId||''));
   if(!fila)throw new Error('No se encontró la respuesta.');
   h.getRange(fila,9).setValue('PROCESADO');
@@ -5396,7 +5404,7 @@ function instalarActualizacionDiariaMD20(){
  * =========================================================
  */
 function prepararModuloInventarioDigitalMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),h=l.getSheetByName('CUENTAS_DIGITALES');
+  const l=md20LibroEstable_(),h=l.getSheetByName('CUENTAS_DIGITALES');
   if(!h)throw new Error('No existe CUENTAS_DIGITALES.');
   if(h.getMaxColumns()<22)h.insertColumnsAfter(h.getMaxColumns(),22-h.getMaxColumns());
   h.getRange(1,22).setValue('PRODUCTO_NOMBRE');
@@ -5427,7 +5435,7 @@ function aplicarListasInventarioDigitalMD20_(l,h){
   if(p&&p.getLastRow()>1)h.getRange(2,3,h.getMaxRows()-1,1).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInRange(p.getRange(2,1,p.getLastRow()-1,1),true).setAllowInvalid(true).build());
 }
 function listarInventarioDigitalMD20_(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');if(!h||h.getLastRow()<=1)return[];
+  const h=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');if(!h||h.getLastRow()<=1)return[];
   const productos={};listarProductosMD20_().forEach(p=>productos[p.id]=p);
   const proveedores={};listarSocios_('PROVEEDOR').forEach(p=>proveedores[p.id]=p);
   return h.getRange(2,1,h.getLastRow()-1,Math.max(22,h.getLastColumn())).getValues().filter(f=>f[0]).map(f=>{
@@ -5438,7 +5446,7 @@ function listarInventarioDigitalMD20_(){
 function guardarInventarioDigitalMD20_(r){
   const lock=LockService.getScriptLock();lock.waitLock(30000);
   try{
-    const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');if(!h)throw new Error('No existe CUENTAS_DIGITALES.');
+    const h=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');if(!h)throw new Error('No existe CUENTAS_DIGITALES.');
     const productoId=String(r.productoId||'').trim(),usuario=String(r.usuarioCuenta||'').trim();if(!productoId||!usuario)throw new Error('Producto y usuario son obligatorios.');
     const total=Math.max(1,Number(r.pantallasTotales||1)),disp=Math.max(0,Number(r.pantallasDisponibles||0));if(disp>total)throw new Error('Los cupos disponibles no pueden superar el total.');
     const producto=listarProductosMD20_().find(p=>p.id===productoId);if(!producto)throw new Error('No se encontró el producto.');
@@ -5455,7 +5463,7 @@ function calcularEstadoInventarioMD20_(fecha,actual){
   const d=calcularDias_(fecha);if(d<0)return 'VENCIDA';if(d<=3)return 'POR_VENCER';return actual==='VENCIDA'||actual==='POR_VENCER'?'DISPONIBLE':(actual||'DISPONIBLE');
 }
 function actualizarEstadosInventarioDigitalMD20(){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');if(!h||h.getLastRow()<=1)return;
+  const h=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');if(!h||h.getLastRow()<=1)return;
   const d=h.getRange(2,1,h.getLastRow()-1,21).getValues();d.forEach((f,i)=>{if(!f[0])return;h.getRange(i+2,18).setValue(calcularEstadoInventarioMD20_(f[14],String(f[17]||'')));h.getRange(i+2,21).setValue(new Date());});
 }
 
@@ -5468,7 +5476,7 @@ function actualizarEstadosInventarioDigitalMD20(){
  * =========================================================
  */
 function prepararModuloPagosMD20(){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),h=l.getSheetByName('PAGOS');
+  const l=md20LibroEstable_(),h=l.getSheetByName('PAGOS');
   if(!h)throw new Error('No existe la pestaña PAGOS.');
   if(h.getMaxColumns()<16)h.insertColumnsAfter(h.getMaxColumns(),16-h.getMaxColumns());
   h.setFrozenRows(1);h.setTabColor('#00A86B');h.setRowHeight(1,44);
@@ -5508,7 +5516,7 @@ function aplicarListasPagoMD20_(l,h){
 }
 
 function listarPagosMD20_(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('PAGOS');
 
   if(!hoja||hoja.getLastRow()<=1)return[];
@@ -5573,7 +5581,7 @@ function guardarPagoMD20_(r){
   lock.waitLock(30000);
 
   try{
-    const libro=SpreadsheetApp.getActiveSpreadsheet();
+    const libro=md20LibroEstable_();
     const hoja=libro.getSheetByName('PAGOS');
 
     if(!hoja)throw new Error('No existe la pestaña PAGOS.');
@@ -5696,7 +5704,7 @@ function cambiarEstadoPagoMD20_(pagoId,estado){
   lock.waitLock(30000);
 
   try{
-    const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PAGOS');
+    const hoja=md20LibroEstable_().getSheetByName('PAGOS');
     if(!hoja)throw new Error('No existe la pestaña PAGOS.');
 
     const encabezados=hoja
@@ -5772,7 +5780,7 @@ function cambiarEstadoPagoMD20_(pagoId,estado){
 }
 
 function procesarConfirmacionPagoMD20_(pagoId,filaPago){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),hp=l.getSheetByName('PAGOS'),hv=l.getSheetByName('VENTAS'),he=l.getSheetByName('ENTREGAS');
+  const l=md20LibroEstable_(),hp=l.getSheetByName('PAGOS'),hv=l.getSheetByName('VENTAS'),he=l.getSheetByName('ENTREGAS');
   const ventaId=String(hp.getRange(filaPago,2).getValue()||''),filaVenta=buscarFilaPorValorMD20_(hv,1,ventaId);
   if(!filaVenta)throw new Error('No se encontró la venta relacionada.');
   const ahora=new Date();
@@ -5784,7 +5792,7 @@ function procesarConfirmacionPagoMD20_(pagoId,filaPago){
 }
 
 function procesarRechazoPagoMD20_(filaPago,estado){
-  const l=SpreadsheetApp.getActiveSpreadsheet(),hp=l.getSheetByName('PAGOS'),hv=l.getSheetByName('VENTAS'),ventaId=String(hp.getRange(filaPago,2).getValue()||''),filaVenta=buscarFilaPorValorMD20_(hv,1,ventaId);
+  const l=md20LibroEstable_(),hp=l.getSheetByName('PAGOS'),hv=l.getSheetByName('VENTAS'),ventaId=String(hp.getRange(filaPago,2).getValue()||''),filaVenta=buscarFilaPorValorMD20_(hv,1,ventaId);
   hp.getRange(filaPago,13).setValue('ADMINISTRADOR');
   hp.getRange(filaPago,14).setValue(new Date());
   recalcularVentaPorPagosMD20_(ventaId);
@@ -5792,7 +5800,7 @@ function procesarRechazoPagoMD20_(filaPago,estado){
 }
 
 function crearNotificacionPagoMD20_(pagoId,ventaId,estado){
-  const h=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const h=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(!h)return;
   h.appendRow(['NOT-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),'ADMINISTRADOR','PAGOS','Pago '+estado,'Pago '+pagoId+' de la venta '+ventaId+' cambió a '+estado,'PAGOS',pagoId,estado==='CONFIRMADO'?'MEDIA':'ALTA','NO',new Date(),'','ACTIVA']);
 }
@@ -5842,7 +5850,7 @@ function manejarEdicionManualPagoMD20_(e){
  * También crea o bloquea la entrega según el saldo.
  */
 function recalcularVentaPorPagosMD20_(ventaId){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hojaPagos=libro.getSheetByName('PAGOS');
   const hojaVentas=libro.getSheetByName('VENTAS');
   const hojaEntregas=libro.getSheetByName('ENTREGAS');
@@ -5937,7 +5945,7 @@ const MD20_ENTREGAS_ENCABEZADOS=[
 ];
 
 function prepararModuloEntregasMD20(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   let hoja=libro.getSheetByName('ENTREGAS');
   if(!hoja)hoja=libro.insertSheet('ENTREGAS');
 
@@ -6017,7 +6025,7 @@ function encabezadosEntregaMD20_(hoja){
 function listarEntregasMD20_(){
   sincronizarEntregasDesdeVentasMD20_();
 
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('ENTREGAS');
   if(!hoja||hoja.getLastRow()<=1)return[];
 
@@ -6076,7 +6084,7 @@ function guardarEntregaMD20_(r){
   lock.waitLock(30000);
 
   try{
-    const libro=SpreadsheetApp.getActiveSpreadsheet();
+    const libro=md20LibroEstable_();
     const hoja=libro.getSheetByName('ENTREGAS');
     if(!hoja)throw new Error('Ejecuta primero prepararModuloEntregasMD20.');
 
@@ -6177,7 +6185,7 @@ function cambiarEstadoEntregaMD20_(entregaId,estado){
 }
 
 function sincronizarEntregasDesdeVentasMD20_(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('ENTREGAS');
   if(!hoja)return;
 
@@ -6204,7 +6212,7 @@ function sincronizarEntregasDesdeVentasMD20_(){
 }
 
 function actualizarVentaDesdeEntregaMD20_(ventaId,estadoEntrega){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('VENTAS');
+  const hoja=md20LibroEstable_().getSheetByName('VENTAS');
   if(!hoja)return;
 
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn())
@@ -6235,7 +6243,7 @@ function actualizarVentaDesdeEntregaMD20_(ventaId,estadoEntrega){
 }
 
 function actualizarInventarioDesdeEntregaMD20_(cuentaId,estadoEntrega){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CUENTAS_DIGITALES');
+  const hoja=md20LibroEstable_().getSheetByName('CUENTAS_DIGITALES');
   if(!hoja||hoja.getLastRow()<=1)return;
 
   const fila=buscarFilaPorValorMD20_(hoja,1,String(cuentaId));
@@ -6259,7 +6267,7 @@ function actualizarInventarioDesdeEntregaMD20_(cuentaId,estadoEntrega){
 }
 
 function crearNotificacionEntregaMD20_(entregaId,ventaId,estado){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const hoja=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(!hoja)return;
 
   hoja.appendRow([
@@ -6350,7 +6358,7 @@ function obtenerDatosProductoEntregaMD20_(productoId){
  * usando los nombres de encabezado.
  */
 function obtenerExtrasProductoEntregaMD20_(productoId){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PRODUCTOS');
+  const hoja=md20LibroEstable_().getSheetByName('PRODUCTOS');
   if(!hoja||hoja.getLastRow()<=1){
     return {archivoId:'',imagenUrl:''};
   }
@@ -6391,7 +6399,7 @@ function obtenerExtrasProductoEntregaMD20_(productoId){
  * No depende de listarProductosMD20_.
  */
 function obtenerDatosProductoEntregaDirectoMD20_(productoId){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PRODUCTOS');
+  const hoja=md20LibroEstable_().getSheetByName('PRODUCTOS');
 
   if(!hoja||hoja.getLastRow()<=1){
     return {
@@ -6468,7 +6476,7 @@ function obtenerDatosProductoEntregaDirectoMD20_(productoId){
  * Guarda en ENTREGAS el mensaje generado automáticamente al abrir WhatsApp.
  */
 function guardarMensajeEntregaGeneradoMD20_(entregaId,mensajeEntrega){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('ENTREGAS');
+  const hoja=md20LibroEstable_().getSheetByName('ENTREGAS');
   if(!hoja)throw new Error('No existe la pestaña ENTREGAS.');
 
   const encabezados=encabezadosEntregaMD20_(hoja);
@@ -6500,7 +6508,7 @@ function guardarMensajeEntregaGeneradoMD20_(entregaId,mensajeEntrega){
  * Configuración pública utilizada para construir mensajes de entrega.
  */
 function obtenerConfiguracionEntregaMD20_(){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CONFIGURACION');
+  const hoja=md20LibroEstable_().getSheetByName('CONFIGURACION');
   const predeterminado={grupoVipUrl:'https://chat.whatsapp.com/LQzH8tfVocr0GhQ33HPBDa?s=cl&p=a&ilr=1&amv=1'};
 
   if(!hoja||hoja.getLastRow()<=1)return predeterminado;
@@ -6528,7 +6536,7 @@ function obtenerConfiguracionEntregaMD20_(){
  * Ejecutar una sola vez para registrar o actualizar el enlace VIP.
  */
 function prepararConfiguracionGrupoVipMD20(){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CONFIGURACION');
+  const hoja=md20LibroEstable_().getSheetByName('CONFIGURACION');
   if(!hoja)throw new Error('No existe la pestaña CONFIGURACION.');
 
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn())
@@ -6573,7 +6581,7 @@ function prepararConfiguracionGrupoVipMD20(){
  */
 
 function prepararModuloCatalogoMD20(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('PRODUCTOS');
   if(!hoja)throw new Error('No existe la pestaña PRODUCTOS.');
 
@@ -6753,7 +6761,7 @@ function normalizarDisponibilidadCatalogoMD20_(valor){
 }
 
 function listarCatalogoAdminMD20_(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('PRODUCTOS');
   if(!hoja||hoja.getLastRow()<=1)return[];
 
@@ -6856,7 +6864,7 @@ function listarCategoriasCatalogoPublicoMD20_(productos){
 
 function leerConfiguracionMD20_(){
   const resultado={};
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CONFIGURACION');
+  const hoja=md20LibroEstable_().getSheetByName('CONFIGURACION');
   if(!hoja||hoja.getLastRow()<=1)return resultado;
 
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn())
@@ -6876,7 +6884,7 @@ function leerConfiguracionMD20_(){
 }
 
 function guardarConfiguracionClaveMD20_(clave,valor,descripcion,tipo,editable){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CONFIGURACION');
+  const hoja=md20LibroEstable_().getSheetByName('CONFIGURACION');
   if(!hoja)throw new Error('No existe la pestaña CONFIGURACION.');
 
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn())
@@ -6996,7 +7004,7 @@ function guardarConfiguracionPagosTiendaMD20_(registro){
   guardarConfiguracionClaveMD20_('MOSTRAR_PRECIO_BS',String(registro.mostrarPrecioBs||'SI').toUpperCase()==='NO'?'NO':'SI','Mostrar equivalencia en bolívares en la tienda.','SI_NO','SI');
   guardarConfiguracionClaveMD20_('MAX_COMPROBANTE_MB',maxMb,'Tamaño máximo del comprobante en MB.','NUMERO','SI');
 
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('METODOS_PAGO');
+  const hoja=md20LibroEstable_().getSheetByName('METODOS_PAGO');
   if(!hoja)throw new Error('No existe METODOS_PAGO.');
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0].map(v=>String(v||'').trim().toUpperCase());
   const col=nombre=>encabezados.indexOf(nombre)+1;
@@ -7046,7 +7054,7 @@ const MD20_PEDIDOS_TIENDA={
 };
 
 function prepararCheckoutTiendaMD20(){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   let hoja=libro.getSheetByName(MD20_PEDIDOS_TIENDA.HOJA);
 
   if(!hoja){
@@ -7165,7 +7173,7 @@ function aplicarValidacionPedidoTiendaMD20_(hoja,columna,valores){
 }
 
 function listarMetodosPagoDetalladosMD20_(soloActivos){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('METODOS_PAGO');
+  const hoja=md20LibroEstable_().getSheetByName('METODOS_PAGO');
   if(!hoja||hoja.getLastRow()<=1)return[];
 
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn())
@@ -7228,7 +7236,7 @@ function registrarPedidoTiendaPublicaMD20_(registro){
     throw new Error('No se pudo identificar la solicitud.');
   }
 
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hojaPedidos=libro.getSheetByName(MD20_PEDIDOS_TIENDA.HOJA);
 
   if(!hojaPedidos){
@@ -7627,7 +7635,7 @@ function crearOActualizarClientePedidoTiendaMD20_(datos){
 }
 
 function crearVentaDesdePedidoTiendaMD20_(datos){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hojaVentas=libro.getSheetByName('VENTAS');
   const hojaDetalles=libro.getSheetByName('DETALLE_VENTAS');
   const hojaPagos=libro.getSheetByName('PAGOS');
@@ -7947,7 +7955,7 @@ function pedidoPublicoMD20_(pedido){
 
 
 function buscarPedidoPorTokenTiendaMD20_(token){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName(MD20_PEDIDOS_TIENDA.HOJA);
+  const hoja=md20LibroEstable_().getSheetByName(MD20_PEDIDOS_TIENDA.HOJA);
   if(!hoja||hoja.getLastRow()<=1)return null;
   const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0].map(v=>String(v||'').trim().toUpperCase());
   const colToken=encabezados.indexOf('TOKEN_PUBLICO');
@@ -8007,7 +8015,7 @@ function registrarPagoPedidoTiendaMD20_(registro){
   archivoDrive.setDescription('Comprobante del pedido '+pedido.numeroPedido+' · Cliente '+pedido.clienteNombre);
   const url=archivoDrive.getUrl();
 
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hojaPagos=libro.getSheetByName('PAGOS');
   const hojaVentas=libro.getSheetByName('VENTAS');
   if(!hojaPagos)throw new Error('No existe PAGOS.');
@@ -8052,7 +8060,7 @@ function registrarPagoPedidoTiendaMD20_(registro){
 }
 
 function crearNotificacionPagoTiendaMD20_(pedido,url,referencia,bancoOrigen){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const hoja=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(!hoja)return;
   hoja.appendRow([
     'NOT-'+Utilities.getUuid().replace(/-/g,'').slice(0,10).toUpperCase(),
@@ -8064,7 +8072,7 @@ function crearNotificacionPagoTiendaMD20_(pedido,url,referencia,bancoOrigen){
 
 
 function guardarCatalogoProductoMD20_(registro){
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hoja=libro.getSheetByName('PRODUCTOS');
   if(!hoja)throw new Error('No existe la pestaña PRODUCTOS.');
 
@@ -8163,7 +8171,7 @@ function guardarCatalogoProductoMD20_(registro){
 }
 
 function cambiarPublicacionCatalogoMD20_(productoId,publicar){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PRODUCTOS');
+  const hoja=md20LibroEstable_().getSheetByName('PRODUCTOS');
   if(!hoja)throw new Error('No existe la pestaña PRODUCTOS.');
 
   const encabezados=obtenerEncabezadosCatalogoMD20_(hoja);
@@ -8195,7 +8203,7 @@ function listarAlertasPagosTiendaMD20_(){
   const pagos=listarPagosMD20_().filter(p=>String(p.estado).toUpperCase()==='EN_REVISION');
   if(!pagos.length)return [];
 
-  const libro=SpreadsheetApp.getActiveSpreadsheet();
+  const libro=md20LibroEstable_();
   const hojaPedidos=libro.getSheetByName('PEDIDOS_TIENDA');
   const pedidos=[];
   if(hojaPedidos&&hojaPedidos.getLastRow()>1){
@@ -8251,7 +8259,7 @@ function resolverAlertaPagoTiendaMD20_(registro){
   const lock=LockService.getScriptLock();
   lock.waitLock(30000);
   try{
-    const libro=SpreadsheetApp.getActiveSpreadsheet();
+    const libro=md20LibroEstable_();
     const hojaPagos=libro.getSheetByName('PAGOS');
     if(!hojaPagos)throw new Error('No existe PAGOS.');
 
@@ -8295,7 +8303,7 @@ function resolverAlertaPagoTiendaMD20_(registro){
 }
 
 function sincronizarPedidoRevisionPagoMD20_(ventaId,estadoPago,motivo){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('PEDIDOS_TIENDA');
+  const hoja=md20LibroEstable_().getSheetByName('PEDIDOS_TIENDA');
   if(!hoja||hoja.getLastRow()<=1)return;
   const headers=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0].map(v=>String(v||'').trim().toUpperCase());
   const c=n=>headers.indexOf(n)+1;
@@ -8319,7 +8327,7 @@ function sincronizarPedidoRevisionPagoMD20_(ventaId,estadoPago,motivo){
 }
 
 function marcarNotificacionesPagoLeidasMD20_(pagoId,ventaId){
-  const hoja=SpreadsheetApp.getActiveSpreadsheet().getSheetByName('NOTIFICACIONES');
+  const hoja=md20LibroEstable_().getSheetByName('NOTIFICACIONES');
   if(!hoja||hoja.getLastRow()<=1)return;
   const headers=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0].map(v=>String(v||'').trim().toUpperCase());
   const iTipo=headers.indexOf('TIPO');
@@ -8336,4 +8344,31 @@ function marcarNotificacionesPagoLeidasMD20_(pagoId,ventaId){
       if(iFecha>=0)hoja.getRange(index+2,iFecha+1).setValue(new Date());
     }
   });
+}
+
+
+/**
+ * PRUEBA SEGURA. NO MODIFICA DATOS.
+ * Confirma que la misma lógica usada por la web devuelve registros.
+ */
+function PROBAR_FASE5_FINAL_MD20(){
+  const clientes = listarClientesMD20_();
+  const productos = listarProductosMD20_();
+  const categorias = listarCategoriasMD20_();
+  const catalogo = listarCatalogoPublicoMD20_('ADMIN');
+
+  const resultado = {
+    ok:true,
+    version:'FASE5-REPARACION-FINAL-1',
+    spreadsheetId:md20LibroEstable_().getId(),
+    clientesCantidad:clientes.length,
+    productosCantidad:productos.length,
+    categoriasCantidad:categorias.length,
+    catalogoCantidad:catalogo.length,
+    primerCliente:clientes.length ? clientes[0].id : '',
+    primerProducto:productos.length ? productos[0].id : ''
+  };
+
+  console.log(JSON.stringify(resultado,null,2));
+  return resultado;
 }

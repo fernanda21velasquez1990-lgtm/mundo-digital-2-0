@@ -1,0 +1,100 @@
+MUNDO DIGITAL 2.0 — REPARACIÓN FINAL BASADA EN FASE 5
+
+ESTE PAQUETE USA COMO BASE EXACTA:
+mundo-digital-2-0-fase-5-alertas-confirmacion-parte-5
+
+La web y Código.gs pertenecen a la MISMA versión.
+No se mezclan módulos posteriores de Telegram con el backend principal.
+
+AJUSTES REALIZADOS:
+1. Código.gs abre directamente la Base de Datos real.
+2. La clave API del backend queda sincronizada con la web Fase 5.
+3. js/configuracion.js apunta a la implementación /exec principal actual.
+4. Las acciones originales siguen intactas:
+   listarClientes
+   guardarCliente
+   listarProductos
+   guardarProducto
+   listarCategorias
+   listarCatalogoPublicoMD20
+5. Se conserva api/telegram-admin.js.
+6. Se agregó cache-busting a configuracion.js.
+
+============================================================
+PASO 1 — APPS SCRIPT PRINCIPAL
+============================================================
+
+1. Abre Mundo Digital 2.0 - Sistema.
+2. Reemplaza TODO Código.gs por:
+   apps-script/Codigo.gs
+3. Ctrl + S.
+4. Selecciona:
+   PROBAR_FASE5_FINAL_MD20
+5. Ejecuta.
+
+RESULTADO ESPERADO:
+clientesCantidad: 2
+productosCantidad: 1
+categoriasCantidad: 6 o más
+primerProducto: PRO-000001
+
+NO ejecutes crearBaseDeDatosMundoDigital20.
+
+============================================================
+PASO 2 — PUBLICAR APPS SCRIPT
+============================================================
+
+Cuando la prueba anterior esté correcta:
+
+6. Implementar
+7. Administrar implementaciones
+8. lápiz
+9. Nueva versión
+10. Implementar
+
+NO crees otra implementación.
+La web ya apunta a la URL /exec actual.
+
+============================================================
+PASO 3 — REEMPLAZAR WEB
+============================================================
+
+11. Haz copia de seguridad de tu carpeta actual.
+12. Extrae este ZIP dentro de la carpeta mundo-digital-2-0-futurista.
+13. Reemplaza todos los archivos.
+14. NO borres .git de tu PC.
+
+============================================================
+PASO 4 — GITHUB / VERCEL
+============================================================
+
+15. En VS Code:
+
+git status
+git add .
+git commit -m "Repara plataforma con backend estable Fase 5"
+git push
+
+16. Espera Vercel Ready.
+
+============================================================
+PASO 5 — PRUEBA
+============================================================
+
+17. Abre Clientes y Ctrl+F5.
+    Deben salir los 2 clientes.
+
+18. Prueba crear UN cliente nuevo.
+    Debe guardarse en CLIENTES y aparecer en la tabla.
+
+19. Abre Productos y Ctrl+F5.
+    Debe aparecer PRO-000001.
+
+20. Abre Tienda y Ctrl+F5.
+
+NO TOCAR:
+TelegramAdmin.gs
+Variables de Vercel
+Google Sheets
+Crear base de datos
+Otros ZIP de diagnóstico
