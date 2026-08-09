@@ -101,6 +101,10 @@ function tarjeta(s){
     dato("Precio de renovación",`${Number(s.precioRenovacion||0).toLocaleString("es-ES",{minimumFractionDigits:2})} ${s.moneda||"USD"}`)
   ].join("");
 
+  const archivo = s.archivoUrl
+    ? `<a class="renovar" href="${esc(s.archivoUrl)}" target="_blank" rel="noopener noreferrer">📥 Abrir / Descargar archivo</a>`
+    : "";
+
   return `<article class="servicio">
     <div class="servicio-cabecera">
       <div><h4>${esc(s.nombre)}</h4><p class="subtitulo">${esc(tipo)}</p></div>
@@ -108,6 +112,7 @@ function tarjeta(s){
     </div>
     <div class="datos">${credenciales}</div>
     <div class="acciones">
+      ${archivo}
       <button class="renovar" data-id="${esc(s.id)}" data-tipo="${esc(s.tipoServicio)}" data-respuesta="RENOVAR">Quiero renovar</button>
       <button class="no-renovar" data-id="${esc(s.id)}" data-tipo="${esc(s.tipoServicio)}" data-respuesta="NO_RENOVAR">No renovar</button>
     </div>
@@ -122,6 +127,7 @@ async function cargar(telefono,token){
   try{
     const d=await getPortal(sesion.telefono,sesion.token);
     const servicios=d.servicios||[];
+    console.log("Portal versión:", d.portalVersion || "sin-version", "Servicios:", servicios.length);
     E.nombre.textContent=d.cliente?.nombreCompleto||"cliente";
     const numero=String(d.soporteWhatsapp||"").replace(/\D/g,"");
     E.soporte.href=numero?`https://wa.me/${numero}?text=${encodeURIComponent("Hola, necesito ayuda con mis servicios de Mundo Digital 2.0.")}`:"#";
