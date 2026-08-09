@@ -37,16 +37,3 @@ body{min-height:100vh;background:#09090c;color:#fff;overflow-x:hidden}
 .portal-footer{margin-top:30px;padding:20px;text-align:center;color:#7f7f89;font-size:10px;line-height:1.7}
 .mensaje{position:fixed;right:20px;bottom:20px;max-width:360px;padding:14px 17px;border-radius:13px;background:#123d2a;color:#9ef0bd;box-shadow:0 15px 40px rgba(0,0,0,.4);font-size:12px;font-weight:700;opacity:0;transform:translateY(20px);pointer-events:none;transition:.25s}.mensaje.visible{opacity:1;transform:none}.mensaje.error{background:#4a1418;color:#ffadb3}
 @media(max-width:750px){.bienvenida{align-items:flex-start;flex-direction:column}.resumen,.lista-servicios{grid-template-columns:1fr}.datos{grid-template-columns:1fr}.bienvenida h2{font-size:25px}}
-
-
-/* === Acceso por celular + token === */
-.login-card{width:min(520px,100%);margin:30px auto 0;padding:32px;border:1px solid rgba(255,255,255,.09);border-radius:24px;background:radial-gradient(circle at 85% 5%,rgba(255,106,0,.15),transparent 34%),linear-gradient(145deg,#15151b,#101014);box-shadow:0 24px 70px rgba(0,0,0,.28)}
-.login-icono{width:58px;height:58px;display:grid;place-items:center;margin-bottom:18px;border-radius:18px;background:rgba(255,109,0,.11);font-size:27px}
-.login-card h2{margin:8px 0 8px;font-size:27px}.login-card>p{color:#9898a2;font-size:13px;line-height:1.65;margin-bottom:22px}
-.login-card form{display:grid;gap:15px}.login-card label span{display:block;margin:0 0 7px;color:#b4b4bd;font-size:11px;font-weight:800}
-.login-card input{width:100%;height:49px;padding:0 14px;border:1px solid rgba(255,255,255,.1);border-radius:13px;outline:none;background:#0d0d11;color:#fff;font-size:14px}.login-card input:focus{border-color:rgba(255,109,0,.7);box-shadow:0 0 0 3px rgba(255,109,0,.08)}
-.login-card button,.boton-secundario,.boton-salir{border:0;cursor:pointer;font-weight:900}.login-card button{height:50px;border-radius:13px;background:linear-gradient(135deg,#ff1744,#ff6d00);color:#fff;font-size:13px;box-shadow:0 12px 28px rgba(255,77,0,.2)}
-.seguridad{margin-top:17px;padding:11px 12px;border-radius:11px;background:#1a1a20;color:#85858f;font-size:10px;text-align:center}
-.boton-secundario{margin-top:18px;padding:12px 16px;border-radius:12px;background:#26262d;color:#fff}.bienvenida-acciones{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.boton-salir{padding:13px 17px;border-radius:13px;background:#24242a;color:#c8c8d0}
-.dato.sensible{border:1px solid rgba(255,109,0,.16);background:#1d1815}
-@media(max-width:750px){.login-card{padding:24px 18px;margin-top:12px}.bienvenida-acciones{width:100%}.bienvenida-acciones>*{flex:1;text-align:center}.portal{width:min(100% - 18px,1120px)}}

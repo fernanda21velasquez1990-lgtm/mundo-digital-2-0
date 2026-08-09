@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#09090c">
   <title>Mundo Digital 2.0 | Mi cuenta</title>
-  <link rel="stylesheet" href="css/mi-cuenta.css?v=20260809-token">
+  <link rel="stylesheet" href="css/mi-cuenta.css">
 </head>
 <body>
   <div class="fondo-orbe orbe-1"></div>
@@ -21,27 +20,7 @@
       </div>
     </header>
 
-    <section id="loginPortal" class="login-card">
-      <div class="login-icono">🔐</div>
-      <span class="etiqueta">PORTAL PRIVADO</span>
-      <h2>Consulta tus servicios</h2>
-      <p>Ingresa el número de celular registrado y el token que recibiste de Mundo Digital 2.0.</p>
-
-      <form id="formAcceso" autocomplete="off">
-        <label>
-          <span>📱 Número de celular</span>
-          <input id="telefonoPortal" type="tel" inputmode="numeric" placeholder="Ejemplo: 584121234567" required>
-        </label>
-        <label>
-          <span>🔑 Token de acceso</span>
-          <input id="tokenPortal" type="text" spellcheck="false" autocapitalize="characters" placeholder="MD20-XXXXXXXXXXXX" required>
-        </label>
-        <button id="btnEntrar" type="submit">Entrar a mi cuenta</button>
-      </form>
-      <div class="seguridad">🔒 Tu acceso está vinculado a tu número de celular.</div>
-    </section>
-
-    <section id="cargandoPortal" class="estado-portal" hidden>
+    <section id="cargandoPortal" class="estado-portal">
       <div class="spinner"></div>
       <h2>Consultando tus servicios</h2>
       <p>Espera unos segundos.</p>
@@ -50,8 +29,7 @@
     <section id="errorPortal" class="estado-portal error" hidden>
       <span class="icono-estado">!</span>
       <h2>No pudimos abrir tu cuenta</h2>
-      <p id="textoError">Revisa tu número de celular y token.</p>
-      <button id="volverLogin" class="boton-secundario" type="button">Volver a intentar</button>
+      <p id="textoError">El enlace no es válido o ya no está activo.</p>
     </section>
 
     <div id="contenidoPortal" hidden>
@@ -59,15 +37,10 @@
         <div>
           <span class="etiqueta">PORTAL PRIVADO</span>
           <h2>Hola, <span id="nombreCliente">cliente</span></h2>
-          <p>Aquí puedes consultar tus cuentas, accesos, estados y fechas de vencimiento.</p>
+          <p>Aquí puedes consultar tus servicios, fechas de vencimiento y responder si deseas renovar.</p>
         </div>
-        <div class="bienvenida-acciones">
-          <a id="botonSoporte" class="boton-soporte" target="_blank" rel="noopener">Contactar soporte</a>
-          <button id="cerrarSesion" class="boton-salir" type="button">Cerrar sesión</button>
-        </div>
+        <a id="botonSoporte" class="boton-soporte" target="_blank" rel="noopener">Contactar soporte</a>
       </section>
-
-      <div id="diagnosticoPortal" hidden style="margin:0 0 16px;padding:12px 16px;border:1px solid #ff6a00;border-radius:12px;background:#1a1512;color:#ffd2b3;font-size:13px;font-weight:700;"></div>
 
       <section class="resumen">
         <article><span>Servicios activos</span><strong id="totalActivos">0</strong></article>
@@ -90,7 +63,7 @@
       </section>
 
       <footer class="portal-footer">
-        <p>Este acceso es privado. No compartas tu token con otras personas.</p>
+        <p>Este enlace es privado. No lo compartas con otras personas.</p>
         <small>Mundo Digital 2.0 · Atención y servicios digitales</small>
       </footer>
     </div>
@@ -98,7 +71,7 @@
 
   <div id="mensajePortal" class="mensaje"></div>
 
-  <script src="js/configuracion.js?v=20260809-urlcorrecta"></script>
-  <script src="js/mi-cuenta.js?v=20260809-diagnostico2"></script>
+  <script src="js/configuracion.js"></script>
+  <script src="js/mi-cuenta.js"></script>
 </body>
 </html>
