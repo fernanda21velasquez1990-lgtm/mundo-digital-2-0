@@ -810,3 +810,18 @@
 .control-tienda-visible:hover{
   filter:brightness(1.18);
 }
+
+.boton-telegram-revendedores{
+  min-height:46px;
+  padding:0 15px;
+  border:1px solid rgba(123,31,162,.45);
+  border-radius:13px;
+  background:rgba(123,31,162,.13);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.8rem;
+  font-weight:850;
+  text-decoration:none;
+}

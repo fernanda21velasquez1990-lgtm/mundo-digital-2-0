@@ -1,0 +1,42 @@
+MUNDO DIGITAL 2.0 — PORTAL PRIVADO DEL CLIENTE
+
+NUEVO ACCESO:
+- Número de celular registrado
+- Token generado por el administrador desde Telegram
+
+EL CLIENTE PUEDE VER:
+- Sus cuentas y suscripciones
+- Canva asociado a su cliente o WhatsApp
+- Usuario/correo
+- Contraseña (cuando existe)
+- Perfil / PIN (cuando existe)
+- Estado
+- Fecha de compra
+- Fecha de vencimiento
+- Días restantes
+- Precio de renovación
+- Renovar / No renovar
+
+SEGURIDAD:
+- Token vinculado al mismo número de celular del cliente.
+- Token debe estar ACTIVO.
+- TOKEN_VENCE debe seguir vigente.
+- No se muestran datos de proveedores.
+- Un cliente solo recibe servicios asociados a su CLIENTE_ID/WhatsApp.
+
+ARCHIVOS IMPORTANTES:
+1. apps-script/Codigo.gs -> reemplazar el Código.gs del proyecto principal Mundo Digital 2.0 - Sistema.
+2. mi-cuenta.html -> va en la carpeta web.
+3. js/mi-cuenta.js -> va en la carpeta web.
+4. css/mi-cuenta.css -> va en la carpeta web.
+
+NO REEMPLACES TelegramAdmin.gs CON Codigo.gs. SON PROYECTOS APPS SCRIPT SEPARADOS.
+
+DESPUÉS:
+1. Publica nueva versión del Apps Script PRINCIPAL.
+2. Reemplaza la carpeta web local con este ZIP.
+3. git add .
+4. git commit -m "Agrega portal cliente por celular y token"
+5. git push
+6. Abre /mi-cuenta.html en Vercel.
+7. Prueba con el mismo celular y token creado desde Telegram.
