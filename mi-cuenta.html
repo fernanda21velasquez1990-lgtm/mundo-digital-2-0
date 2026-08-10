@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>Mundo Digital 2.0 | Mi cuenta</title>
-  <link rel="stylesheet" href="css/mi-cuenta.css">
+  <link rel="stylesheet" href="css/mi-cuenta.css?v=portal-completo-2">
 </head>
 <body>
   <div class="fondo-orbe orbe-1"></div>
@@ -22,8 +22,8 @@
 
     <section id="cargandoPortal" class="estado-portal">
       <div class="spinner"></div>
-      <h2>Consultando tus servicios</h2>
-      <p>Espera unos segundos.</p>
+      <h2>Consultando tu cuenta</h2>
+      <p>Estamos cargando tus compras, cuentas y materiales.</p>
     </section>
 
     <section id="errorPortal" class="estado-portal error" hidden>
@@ -35,30 +35,62 @@
     <div id="contenidoPortal" hidden>
       <section class="bienvenida">
         <div>
-          <span class="etiqueta">PORTAL PRIVADO</span>
+          <span class="etiqueta">PORTAL PRIVADO DEL CLIENTE</span>
           <h2>Hola, <span id="nombreCliente">cliente</span></h2>
-          <p>Aquí puedes consultar tus servicios, fechas de vencimiento y responder si deseas renovar.</p>
+          <p>Aquí encontrarás tus cuentas, credenciales, vencimientos, materiales digitales y todo tu historial de compras con Mundo Digital 2.0.</p>
         </div>
-        <a id="botonSoporte" class="boton-soporte" target="_blank" rel="noopener">Contactar soporte</a>
+        <a id="botonSoporte" class="boton-soporte" target="_blank" rel="noopener">💬 Hablar por WhatsApp</a>
       </section>
 
       <section class="resumen">
+        <article><span>Total de compras</span><strong id="totalCompras">0</strong></article>
         <article><span>Servicios activos</span><strong id="totalActivos">0</strong></article>
         <article><span>Por vencer</span><strong id="totalPorVencer">0</strong></article>
         <article><span>Vencidos</span><strong id="totalVencidos">0</strong></article>
       </section>
 
-      <section>
+      <section class="seccion-portal">
         <div class="titulo-seccion">
           <div>
-            <span class="etiqueta">TUS SERVICIOS</span>
-            <h3>Cuentas y suscripciones</h3>
+            <span class="etiqueta">MIS CUENTAS</span>
+            <h3>Cuentas, streaming y Canva</h3>
+            <p>Consulta usuario, contraseña, perfil, PIN, equipo y fecha de vencimiento.</p>
           </div>
         </div>
         <div id="listaServicios" class="lista-servicios"></div>
         <div id="sinServicios" class="sin-servicios" hidden>
-          <h3>No tienes servicios registrados</h3>
-          <p>Comunícate con soporte para revisar tu cuenta.</p>
+          <h3>No tienes cuentas o servicios registrados</h3>
+          <p>Cuando tengas una cuenta de streaming, Canva u otro servicio aparecerá aquí.</p>
+        </div>
+      </section>
+
+      <section class="seccion-portal">
+        <div class="titulo-seccion">
+          <div>
+            <span class="etiqueta">MIS MATERIALES</span>
+            <h3>Materiales digitales y descargas</h3>
+            <p>Todos los archivos, cursos y materiales entregados quedan disponibles desde tu portal.</p>
+          </div>
+        </div>
+        <div id="listaMateriales" class="lista-materiales"></div>
+        <div id="sinMateriales" class="sin-servicios" hidden>
+          <h3>No tienes materiales digitales registrados</h3>
+          <p>Cuando compres un PDF, curso o archivo digital aparecerá aquí.</p>
+        </div>
+      </section>
+
+      <section class="seccion-portal">
+        <div class="titulo-seccion">
+          <div>
+            <span class="etiqueta">HISTORIAL</span>
+            <h3>Todas mis compras</h3>
+            <p>Consulta lo que has comprado hasta la fecha y el estado de cada pedido.</p>
+          </div>
+        </div>
+        <div id="historialCompras" class="historial-compras"></div>
+        <div id="sinCompras" class="sin-servicios" hidden>
+          <h3>Todavía no tienes compras registradas</h3>
+          <p>Cuando realices tu primera compra aparecerá aquí.</p>
         </div>
       </section>
 
@@ -72,6 +104,6 @@
   <div id="mensajePortal" class="mensaje"></div>
 
   <script src="js/configuracion.js?v=fase5-final-1"></script>
-  <script src="js/mi-cuenta.js"></script>
+  <script src="js/mi-cuenta.js?v=portal-completo-2"></script>
 </body>
 </html>
