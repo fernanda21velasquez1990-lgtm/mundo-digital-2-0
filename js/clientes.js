@@ -173,7 +173,10 @@
   async function generarPortal(r) {
     try {
       const data = await peticionPost({ action:"generarPortalCliente", clienteId:r.id });
-      const base = location.href.replace(/clientes\.html.*$/i, "mi-cuenta.html");
+      // El portal debe usar siempre el dominio público de producción.
+      // No usamos location.href porque en Vercel puede ser una URL Preview protegida
+      // y las rutas limpias usan /clientes en vez de /clientes.html.
+      const base = "https://mundo-digital-2-0.vercel.app/mi-cuenta.html";
       const enlace = `${base}?token=${encodeURIComponent(data.token)}`;
       await navigator.clipboard.writeText(enlace);
       mostrarMensaje("Enlace privado copiado. Ya puedes enviarlo al cliente.");
