@@ -1,46 +1,136 @@
 /**
  * MUNDO DIGITAL 2.0
- * Puente independiente Telegram Vendedores
+ * Puente estable Telegram Vendedores
  *
- * Telegram
- *   -> /api/telegram-vendedor
- *   -> Apps Script: Mundo Digital 2.0 - Telegram Vendedores
+ * Telegram -> Vercel -> Apps Script Vendedores
  *
- * Variables privadas Vercel:
- *   APPS_SCRIPT_VENDEDOR_URL
- *   MD20_VENDEDOR_BRIDGE_SECRET
+ * Variables Vercel existentes:
+ * - APPS_SCRIPT_VENDEDOR_URL
+ * - MD20_VENDEDOR_BRIDGE_SECRET
+ *
+ * CAMBIO CLAVE:
+ * Telegram recibe 200 inmediatamente.
+ * La llamada lenta a Apps Script continúa con waitUntil().
  */
 
-export default async function handler(req, res) {
+import { waitUntil } from '@vercel/functions';
+
+async function enviarAAppsScript({
+  appsScriptUrl,
+  secret,
+  update
+}) {
+  const target = new URL(appsScriptUrl);
+
+  target.searchParams.set(
+    'bridge_secret',
+    secret
+  );
+
+  const controller =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => controller.abort(),
+      45000
+    );
+
+  try {
+    const response =
+      await fetch(
+        target.toString(),
+        {
+          method: 'POST',
+          headers: {
+            'content-type':
+              'application/json; charset=utf-8'
+          },
+          body:
+            JSON.stringify(update || {}),
+          redirect: 'follow',
+          signal:
+            controller.signal
+        }
+      );
+
+    const body =
+      await response.text();
+
+    if (!response.ok) {
+      console.error(
+        '[VENDEDOR] Apps Script respondió error:',
+        response.status,
+        body.slice(0, 1000)
+      );
+
+      return;
+    }
+
+    console.log(
+      '[VENDEDOR] Update procesado correctamente por Apps Script'
+    );
+
+  } catch (error) {
+    console.error(
+      '[VENDEDOR] Error enviando update a Apps Script:',
+      error &&
+      error.name === 'AbortError'
+        ? 'Timeout interno de 45 segundos'
+        : error
+    );
+
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+
+export default function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(200).json({
       ok: true,
-      service: 'Mundo Digital 2.0 - Telegram Vendedores Bridge'
+      service:
+        'Mundo Digital 2.0 - Telegram Vendedores Bridge',
+      mode:
+        'immediate-ack',
+      version:
+        'MD20-VENDEDOR-BRIDGE-STABLE-1'
     });
   }
 
-  const appsScriptUrl = String(
-    process.env.APPS_SCRIPT_VENDEDOR_URL || ''
-  ).trim();
+  const appsScriptUrl =
+    String(
+      process.env.APPS_SCRIPT_VENDEDOR_URL ||
+      ''
+    ).trim();
 
-  const expectedSecret = String(
-    process.env.MD20_VENDEDOR_BRIDGE_SECRET || ''
-  ).trim();
+  const expectedSecret =
+    String(
+      process.env.MD20_VENDEDOR_BRIDGE_SECRET ||
+      ''
+    ).trim();
 
-  const receivedSecret = String(
-    req.query && req.query.secret
-      ? req.query.secret
-      : ''
-  ).trim();
+  const receivedSecret =
+    String(
+      req.query &&
+      req.query.secret
+        ? req.query.secret
+        : ''
+    ).trim();
 
-  if (!appsScriptUrl || !expectedSecret) {
+  if (
+    !appsScriptUrl ||
+    !expectedSecret
+  ) {
     console.error(
-      'Faltan variables APPS_SCRIPT_VENDEDOR_URL o MD20_VENDEDOR_BRIDGE_SECRET'
+      '[VENDEDOR] Variables de entorno incompletas'
     );
 
     return res.status(500).json({
       ok: false,
-      error: 'Bridge vendedor no configurado'
+      error:
+        'Bridge vendedores environment not configured'
     });
   }
 
@@ -50,54 +140,31 @@ export default async function handler(req, res) {
   ) {
     return res.status(401).json({
       ok: false,
-      error: 'Unauthorized'
+      error:
+        'Unauthorized'
     });
   }
 
-  try {
-    const target = new URL(appsScriptUrl);
+  // Copiamos el update antes de terminar la respuesta.
+  const update =
+    req.body || {};
 
-    target.searchParams.set(
-      'bridge_secret',
-      expectedSecret
-    );
+  // Vercel mantiene viva la función para esta Promise,
+  // pero Telegram NO tiene que esperar a Apps Script.
+  waitUntil(
+    enviarAAppsScript({
+      appsScriptUrl:
+        appsScriptUrl,
+      secret:
+        expectedSecret,
+      update:
+        update
+    })
+  );
 
-    const response = await fetch(
-      target.toString(),
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(req.body || {}),
-        redirect: 'follow'
-      }
-    );
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      console.error(
-        'Apps Script Vendedor respondió:',
-        response.status,
-        text.slice(0, 1000)
-      );
-    }
-
-    // Telegram debe recibir 200 para que no reintente en bucle.
-    return res.status(200).json({
-      ok: true
-    });
-
-  } catch (error) {
-    console.error(
-      'Error puente Telegram Vendedor:',
-      error
-    );
-
-    return res.status(200).json({
-      ok: false,
-      handled: true
-    });
-  }
+  // Respuesta inmediata a Telegram:
+  return res.status(200).json({
+    ok: true,
+    accepted: true
+  });
 }
