@@ -3720,6 +3720,11 @@ function doGet(e) {
       return respuestaJson_(consultarPedidoTiendaPublicaMD20_(p.token||''));
     }
 
+    // Chat público de vendedores protegido por token individual.
+    if(a==='consultarChatVendedorMD20'){
+      return respuestaJson_(consultarChatVendedorMD20_(p.token||''));
+    }
+
     validarClaveApi_(p.claveApi||'');
 
     if(a==='listarSuscripciones')return respuestaJson_({ok:true,registros:listarSuscripcionesMD20_()});
@@ -3743,6 +3748,10 @@ function doGet(e) {
     if(a==='listarClientes')return respuestaJson_({ok:true,registros:listarClientesMD20_()});
     if(a==='historialCliente')return respuestaJson_({ok:true,ventas:obtenerHistorialClienteMD20_(p.clienteId||'')});
     if(a==='listarSocios'){const t=validarTipoSocio_(p.tipo);return respuestaJson_({ok:true,registros:listarSocios_(t)});}
+    if(a==='listarTelegramProveedoresMD20')return respuestaJson_({ok:true,registros:listarTelegramProveedoresMD20_()});
+    if(a==='listarPublicidadMD20')return respuestaJson_({ok:true,registros:listarPublicidadMD20_()});
+    if(a==='listarChatsAdminMD20')return respuestaJson_({ok:true,registros:listarChatsAdminMD20_()});
+    if(a==='listarMensajesChatAdminMD20')return respuestaJson_({ok:true,registros:listarMensajesChatAdminMD20_(p.vendedorId||'')});
     return respuestaJson_({ok:false,mensaje:'Acción GET no reconocida.'});
   }catch(error){return respuestaJson_({ok:false,mensaje:error.message||'Error inesperado.'});}
 }
@@ -3764,6 +3773,11 @@ function doPost(e) {
 
     if(a==='registrarPagoPedidoTiendaMD20'){
       return respuestaJson_(registrarPagoPedidoTiendaMD20_(c.registro||{}));
+    }
+
+    // Chat público de vendedores protegido por token individual.
+    if(a==='enviarMensajeChatVendedorMD20'){
+      return respuestaJson_(enviarMensajeChatVendedorMD20_(c.token||'',c.mensaje||''));
     }
 
     validarClaveApi_(c.claveApi);
@@ -3791,6 +3805,13 @@ function doPost(e) {
     if(a==='desactivarCliente'){desactivarClienteMD20_(c.id);return respuestaJson_({ok:true});}
     if(a==='guardarSocio'){const t=validarTipoSocio_(c.tipo);return respuestaJson_({ok:true,registro:guardarSocio_(t,c.registro||{})});}
     if(a==='desactivarSocio'){const t=validarTipoSocio_(c.tipo);desactivarSocio_(t,c.id);return respuestaJson_({ok:true});}
+    if(a==='guardarTelegramProveedorMD20')return respuestaJson_({ok:true,registro:guardarTelegramProveedorMD20_(c.registro||{})});
+    if(a==='cambiarEstadoTelegramProveedorMD20')return respuestaJson_({ok:true,registro:cambiarEstadoTelegramProveedorMD20_(c.id||'',c.estado||'')});
+    if(a==='guardarPublicidadMD20')return respuestaJson_({ok:true,registro:guardarPublicidadMD20_(c.registro||{})});
+    if(a==='cambiarEstadoPublicidadMD20')return respuestaJson_({ok:true,registro:cambiarEstadoPublicidadMD20_(c.id||'',c.estado||'')});
+    if(a==='generarAccesoChatVendedorMD20')return respuestaJson_({ok:true,registro:generarAccesoChatVendedorMD20_(c.registro||{})});
+    if(a==='cambiarEstadoAccesoChatVendedorMD20')return respuestaJson_({ok:true,registro:cambiarEstadoAccesoChatVendedorMD20_(c.vendedorId||'',c.estado||'')});
+    if(a==='enviarMensajeChatAdminMD20')return respuestaJson_({ok:true,registro:enviarMensajeChatAdminMD20_(c.vendedorId||'',c.mensaje||'')});
     return respuestaJson_({ok:false,mensaje:'Acción POST no reconocida.'});
   }catch(error){return respuestaJson_({ok:false,mensaje:error.message||'Error inesperado.'});}
 }
@@ -8371,4 +8392,304 @@ function PROBAR_FASE5_FINAL_MD20(){
 
   console.log(JSON.stringify(resultado,null,2));
   return resultado;
+}
+
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0 — NUEVOS MÓDULOS WEB V1
+ * 1) Telegram Proveedores
+ * 2) Centro de Publicidad (Drive + Sheets)
+ * 3) Chat Admin ↔ Vendedor por token
+ * =========================================================
+ */
+const MD20_NM = {
+  TELEGRAM_HOJA: 'TELEGRAM_PROVEEDORES',
+  PUBLICIDAD_HOJA: 'PUBLICIDAD',
+  CHAT_ACCESOS_HOJA: 'CHAT_ACCESOS_VENDEDORES',
+  CHAT_MENSAJES_HOJA: 'CHAT_MENSAJES',
+  CARPETA_PUBLICIDAD_CFG: 'CARPETA_PUBLICIDAD_ID',
+  CARPETA_PUBLICIDAD_NOMBRE: 'MUNDO DIGITAL 2.0 - PUBLICIDAD',
+  MAX_IMAGEN_BYTES: 6 * 1024 * 1024
+};
+
+function PREPARAR_NUEVOS_MODULOS_MD20(){
+  const libro = md20LibroEstable_();
+  nmPrepararHoja_(libro, MD20_NM.TELEGRAM_HOJA, [
+    'PROVEEDOR_TELEGRAM_ID','NOMBRE','TIPO','USUARIO_TELEGRAM','ENLACE_TELEGRAM','CATEGORIA','SERVICIO',
+    'PRECIO_COMPRA','PRECIO_VENTA_VENDEDOR','GANANCIA','MONEDA','METODO_PAGO','NOTAS','ESTADO','CREADO_EN','ACTUALIZADO_EN'
+  ], '#229ED9');
+  nmPrepararHoja_(libro, MD20_NM.PUBLICIDAD_HOJA, [
+    'PUBLICIDAD_ID','TITULO','CATEGORIA','PRODUCTO','PRECIO_TEXTO','COPY','IMAGEN_URL','IMAGEN_FILE_ID',
+    'ETIQUETAS','ESTADO','CREADO_EN','ACTUALIZADO_EN'
+  ], '#FF6D00');
+  nmPrepararHoja_(libro, MD20_NM.CHAT_ACCESOS_HOJA, [
+    'VENDEDOR_ID','NOMBRE','TOKEN','ESTADO','CREADO_EN','ACTUALIZADO_EN'
+  ], '#7C4DFF');
+  nmPrepararHoja_(libro, MD20_NM.CHAT_MENSAJES_HOJA, [
+    'MENSAJE_ID','VENDEDOR_ID','REMITENTE','MENSAJE','LEIDO_ADMIN','LEIDO_VENDEDOR','CREADO_EN'
+  ], '#25D47A');
+  const carpeta = nmObtenerCarpetaPublicidad_();
+  SpreadsheetApp.flush();
+  return {
+    ok:true,
+    mensaje:'Nuevos módulos preparados correctamente.',
+    hojas:[MD20_NM.TELEGRAM_HOJA,MD20_NM.PUBLICIDAD_HOJA,MD20_NM.CHAT_ACCESOS_HOJA,MD20_NM.CHAT_MENSAJES_HOJA],
+    carpetaPublicidadId:carpeta.getId()
+  };
+}
+
+function nmPrepararHoja_(libro,nombre,encabezados,color){
+  let hoja = libro.getSheetByName(nombre);
+  if(!hoja) hoja = libro.insertSheet(nombre);
+  if(hoja.getMaxColumns() < encabezados.length) hoja.insertColumnsAfter(hoja.getMaxColumns(), encabezados.length-hoja.getMaxColumns());
+  hoja.getRange(1,1,1,encabezados.length).setValues([encabezados]);
+  hoja.setFrozenRows(1);
+  hoja.getRange(1,1,1,encabezados.length)
+    .setBackground(color).setFontColor('#ffffff').setFontWeight('bold')
+    .setHorizontalAlignment('center');
+  hoja.autoResizeColumns(1,encabezados.length);
+  return hoja;
+}
+
+function nmHoja_(nombre){
+  const hoja = md20LibroEstable_().getSheetByName(nombre);
+  if(!hoja) throw new Error('Falta preparar la pestaña '+nombre+'. Ejecuta PREPARAR_NUEVOS_MODULOS_MD20 una sola vez.');
+  return hoja;
+}
+
+function nmHeaders_(hoja){
+  return hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0].map(v=>String(v||'').trim().toUpperCase());
+}
+
+function nmFilaPorId_(hoja,columna,id){
+  if(!id || hoja.getLastRow()<=1) return 0;
+  const vals=hoja.getRange(2,columna,hoja.getLastRow()-1,1).getDisplayValues().flat();
+  const i=vals.indexOf(String(id));
+  return i<0?0:i+2;
+}
+
+function nmFechaHora_(v){
+  if(!(v instanceof Date) || isNaN(v)) return '';
+  return Utilities.formatDate(v,Session.getScriptTimeZone(),"yyyy-MM-dd'T'HH:mm:ss");
+}
+
+function nmId_(prefijo){
+  return prefijo+'-'+Utilities.getUuid().replace(/-/g,'').slice(0,12).toUpperCase();
+}
+
+function nmTexto_(v){ return String(v==null?'':v).trim(); }
+
+function nmObtenerCarpetaPublicidad_(){
+  const libro=md20LibroEstable_();
+  const cfg=libro.getSheetByName('CONFIGURACION');
+  let id='';
+  if(cfg&&cfg.getLastRow()>1){
+    const filas=cfg.getRange(2,1,cfg.getLastRow()-1,2).getDisplayValues();
+    const fila=filas.find(r=>String(r[0]||'').trim()===MD20_NM.CARPETA_PUBLICIDAD_CFG);
+    if(fila) id=String(fila[1]||'').trim();
+  }
+  if(id){
+    try{return DriveApp.getFolderById(id);}catch(_e){}
+  }
+  const carpeta=DriveApp.createFolder(MD20_NM.CARPETA_PUBLICIDAD_NOMBRE);
+  if(cfg) guardarConfig_(cfg,MD20_NM.CARPETA_PUBLICIDAD_CFG,carpeta.getId(),'Carpeta de Drive usada por el Centro de Publicidad');
+  return carpeta;
+}
+
+/* ================= TELEGRAM PROVEEDORES ================= */
+function listarTelegramProveedoresMD20_(){
+  const h=nmHoja_(MD20_NM.TELEGRAM_HOJA);
+  if(h.getLastRow()<=1)return [];
+  return h.getRange(2,1,h.getLastRow()-1,16).getValues().filter(r=>r[0]).map(r=>({
+    id:String(r[0]),nombre:String(r[1]||''),tipo:String(r[2]||'BOT'),usuarioTelegram:String(r[3]||''),
+    enlaceTelegram:String(r[4]||''),categoria:String(r[5]||''),servicio:String(r[6]||''),
+    precioCompra:Number(r[7]||0),precioVentaVendedor:Number(r[8]||0),ganancia:Number(r[9]||0),
+    moneda:String(r[10]||'USD'),metodoPago:String(r[11]||''),notas:String(r[12]||''),estado:String(r[13]||'ACTIVO'),
+    creadoEn:nmFechaHora_(r[14]),actualizadoEn:nmFechaHora_(r[15])
+  }));
+}
+
+function guardarTelegramProveedorMD20_(r){
+  r=r||{};
+  const nombre=nmTexto_(r.nombre),servicio=nmTexto_(r.servicio);
+  if(!nombre)throw new Error('Escribe el nombre del proveedor.');
+  if(!servicio)throw new Error('Escribe el servicio que compras.');
+  let usuario=nmTexto_(r.usuarioTelegram).replace(/^@/,'');
+  let enlace=nmTexto_(r.enlaceTelegram);
+  if(!enlace&&usuario) enlace='https://t.me/'+usuario;
+  if(enlace&&!/^https?:\/\//i.test(enlace)) enlace='https://'+enlace.replace(/^\/+/, '');
+  if(!enlace)throw new Error('Agrega el enlace o usuario de Telegram.');
+  const tipo=['BOT','CANAL','GRUPO'].includes(String(r.tipo||'').toUpperCase())?String(r.tipo).toUpperCase():'BOT';
+  const costo=Math.max(0,Number(r.precioCompra||0));
+  const venta=Math.max(0,Number(r.precioVentaVendedor||0));
+  const h=nmHoja_(MD20_NM.TELEGRAM_HOJA),lock=LockService.getScriptLock(); lock.waitLock(30000);
+  try{
+    const id=nmTexto_(r.id)||nmId_('TGP');
+    const fila=nmFilaPorId_(h,1,id),ahora=new Date();
+    const creado=fila?h.getRange(fila,15).getValue()||ahora:ahora;
+    const valores=[id,nombre,tipo,usuario,enlace,nmTexto_(r.categoria),servicio,costo,venta,venta-costo,nmTexto_(r.moneda)||'USD',nmTexto_(r.metodoPago),nmTexto_(r.notas),nmTexto_(r.estado)||'ACTIVO',creado,ahora];
+    (fila?h.getRange(fila,1,1,16):h.getRange(h.getLastRow()+1,1,1,16)).setValues([valores]);
+    SpreadsheetApp.flush();
+    return listarTelegramProveedoresMD20_().find(x=>x.id===id);
+  }finally{lock.releaseLock();}
+}
+
+function cambiarEstadoTelegramProveedorMD20_(id,estado){
+  const h=nmHoja_(MD20_NM.TELEGRAM_HOJA),fila=nmFilaPorId_(h,1,id);
+  if(!fila)throw new Error('Proveedor Telegram no encontrado.');
+  const e=String(estado||'INACTIVO').toUpperCase()==='ACTIVO'?'ACTIVO':'INACTIVO';
+  h.getRange(fila,14).setValue(e); h.getRange(fila,16).setValue(new Date());
+  return {id:String(id),estado:e};
+}
+
+/* ================= CENTRO DE PUBLICIDAD ================= */
+function listarPublicidadMD20_(){
+  const h=nmHoja_(MD20_NM.PUBLICIDAD_HOJA);
+  if(h.getLastRow()<=1)return [];
+  return h.getRange(2,1,h.getLastRow()-1,12).getValues().filter(r=>r[0]).map(r=>({
+    id:String(r[0]),titulo:String(r[1]||''),categoria:String(r[2]||''),producto:String(r[3]||''),
+    precioTexto:String(r[4]||''),copy:String(r[5]||''),imagenUrl:String(r[6]||''),imagenFileId:String(r[7]||''),
+    etiquetas:String(r[8]||''),estado:String(r[9]||'ACTIVO'),creadoEn:nmFechaHora_(r[10]),actualizadoEn:nmFechaHora_(r[11])
+  }));
+}
+
+function guardarPublicidadMD20_(r){
+  r=r||{};
+  const titulo=nmTexto_(r.titulo),copy=nmTexto_(r.copy);
+  if(!titulo)throw new Error('Escribe un título para la publicidad.');
+  if(!copy)throw new Error('Escribe el copy de la publicidad.');
+  const h=nmHoja_(MD20_NM.PUBLICIDAD_HOJA),lock=LockService.getScriptLock(); lock.waitLock(30000);
+  try{
+    const id=nmTexto_(r.id)||nmId_('PUB');
+    const fila=nmFilaPorId_(h,1,id),ahora=new Date();
+    const creado=fila?h.getRange(fila,11).getValue()||ahora:ahora;
+    let imagenUrl=fila?String(h.getRange(fila,7).getValue()||''):'';
+    let imagenFileId=fila?String(h.getRange(fila,8).getValue()||''):'';
+    if(nmTexto_(r.imagenBase64)){
+      const base64=String(r.imagenBase64).replace(/^data:[^;]+;base64,/, '');
+      const bytes=Utilities.base64Decode(base64);
+      if(bytes.length>MD20_NM.MAX_IMAGEN_BYTES)throw new Error('La imagen supera el máximo de 6 MB.');
+      const tipo=nmTexto_(r.imagenMime)||'image/png';
+      const nombre=nmTexto_(r.imagenNombre)||('publicidad-'+id+'.png');
+      const archivo=nmObtenerCarpetaPublicidad_().createFile(Utilities.newBlob(bytes,tipo,nombre));
+      archivo.setSharing(DriveApp.Access.ANYONE_WITH_LINK,DriveApp.Permission.VIEW);
+      imagenFileId=archivo.getId();
+      imagenUrl='https://drive.google.com/thumbnail?id='+imagenFileId+'&sz=w1600';
+    }
+    const valores=[id,titulo,nmTexto_(r.categoria),nmTexto_(r.producto),nmTexto_(r.precioTexto),copy,imagenUrl,imagenFileId,nmTexto_(r.etiquetas),nmTexto_(r.estado)||'ACTIVO',creado,ahora];
+    (fila?h.getRange(fila,1,1,12):h.getRange(h.getLastRow()+1,1,1,12)).setValues([valores]);
+    SpreadsheetApp.flush();
+    return listarPublicidadMD20_().find(x=>x.id===id);
+  }finally{lock.releaseLock();}
+}
+
+function cambiarEstadoPublicidadMD20_(id,estado){
+  const h=nmHoja_(MD20_NM.PUBLICIDAD_HOJA),fila=nmFilaPorId_(h,1,id);
+  if(!fila)throw new Error('Publicidad no encontrada.');
+  const e=String(estado||'ARCHIVADA').toUpperCase()==='ACTIVO'?'ACTIVO':'ARCHIVADA';
+  h.getRange(fila,10).setValue(e); h.getRange(fila,12).setValue(new Date());
+  return {id:String(id),estado:e};
+}
+
+/* ================= CHAT ADMIN ↔ VENDEDOR ================= */
+function listarChatsAdminMD20_(){
+  const accesos=nmLeerAccesosChat_(),mensajes=nmLeerMensajesChat_();
+  return accesos.filter(a=>a.estado==='ACTIVO').map(a=>{
+    const ms=mensajes.filter(m=>m.vendedorId===a.vendedorId);
+    const ultimo=ms.length?ms[ms.length-1]:null;
+    return {
+      vendedorId:a.vendedorId,nombre:a.nombre,token:a.token,estado:a.estado,
+      noLeidos:ms.filter(m=>m.remitente==='VENDEDOR'&&m.leidoAdmin!=='SI').length,
+      ultimoMensaje:ultimo?ultimo.mensaje:'',ultimoEn:ultimo?ultimo.creadoEn:'',ultimoRemitente:ultimo?ultimo.remitente:''
+    };
+  }).sort((a,b)=>String(b.ultimoEn).localeCompare(String(a.ultimoEn)));
+}
+
+function generarAccesoChatVendedorMD20_(r){
+  r=r||{};
+  const vendedorId=nmTexto_(r.vendedorId),nombre=nmTexto_(r.nombre)||vendedorId;
+  if(!vendedorId)throw new Error('Escribe el ID del vendedor.');
+  const h=nmHoja_(MD20_NM.CHAT_ACCESOS_HOJA),fila=nmFilaPorId_(h,1,vendedorId),ahora=new Date();
+  let token=fila?String(h.getRange(fila,3).getValue()||''):'';
+  if(!token||r.regenerar===true||String(r.regenerar).toUpperCase()==='SI')token=Utilities.getUuid().replace(/-/g,'')+Utilities.getUuid().replace(/-/g,'').slice(0,12);
+  const creado=fila?h.getRange(fila,5).getValue()||ahora:ahora;
+  const vals=[vendedorId,nombre,token,'ACTIVO',creado,ahora];
+  (fila?h.getRange(fila,1,1,6):h.getRange(h.getLastRow()+1,1,1,6)).setValues([vals]);
+  SpreadsheetApp.flush();
+  return {vendedorId,nombre,token,estado:'ACTIVO'};
+}
+
+function cambiarEstadoAccesoChatVendedorMD20_(vendedorId,estado){
+  const h=nmHoja_(MD20_NM.CHAT_ACCESOS_HOJA),fila=nmFilaPorId_(h,1,vendedorId);
+  if(!fila)throw new Error('Acceso de chat no encontrado.');
+  const e=String(estado||'INACTIVO').toUpperCase()==='ACTIVO'?'ACTIVO':'INACTIVO';
+  h.getRange(fila,4).setValue(e);h.getRange(fila,6).setValue(new Date());
+  return {vendedorId:String(vendedorId),estado:e};
+}
+
+function listarMensajesChatAdminMD20_(vendedorId){
+  vendedorId=nmTexto_(vendedorId);
+  if(!vendedorId)throw new Error('Falta el vendedor.');
+  const h=nmHoja_(MD20_NM.CHAT_MENSAJES_HOJA),mensajes=nmLeerMensajesChat_().filter(m=>m.vendedorId===vendedorId);
+  if(h.getLastRow()>1){
+    const vals=h.getRange(2,1,h.getLastRow()-1,7).getValues();
+    vals.forEach((r,i)=>{if(String(r[1])===vendedorId&&String(r[2])==='VENDEDOR'&&String(r[4])!=='SI')h.getRange(i+2,5).setValue('SI');});
+  }
+  return mensajes;
+}
+
+function enviarMensajeChatAdminMD20_(vendedorId,mensaje){
+  vendedorId=nmTexto_(vendedorId); mensaje=nmTexto_(mensaje);
+  if(!vendedorId)throw new Error('Falta el vendedor.');
+  if(!mensaje)throw new Error('Escribe un mensaje.');
+  if(mensaje.length>2000)throw new Error('El mensaje es demasiado largo.');
+  const acceso=nmLeerAccesosChat_().find(a=>a.vendedorId===vendedorId&&a.estado==='ACTIVO');
+  if(!acceso)throw new Error('Este vendedor no tiene un acceso de chat activo.');
+  return nmGuardarMensajeChat_(vendedorId,'ADMIN',mensaje);
+}
+
+function consultarChatVendedorMD20_(token){
+  token=nmTexto_(token);
+  const acceso=nmLeerAccesosChat_().find(a=>a.token===token&&a.estado==='ACTIVO');
+  if(!acceso)return {ok:false,mensaje:'El enlace de chat no es válido o está desactivado.'};
+  const h=nmHoja_(MD20_NM.CHAT_MENSAJES_HOJA);
+  if(h.getLastRow()>1){
+    const vals=h.getRange(2,1,h.getLastRow()-1,7).getValues();
+    vals.forEach((r,i)=>{if(String(r[1])===acceso.vendedorId&&String(r[2])==='ADMIN'&&String(r[5])!=='SI')h.getRange(i+2,6).setValue('SI');});
+  }
+  return {ok:true,vendedor:{id:acceso.vendedorId,nombre:acceso.nombre},mensajes:nmLeerMensajesChat_().filter(m=>m.vendedorId===acceso.vendedorId)};
+}
+
+function enviarMensajeChatVendedorMD20_(token,mensaje){
+  token=nmTexto_(token); mensaje=nmTexto_(mensaje);
+  const acceso=nmLeerAccesosChat_().find(a=>a.token===token&&a.estado==='ACTIVO');
+  if(!acceso)throw new Error('El enlace de chat no es válido o está desactivado.');
+  if(!mensaje)throw new Error('Escribe un mensaje.');
+  if(mensaje.length>2000)throw new Error('El mensaje es demasiado largo.');
+  return {ok:true,registro:nmGuardarMensajeChat_(acceso.vendedorId,'VENDEDOR',mensaje)};
+}
+
+function nmLeerAccesosChat_(){
+  const h=nmHoja_(MD20_NM.CHAT_ACCESOS_HOJA);
+  if(h.getLastRow()<=1)return [];
+  return h.getRange(2,1,h.getLastRow()-1,6).getValues().filter(r=>r[0]).map(r=>({
+    vendedorId:String(r[0]),nombre:String(r[1]||r[0]),token:String(r[2]||''),estado:String(r[3]||'ACTIVO'),creadoEn:nmFechaHora_(r[4]),actualizadoEn:nmFechaHora_(r[5])
+  }));
+}
+
+function nmLeerMensajesChat_(){
+  const h=nmHoja_(MD20_NM.CHAT_MENSAJES_HOJA);
+  if(h.getLastRow()<=1)return [];
+  return h.getRange(2,1,h.getLastRow()-1,7).getValues().filter(r=>r[0]).map(r=>({
+    id:String(r[0]),vendedorId:String(r[1]),remitente:String(r[2]),mensaje:String(r[3]||''),
+    leidoAdmin:String(r[4]||'NO'),leidoVendedor:String(r[5]||'NO'),creadoEn:nmFechaHora_(r[6])
+  }));
+}
+
+function nmGuardarMensajeChat_(vendedorId,remitente,mensaje){
+  const h=nmHoja_(MD20_NM.CHAT_MENSAJES_HOJA),ahora=new Date();
+  const id=nmId_('MSG');
+  const row=[id,vendedorId,remitente,mensaje,remitente==='ADMIN'?'SI':'NO',remitente==='VENDEDOR'?'SI':'NO',ahora];
+  h.appendRow(row);SpreadsheetApp.flush();
+  return {id,vendedorId,remitente,mensaje,leidoAdmin:row[4],leidoVendedor:row[5],creadoEn:nmFechaHora_(ahora)};
 }

@@ -47,7 +47,7 @@ $("#botonCerrarSesion")?.addEventListener("click",()=>{if(confirm("¿Deseas cerr
 actualizar?.addEventListener("click",cargar);
 document.addEventListener("click",e=>{const b=e.target.closest("[data-destino]");if(b){e.preventDefault();location.href=b.dataset.destino}});
 document.querySelectorAll("[data-pagina]").forEach(x=>x.addEventListener("click",e=>{e.preventDefault();mostrarMensaje(`La sección “${x.dataset.pagina}” se conectará en su fase.`)}));
-const mapa={clientes:"clientes.html",productos:"productos.html",canva:"canva.html",proveedores:"proveedores.html",revendedores:"revendedores.html",ventas:"ventas.html",suscripciones:"suscripciones.html",renovaciones:"renovaciones.html"};
+const mapa={clientes:"clientes.html",productos:"productos.html",canva:"canva.html",proveedores:"proveedores.html",revendedores:"revendedores.html",ventas:"ventas.html",suscripciones:"suscripciones.html",renovaciones:"renovaciones.html",telegram:"telegram-proveedores.html",publicidad:"publicidad.html",chat:"chat-admin.html"};
 $("#buscarPlataforma")?.addEventListener("keydown",e=>{if(e.key==="Enter"){const q=e.target.value.trim().toLowerCase(),k=Object.keys(mapa).find(x=>x.includes(q)||q.includes(x));k?location.href=mapa[k]:mostrarMensaje("No encontramos una sección disponible con ese nombre.")}});
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();$("#buscarPlataforma")?.focus()}});
 cargar();

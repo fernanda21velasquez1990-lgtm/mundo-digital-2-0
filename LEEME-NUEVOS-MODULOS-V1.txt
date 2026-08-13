@@ -1,0 +1,109 @@
+MUNDO DIGITAL 2.0 — NUEVOS MÓDULOS V1
+========================================
+
+ESTE PAQUETE AGREGA 3 CAMBIOS SIN TOCAR LOS BOTS DE TELEGRAM:
+
+1) 📡 TELEGRAM PROVEEDORES
+   - Guarda BOT / CANAL / GRUPO.
+   - Usuario y enlace de Telegram.
+   - Categoría y servicio.
+   - Precio de compra.
+   - Precio para vendedores.
+   - Ganancia automática.
+   - Método de pago y notas.
+   - Botón Comprar en Telegram.
+   - Botón Copiar oferta.
+
+2) 🖼️ CENTRO DE PUBLICIDAD
+   - Sube imagen desde PC o celular.
+   - Guarda la imagen en Google Drive.
+   - Guarda título, categoría, producto, precio, copy y etiquetas en Google Sheets.
+   - Copiar copy con un clic.
+   - Descargar la imagen.
+   - Editar, archivar y reactivar promociones.
+   - Tamaño máximo por imagen: 6 MB.
+
+3) 💬 CHAT ADMIN ↔ VENDEDOR
+   - El administrador crea un acceso por VENDEDOR_ID.
+   - Se genera un enlace privado con token.
+   - El vendedor abre chat-vendedor.html?token=...
+   - Admin y vendedor pueden enviarse mensajes.
+   - Actualización automática cada 8 segundos.
+   - Contador de mensajes no leídos para el administrador.
+   - Historial guardado en Google Sheets.
+
+IMPORTANTE SOBRE EL CHAT
+------------------------
+El ZIP recibido no contiene todavía un panel web independiente de Vendedores.
+Por eso esta versión usa la opción más segura y compatible con lo actual:
+un enlace privado por token para cada vendedor. Cuando exista/entregues el panel
+web de Vendedores, ese mismo chat se puede insertar dentro de su menú sin cambiar
+la base de datos del chat.
+
+NO TOCAR
+--------
+- Mundo Digital 2.0 - Telegram Admin V10.6.2
+- Mundo Digital 2.0 - Telegram Vendedores V15.1
+- Sus activadores/desencadenadores.
+
+PASO A — ARCHIVOS DE LA WEB
+---------------------------
+Copia/reemplaza los archivos del ZIP en la carpeta local actual de Mundo Digital 2.0.
+El ZIP de entrega NO incluye la carpeta .git, así que no modifica el historial Git.
+
+PASO B — APPS SCRIPT DE LA PLATAFORMA (NO LOS BOTS)
+----------------------------------------------------
+1. Abre el Apps Script que usa la PLATAFORMA WEB de Mundo Digital 2.0.
+2. Reemplaza su archivo Codigo.gs con:
+
+   apps-script/Codigo.gs
+
+3. Guarda.
+4. En el selector de funciones ejecuta UNA SOLA VEZ:
+
+   PREPARAR_NUEVOS_MODULOS_MD20
+
+5. Acepta los permisos solicitados de Google Drive/Sheets.
+
+La función crea estas pestañas:
+- TELEGRAM_PROVEEDORES
+- PUBLICIDAD
+- CHAT_ACCESOS_VENDEDORES
+- CHAT_MENSAJES
+
+También crea en Google Drive:
+- MUNDO DIGITAL 2.0 - PUBLICIDAD
+
+PASO C — PUBLICAR APPS SCRIPT DE LA PLATAFORMA
+-----------------------------------------------
+Implementar > Administrar implementaciones > lápiz > Nueva versión.
+Descripción sugerida:
+
+PLATAFORMA V1 NUEVOS MODULOS TELEGRAM PUBLICIDAD CHAT
+
+Pulsa Implementar.
+No cambies la URL /exec: la web sigue usando la misma implementación.
+
+PASO D — PRUEBA RÁPIDA
+----------------------
+1. Abre telegram-proveedores.html y crea un proveedor de prueba.
+2. Abre publicidad.html y crea una publicidad con imagen + copy.
+3. Abre chat-admin.html, crea acceso para VND-PRUEBA001 y copia el enlace.
+4. Abre ese enlace en otra pestaña/incógnito y manda un mensaje como vendedor.
+5. Verifica que aparezca en Chat Vendedores del Admin.
+
+ARCHIVOS NUEVOS PRINCIPALES
+---------------------------
+telegram-proveedores.html
+publicidad.html
+chat-admin.html
+chat-vendedor.html
+css/nuevos-modulos.css
+css/chat-vendedor.css
+js/telegram-proveedores.js
+js/publicidad.js
+js/chat-admin.js
+js/chat-vendedor.js
+js/configuracion-publica.js
+
+Además se agregaron accesos a los 3 módulos en los menús administrativos existentes.
