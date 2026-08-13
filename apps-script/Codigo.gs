@@ -6620,6 +6620,7 @@ function prepararModuloCatalogoMD20(){
     'ETIQUETAS_PUBLICAS',
     'VENDE_ADMIN',
     'VENDE_REVENDEDOR',
+    'PUBLICIDAD_ID_IMAGEN',
     'ACTUALIZADO_CATALOGO_EN'
   ];
 
@@ -6791,6 +6792,12 @@ function listarCatalogoAdminMD20_(){
   const categorias={};
   listarCategoriasMD20_().forEach(c=>categorias[c.id]=c.nombre);
 
+  // V2: enlace vivo con la biblioteca PUBLICIDAD.
+  const publicidadPorId={};
+  try{
+    listarPublicidadMD20_().forEach(p=>publicidadPorId[p.id]=p);
+  }catch(_e){}
+
   return hoja.getRange(2,1,hoja.getLastRow()-1,hoja.getLastColumn())
     .getValues()
     .filter(fila=>textoFilaCatalogoMD20_(fila,mapa,'PRODUCTO_ID','')!=='')
@@ -6798,6 +6805,10 @@ function listarCatalogoAdminMD20_(){
       const categoriaId=textoFilaCatalogoMD20_(fila,mapa,'CATEGORIA_ID','');
       const precioVenta=numeroFilaCatalogoMD20_(fila,mapa,'PRECIO_VENTA',0);
       const descripcion=textoFilaCatalogoMD20_(fila,mapa,'DESCRIPCION','');
+      const publicidadIdImagen=textoFilaCatalogoMD20_(fila,mapa,'PUBLICIDAD_ID_IMAGEN','');
+      const publicidadImagen=publicidadIdImagen?publicidadPorId[publicidadIdImagen]:null;
+      const imagenUrlGuardada=textoFilaCatalogoMD20_(fila,mapa,'IMAGEN_URL','');
+      const imagenUrlResuelta=(publicidadImagen&&publicidadImagen.imagenUrl)||imagenUrlGuardada;
 
       return {
         id:textoFilaCatalogoMD20_(fila,mapa,'PRODUCTO_ID',''),
@@ -6814,7 +6825,8 @@ function listarCatalogoAdminMD20_(){
         stockMinimo:numeroFilaCatalogoMD20_(fila,mapa,'STOCK_MINIMO',0),
         controlarStock:textoFilaCatalogoMD20_(fila,mapa,'CONTROLAR_STOCK','NO'),
         archivoId:textoFilaCatalogoMD20_(fila,mapa,'ARCHIVO_ID',''),
-        imagenUrl:textoFilaCatalogoMD20_(fila,mapa,'IMAGEN_URL',''),
+        imagenUrl:imagenUrlResuelta,
+        publicidadIdImagen:publicidadIdImagen,
         estado:textoFilaCatalogoMD20_(fila,mapa,'ESTADO','ACTIVO'),
         publicarCatalogo:textoFilaCatalogoMD20_(fila,mapa,'PUBLICAR_CATALOGO','NO'),
         slugProducto:textoFilaCatalogoMD20_(fila,mapa,'SLUG_PRODUCTO',crearSlugCatalogoMD20_(textoFilaCatalogoMD20_(fila,mapa,'NOMBRE',''))),
@@ -8139,6 +8151,16 @@ function guardarCatalogoProductoMD20_(registro){
   const descripcionCompleta=String(registro.descripcionCompleta||descripcionCorta).trim();
   const slug=crearSlugCatalogoMD20_(registro.slugProducto||nombre);
 
+  const publicidadIdImagen=String(registro.publicidadIdImagen||'').trim();
+  let imagenUrl=String(registro.imagenUrl||'').trim();
+  if(publicidadIdImagen){
+    let publicidad=null;
+    try{ publicidad=listarPublicidadMD20_().find(p=>p.id===publicidadIdImagen); }catch(_e){}
+    if(!publicidad)throw new Error('La imagen seleccionada ya no existe en la biblioteca de publicidad.');
+    if(!publicidad.imagenUrl)throw new Error('La publicidad seleccionada no tiene una imagen guardada.');
+    imagenUrl=String(publicidad.imagenUrl||'').trim();
+  }
+
   const valores={
     PRODUCTO_ID:productoId,
     NOMBRE:nombre,
@@ -8153,7 +8175,7 @@ function guardarCatalogoProductoMD20_(registro){
     STOCK_MINIMO:Number(registro.stockMinimo||0),
     CONTROLAR_STOCK:normalizarSiNoCatalogoMD20_(registro.controlarStock,'NO'),
     ARCHIVO_ID:String(registro.archivoId||'').trim(),
-    IMAGEN_URL:String(registro.imagenUrl||'').trim(),
+    IMAGEN_URL:imagenUrl,
     ESTADO:String(registro.estado||'ACTIVO').trim().toUpperCase(),
     CREADO_POR:'ADMINISTRADOR',
     CREADO_EN:creadoEn,
@@ -8171,6 +8193,7 @@ function guardarCatalogoProductoMD20_(registro){
     ETIQUETAS_PUBLICAS:String(registro.etiquetasPublicas||'').trim(),
     VENDE_ADMIN:normalizarSiNoCatalogoMD20_(registro.vendeAdmin,'SI'),
     VENDE_REVENDEDOR:normalizarSiNoCatalogoMD20_(registro.vendeRevendedor,'SI'),
+    PUBLICIDAD_ID_IMAGEN:publicidadIdImagen,
     ACTUALIZADO_CATALOGO_EN:ahora
   };
 
@@ -8429,12 +8452,48 @@ function PREPARAR_NUEVOS_MODULOS_MD20(){
     'MENSAJE_ID','VENDEDOR_ID','REMITENTE','MENSAJE','LEIDO_ADMIN','LEIDO_VENDEDOR','CREADO_EN'
   ], '#25D47A');
   const carpeta = nmObtenerCarpetaPublicidad_();
+
+  // V2: enlaza la biblioteca de publicidad con PRODUCTOS.
+  const hojaProductos=libro.getSheetByName('PRODUCTOS');
+  if(hojaProductos){
+    let encabezadosProductos=obtenerEncabezadosCatalogoMD20_(hojaProductos);
+    if(!encabezadosProductos.includes('PUBLICIDAD_ID_IMAGEN')){
+      const columna=hojaProductos.getLastColumn()+1;
+      if(hojaProductos.getMaxColumns()<columna)hojaProductos.insertColumnAfter(hojaProductos.getMaxColumns());
+      hojaProductos.getRange(1,columna).setValue('PUBLICIDAD_ID_IMAGEN');
+    }
+  }
+
   SpreadsheetApp.flush();
   return {
     ok:true,
-    mensaje:'Nuevos módulos preparados correctamente.',
+    mensaje:'Nuevos módulos preparados correctamente. Biblioteca de publicidad enlazada con PRODUCTOS.',
     hojas:[MD20_NM.TELEGRAM_HOJA,MD20_NM.PUBLICIDAD_HOJA,MD20_NM.CHAT_ACCESOS_HOJA,MD20_NM.CHAT_MENSAJES_HOJA],
     carpetaPublicidadId:carpeta.getId()
+  };
+}
+
+
+function PREPARAR_BIBLIOTECA_PUBLICIDAD_TIENDA_MD20(){
+  const libro=md20LibroEstable_();
+  const hoja=libro.getSheetByName('PRODUCTOS');
+  if(!hoja)throw new Error('No existe la pestaña PRODUCTOS.');
+
+  let encabezados=obtenerEncabezadosCatalogoMD20_(hoja);
+  if(!encabezados.includes('PUBLICIDAD_ID_IMAGEN')){
+    const columna=hoja.getLastColumn()+1;
+    if(hoja.getMaxColumns()<columna)hoja.insertColumnAfter(hoja.getMaxColumns());
+    hoja.getRange(1,columna).setValue('PUBLICIDAD_ID_IMAGEN');
+  }
+
+  hoja.getRange(1,1,1,hoja.getLastColumn())
+    .setFontWeight('bold')
+    .setWrap(true);
+  SpreadsheetApp.flush();
+
+  return {
+    ok:true,
+    mensaje:'Biblioteca de Publicidad enlazada con PRODUCTOS. Copy opcional habilitado.'
   };
 }
 
@@ -8557,7 +8616,7 @@ function guardarPublicidadMD20_(r){
   r=r||{};
   const titulo=nmTexto_(r.titulo),copy=nmTexto_(r.copy);
   if(!titulo)throw new Error('Escribe un título para la publicidad.');
-  if(!copy)throw new Error('Escribe el copy de la publicidad.');
+  // El copy es opcional: la biblioteca también puede guardar imágenes sin texto.
   const h=nmHoja_(MD20_NM.PUBLICIDAD_HOJA),lock=LockService.getScriptLock(); lock.waitLock(30000);
   try{
     const id=nmTexto_(r.id)||nmId_('PUB');

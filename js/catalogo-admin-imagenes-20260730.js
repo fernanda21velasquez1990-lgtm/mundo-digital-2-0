@@ -7,6 +7,8 @@ const cfg=window.MUNDO_DIGITAL_CONFIG||{};
 const estado={
   productos:[],
   categorias:[],
+  publicidades:[],
+  publicidadInicialProcesada:false,
   editando:"",
   texto:"",
   categoria:"TODAS",
@@ -46,7 +48,15 @@ const E={
   kDestacados:$("#kpiDestacados"),
   kAgotados:$("#kpiAgotados"),
   vistaImagen:$("#vistaImagenCatalogo"),
-  estadoVistaImagen:$("#estadoVistaImagenCatalogo")
+  estadoVistaImagen:$("#estadoVistaImagenCatalogo"),
+  abrirBiblioteca:$("#abrirBibliotecaPublicidad"),
+  quitarBiblioteca:$("#quitarBibliotecaPublicidad"),
+  estadoBiblioteca:$("#estadoBibliotecaPublicidad"),
+  modalBiblioteca:$("#modalBibliotecaPublicidad"),
+  cerrarBiblioteca:$("#cerrarBibliotecaPublicidad"),
+  buscarBiblioteca:$("#buscarBibliotecaPublicidad"),
+  gridBiblioteca:$("#gridBibliotecaPublicidad"),
+  vacioBiblioteca:$("#vacioBibliotecaPublicidad")
 };
 
 const campos=[
@@ -59,6 +69,7 @@ const campos=[
   "controlarStock",
   "descripcionCorta",
   "descripcionCompleta",
+  "publicidadIdImagen",
   "imagenUrl",
   "slugProducto",
   "etiquetasPublicas",
@@ -143,16 +154,20 @@ async function cargar(mostrarMensaje=false){
   E.rejilla.innerHTML="";
 
   try{
-    const [productos,categorias]=await Promise.all([
+    const [productos,categorias,publicidad]=await Promise.all([
       get("listarCatalogoAdminMD20"),
-      get("listarCategorias")
+      get("listarCategorias"),
+      get("listarPublicidadMD20")
     ]);
 
     estado.productos=productos.registros||[];
     estado.categorias=categorias.registros||[];
+    estado.publicidades=(publicidad.registros||[]).filter(item=>item.imagenUrl);
 
     llenarCategorias();
     renderizar();
+    actualizarEstadoBiblioteca();
+    procesarPublicidadInicial();
 
     E.conexion.textContent="Google Sheets conectado";
     E.puntoConexion.className="punto-estado conectado";
@@ -473,6 +488,82 @@ async function cambiarPublicacion(producto){
   }
 }
 
+
+function publicidadSeleccionada(){
+  const id=String(C.publicidadIdImagen.value||"").trim();
+  return estado.publicidades.find(item=>item.id===id)||null;
+}
+
+function actualizarEstadoBiblioteca(){
+  const p=publicidadSeleccionada();
+  if(p){
+    E.estadoBiblioteca.textContent=`Enlazada: ${p.titulo||p.producto||p.id}`;
+    E.estadoBiblioteca.className="estado-biblioteca-publicidad enlazada";
+    E.quitarBiblioteca.hidden=false;
+  }else{
+    E.estadoBiblioteca.textContent="Puedes elegir una imagen guardada en Publicidad o pegar una URL manual.";
+    E.estadoBiblioteca.className="estado-biblioteca-publicidad";
+    E.quitarBiblioteca.hidden=true;
+  }
+}
+
+function renderBibliotecaPublicidad(){
+  const q=String(E.buscarBiblioteca.value||"").trim().toLowerCase();
+  const items=estado.publicidades.filter(p=>{
+    const bolsa=[p.titulo,p.producto,p.categoria,p.etiquetas,p.copy].join(" ").toLowerCase();
+    return !q||bolsa.includes(q);
+  });
+
+  E.vacioBiblioteca.hidden=items.length>0;
+  E.gridBiblioteca.innerHTML=items.map(p=>`
+    <button type="button" class="biblioteca-publicidad-card" data-seleccionar-publicidad="${escAttr(p.id)}">
+      <span class="biblioteca-publicidad-img"><img src="${escAttr(normalizarUrlImagen(p.imagenUrl))}" alt="${escAttr(p.titulo||p.producto||"Publicidad")}" loading="lazy"></span>
+      <span class="biblioteca-publicidad-info">
+        <strong>${esc(p.titulo||"Sin título")}</strong>
+        <small>${esc(p.producto||p.categoria||"Biblioteca")}</small>
+        <em>${esc(p.estado||"ACTIVO")}</em>
+      </span>
+    </button>
+  `).join("");
+}
+
+function abrirBibliotecaPublicidad(){
+  E.buscarBiblioteca.value="";
+  renderBibliotecaPublicidad();
+  E.modalBiblioteca.classList.add("visible");
+  E.modalBiblioteca.setAttribute("aria-hidden","false");
+}
+
+function cerrarBibliotecaPublicidad(){
+  E.modalBiblioteca.classList.remove("visible");
+  E.modalBiblioteca.setAttribute("aria-hidden","true");
+}
+
+function seleccionarPublicidad(id){
+  const p=estado.publicidades.find(item=>item.id===id);
+  if(!p||!p.imagenUrl){
+    mensaje("La publicidad seleccionada no tiene una imagen disponible.","error");
+    return;
+  }
+  C.publicidadIdImagen.value=p.id;
+  C.imagenUrl.value=p.imagenUrl;
+  actualizarEstadoBiblioteca();
+  actualizarVistaImagen();
+  cerrarBibliotecaPublicidad();
+  mensaje("Imagen enlazada desde tu biblioteca de publicidad.");
+}
+
+function procesarPublicidadInicial(){
+  if(estado.publicidadInicialProcesada)return;
+  const id=new URLSearchParams(location.search).get("publicidadId");
+  if(!id)return;
+  estado.publicidadInicialProcesada=true;
+  const p=estado.publicidades.find(item=>item.id===id);
+  if(!p)return mensaje("La imagen solicitada ya no está disponible en Publicidad.","error");
+  abrirModal();
+  seleccionarPublicidad(id);
+}
+
 function abrirModal(producto=null){
   estado.editando=producto?.id||"";
   E.formulario.reset();
@@ -502,6 +593,7 @@ function abrirModal(producto=null){
     });
   }
 
+  actualizarEstadoBiblioteca();
   actualizarVistaImagen();
 
   E.modal.classList.add("visible");
@@ -701,7 +793,28 @@ C.nombre.addEventListener("input",actualizarSlugAutomatico);
 C.slugProducto.addEventListener("input",()=>{
   C.slugProducto.dataset.modificado="SI";
 });
-C.imagenUrl.addEventListener("input",actualizarVistaImagen);
+C.imagenUrl.addEventListener("input",()=>{
+  if(C.publicidadIdImagen.value){
+    C.publicidadIdImagen.value="";
+    actualizarEstadoBiblioteca();
+  }
+  actualizarVistaImagen();
+});
+E.abrirBiblioteca.addEventListener("click",abrirBibliotecaPublicidad);
+E.quitarBiblioteca.addEventListener("click",()=>{
+  C.publicidadIdImagen.value="";
+  actualizarEstadoBiblioteca();
+  mensaje("Imagen desvinculada. La URL actual se conserva como imagen manual.","informacion");
+});
+E.cerrarBiblioteca.addEventListener("click",cerrarBibliotecaPublicidad);
+E.buscarBiblioteca.addEventListener("input",renderBibliotecaPublicidad);
+E.gridBiblioteca.addEventListener("click",evento=>{
+  const boton=evento.target.closest("[data-seleccionar-publicidad]");
+  if(boton)seleccionarPublicidad(boton.dataset.seleccionarPublicidad);
+});
+E.modalBiblioteca.addEventListener("click",evento=>{
+  if(evento.target===E.modalBiblioteca)cerrarBibliotecaPublicidad();
+});
 
 E.abrirMenu.addEventListener("click",()=>{
   E.menu.classList.add("abierto");
@@ -729,7 +842,12 @@ $$("[data-pagina]").forEach(enlace=>{
 });
 
 document.addEventListener("keydown",evento=>{
-  if(evento.key==="Escape"&&E.modal.classList.contains("visible")){
+  if(evento.key!=="Escape")return;
+  if(E.modalBiblioteca.classList.contains("visible")){
+    cerrarBibliotecaPublicidad();
+    return;
+  }
+  if(E.modal.classList.contains("visible")){
     cerrarModal();
   }
 });

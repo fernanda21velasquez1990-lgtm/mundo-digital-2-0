@@ -145,3 +145,29 @@
   .boton-vista-tienda span{display:none}
   .boton-vista-tienda{width:44px;padding:0}
 }
+
+
+/* ===== BIBLIOTECA PUBLICIDAD → TIENDA V2 ===== */
+.biblioteca-imagen-controles{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.boton-biblioteca-publicidad{min-height:42px;padding:0 14px;border:1px solid rgba(255,109,0,.45);border-radius:12px;background:rgba(255,109,0,.12);color:#fff;font-weight:800;cursor:pointer}
+.boton-biblioteca-publicidad:hover{background:rgba(255,109,0,.2)}
+.boton-biblioteca-publicidad.secundario{border-color:#34343d;background:#18181e;color:#bbb}
+.estado-biblioteca-publicidad{display:block;margin:3px 0 10px;color:#858590;font-size:.73rem}
+.estado-biblioteca-publicidad.enlazada{color:#58eaaa;font-weight:750}
+.dialogo-biblioteca-publicidad{width:min(1060px,100%)}
+.biblioteca-publicidad-cuerpo{padding:20px}
+.biblioteca-publicidad-buscar{width:100%;height:46px;padding:0 14px;border:1px solid #303038;border-radius:13px;background:#0b0b0e;color:#fff;outline:none}
+.biblioteca-publicidad-buscar:focus{border-color:rgba(255,109,0,.62)}
+.biblioteca-publicidad-ayuda{margin:10px 0 16px;color:#82828d;font-size:.75rem}
+.biblioteca-publicidad-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;max-height:58vh;overflow:auto;padding:2px}
+.biblioteca-publicidad-card{appearance:none;text-align:left;padding:0;border:1px solid #282830;border-radius:15px;background:#121217;color:#fff;overflow:hidden;cursor:pointer;transition:.18s}
+.biblioteca-publicidad-card:hover{transform:translateY(-2px);border-color:rgba(255,109,0,.65);box-shadow:0 12px 30px rgba(0,0,0,.28)}
+.biblioteca-publicidad-img{display:block;aspect-ratio:1/1;background:#0b0b0e;overflow:hidden}
+.biblioteca-publicidad-img img{width:100%;height:100%;display:block;object-fit:cover}
+.biblioteca-publicidad-info{display:grid;gap:4px;padding:11px}
+.biblioteca-publicidad-info strong{font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.biblioteca-publicidad-info small{color:#8b8b95;font-size:.68rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.biblioteca-publicidad-info em{font-style:normal;color:#55e8a6;font-size:.62rem;font-weight:800}
+.biblioteca-publicidad-vacio{padding:45px 15px;text-align:center;color:#8a8a94}
+@media(max-width:900px){.biblioteca-publicidad-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.biblioteca-publicidad-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.biblioteca-publicidad-cuerpo{padding:14px}}

@@ -1,0 +1,50 @@
+MUNDO DIGITAL 2.0 — PUBLICIDAD + TIENDA V2
+==========================================
+
+OBJETIVO
+- La biblioteca Publicidad puede guardar imágenes con copy o SIN copy.
+- El copy deja de ser obligatorio.
+- En Catálogo y tienda, al crear/editar un producto, se puede elegir una imagen directamente desde la biblioteca Publicidad.
+- El producto guarda PUBLICIDAD_ID_IMAGEN además de IMAGEN_URL.
+- La imagen queda enlazada: si la imagen de esa publicidad se actualiza en la biblioteca, el catálogo usa la imagen actual.
+- Desde una tarjeta de Publicidad aparece el botón “Usar en tienda”, que abre Catálogo y tienda con esa imagen ya seleccionada.
+
+NO TOCAR
+- Bot Admin V10.6.2
+- Bot Vendedores V15.1
+- Webhooks ni activadores de Telegram
+
+ARCHIVOS WEB MODIFICADOS
+- publicidad.html
+- js/publicidad.js
+- catalogo-admin.html
+- js/catalogo-admin-imagenes-20260730.js
+- css/catalogo-admin.css
+
+APPS SCRIPT MODIFICADO
+- apps-script/Codigo.gs
+
+NUEVA FUNCIÓN DE PREPARACIÓN (EJECUTAR UNA SOLA VEZ)
+PREPARAR_BIBLIOTECA_PUBLICIDAD_TIENDA_MD20
+
+Esta función agrega de forma segura la columna PUBLICIDAD_ID_IMAGEN a PRODUCTOS.
+No borra filas, productos ni datos existentes.
+
+PUBLICACIÓN APPS SCRIPT
+Actualizar la implementación EXISTENTE con una Nueva versión.
+Descripción sugerida:
+PLATAFORMA V2 BIBLIOTECA PUBLICIDAD ENLAZADA A TIENDA
+
+PRUEBA
+1. Publicidad > Nueva publicidad.
+2. Sube una imagen. El copy puede quedar vacío.
+3. Guarda.
+4. Abre Catálogo y tienda > Nuevo producto.
+5. Pulsa “Elegir desde mi biblioteca de publicidad”.
+6. Selecciona la imagen.
+7. Completa y guarda el producto.
+8. Publica el producto en el catálogo.
+9. Verifica la tienda pública.
+
+ATAJO
+Desde Publicidad, pulsa “Usar en tienda” en cualquier imagen. Se abrirá Catálogo y tienda con la imagen ya enlazada.

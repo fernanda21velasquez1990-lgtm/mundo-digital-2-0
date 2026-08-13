@@ -310,8 +310,14 @@
             </label>
             <label class="campo ancho-completo">
               <span>Imagen del producto</span>
-              <input id="imagenUrl" type="url" placeholder="https://...">
-              <small>Por ahora se utiliza una URL pública. La carga directa de imágenes se agregará posteriormente.</small>
+              <input id="publicidadIdImagen" type="hidden">
+              <div class="biblioteca-imagen-controles">
+                <button id="abrirBibliotecaPublicidad" class="boton-biblioteca-publicidad" type="button">🖼️ Elegir desde mi biblioteca de publicidad</button>
+                <button id="quitarBibliotecaPublicidad" class="boton-biblioteca-publicidad secundario" type="button" hidden>Desvincular imagen</button>
+              </div>
+              <small id="estadoBibliotecaPublicidad" class="estado-biblioteca-publicidad">Puedes elegir una imagen guardada en Publicidad o pegar una URL manual.</small>
+              <input id="imagenUrl" type="url" placeholder="https://... (opcional si eliges una imagen de la biblioteca)">
+              <small>Si eliges una imagen de Publicidad, el producto queda enlazado a esa imagen. Si luego actualizas la imagen en la biblioteca, la tienda usará la versión actual.</small>
             </label>
             <div class="vista-imagen ancho-completo">
               <div id="vistaImagenCatalogo"><svg><use href="#i-box"></use></svg></div>
@@ -424,9 +430,27 @@
     </section>
   </div>
 
+  <div id="modalBibliotecaPublicidad" class="modal-catalogo modal-biblioteca-publicidad" aria-hidden="true">
+    <section class="dialogo-catalogo dialogo-biblioteca-publicidad" role="dialog" aria-modal="true" aria-labelledby="tituloBibliotecaPublicidad">
+      <header class="cabecera-modal-catalogo">
+        <div>
+          <span>BIBLIOTECA CENTRAL</span>
+          <h2 id="tituloBibliotecaPublicidad">Elegir imagen de Publicidad</h2>
+        </div>
+        <button id="cerrarBibliotecaPublicidad" class="boton-icono" type="button" aria-label="Cerrar biblioteca"><svg><use href="#i-close"></use></svg></button>
+      </header>
+      <div class="biblioteca-publicidad-cuerpo">
+        <input id="buscarBibliotecaPublicidad" class="biblioteca-publicidad-buscar" type="search" placeholder="Buscar por título, producto, categoría o etiqueta...">
+        <p class="biblioteca-publicidad-ayuda">Selecciona una imagen. El producto quedará enlazado a la biblioteca de Publicidad.</p>
+        <div id="gridBibliotecaPublicidad" class="biblioteca-publicidad-grid"></div>
+        <div id="vacioBibliotecaPublicidad" class="biblioteca-publicidad-vacio" hidden>No hay imágenes disponibles. Primero sube una imagen en el módulo Publicidad.</div>
+      </div>
+    </section>
+  </div>
+
   <div id="mensajePanel" class="mensaje-flotante" role="status" aria-live="polite"></div>
 
   <script src="js/configuracion.js?v=fase5-final-1"></script>
-  <script src="js/catalogo-admin-imagenes-20260730.js?v=20260730002"></script>
+  <script src="js/catalogo-admin-imagenes-20260730.js?v=20260813-pub-v2"></script>
 </body>
 </html>
