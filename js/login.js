@@ -32,6 +32,8 @@
   function guardarSesion(respuesta) {
     const sesion = {
       usuario: respuesta.usuario,
+      tokenSesion: respuesta.tokenSesion || "",
+      expiraSegundos: Number(respuesta.expiraSegundos || 21600),
       inicio: new Date().toISOString()
     };
     sessionStorage.removeItem(CLAVE_SESION);

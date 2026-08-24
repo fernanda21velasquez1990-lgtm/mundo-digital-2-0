@@ -1,0 +1,37 @@
+MUNDO DIGITAL 2.0 — PANEL DEL VENDEDOR — FASE 2
+================================================
+
+Esta fase parte de la FASE 1 ya probada.
+
+INCLUYE EN UN SOLO PAQUETE:
+- Login por rol ADMIN / VENDEDOR.
+- Sesión privada temporal del vendedor.
+- Mis ventas (solo ventas asociadas al VENDEDOR_ID).
+- Mis clientes (derivados de sus ventas).
+- Mis pagos (solo pagos de sus ventas).
+- Mis comisiones (lee la hoja de comisiones del Bot Admin por VENDEDOR_ID).
+- Productos autorizados para vender.
+- Chat Vendedor -> Administrador integrado al panel.
+- Resumen del vendedor y actualización desde Google Sheets.
+
+ARCHIVOS PRINCIPALES MODIFICADOS:
+- apps-script/Codigo.gs
+- vendedor-dashboard.html
+- js/login.js
+- js/vendedor-dashboard.js
+- css/vendedor-dashboard.css
+
+IMPORTANTE:
+1. Reemplaza la carpeta matriz por este ZIP.
+2. En Apps Script reemplaza TODO Código.gs por apps-script/Codigo.gs de este paquete.
+3. Guarda y actualiza la implementación existente (Nueva versión), sin crear otra URL.
+4. Sube la carpeta a GitHub y espera Vercel Ready.
+5. Cierra sesión en la plataforma e inicia nuevamente como vendedor.prueba.
+   Esto es necesario para recibir el nuevo token privado de sesión de Fase 2.
+6. Prueba los seis módulos desde vendedor-dashboard.html.
+
+NO MODIFICA:
+- Bot Admin de Telegram.
+- Bot Vendedores de Telegram.
+- Datos existentes de ventas/clientes/pagos/comisiones.
+- La URL estable de Apps Script.

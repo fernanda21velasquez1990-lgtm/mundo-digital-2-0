@@ -3725,6 +3725,11 @@ function doGet(e) {
       return respuestaJson_(consultarChatVendedorMD20_(p.token||''));
     }
 
+    // Panel web privado del vendedor. Usa token de sesión generado al iniciar sesión.
+    if(a==='panelVendedorMD20'){
+      return respuestaJson_(obtenerPanelVendedorWebMD20_(p.tokenSesion||p.token||''));
+    }
+
     validarClaveApi_(p.claveApi||'');
 
     if(a==='listarSuscripciones')return respuestaJson_({ok:true,registros:listarSuscripcionesMD20_()});
@@ -3761,6 +3766,11 @@ function doPost(e) {
     const c=JSON.parse((e&&e.postData&&e.postData.contents)||'{}');
     const a=String(c.action||'');
 
+    // LOGIN WEB — acción pública
+    if(a==='loginWebMD20'){
+      return respuestaJson_(autenticarUsuarioWebMD20_(c));
+    }
+
     // Acción pública protegida por token individual.
     if(a==='responderRenovacionPortal'){
       return respuestaJson_(responderRenovacionPortalMD20_(c));
@@ -3778,6 +3788,11 @@ function doPost(e) {
     // Chat público de vendedores protegido por token individual.
     if(a==='enviarMensajeChatVendedorMD20'){
       return respuestaJson_(enviarMensajeChatVendedorMD20_(c.token||'',c.mensaje||''));
+    }
+
+    // Chat desde el panel web autenticado del vendedor.
+    if(a==='enviarMensajeVendedorPanelMD20'){
+      return respuestaJson_(enviarMensajeVendedorPanelMD20_(c.tokenSesion||c.token||'',c.mensaje||''));
     }
 
     validarClaveApi_(c.claveApi);
@@ -8751,4 +8766,878 @@ function nmGuardarMensajeChat_(vendedorId,remitente,mensaje){
   const row=[id,vendedorId,remitente,mensaje,remitente==='ADMIN'?'SI':'NO',remitente==='VENDEDOR'?'SI':'NO',ahora];
   h.appendRow(row);SpreadsheetApp.flush();
   return {id,vendedorId,remitente,mensaje,leidoAdmin:row[4],leidoVendedor:row[5],creadoEn:nmFechaHora_(ahora)};
+}
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0
+ * ACCESO WEB DE VENDEDORES — FASE 1
+ * =========================================================
+ *
+ * Crea/actualiza el usuario web de Vendedor Prueba
+ * sin modificar el Bot Admin ni el Bot Vendedores.
+ */
+
+function crearAccesoWebVendedorPruebaMD20() {
+  const ui = SpreadsheetApp.getUi();
+  const libro = md20LibroEstable_();
+
+  const hojaUsuarios = libro.getSheetByName('USUARIOS');
+  const hojaVendedores = libro.getSheetByName('VENDEDORES');
+
+  if (!hojaUsuarios) {
+    ui.alert(
+      'Error',
+      'No existe la pestaña USUARIOS.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  if (!hojaVendedores) {
+    ui.alert(
+      'Error',
+      'No existe la pestaña VENDEDORES.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  const vendedorId = 'VND-PRUEBA001';
+
+  const vendedor = obtenerVendedorAccesoWebMD20_(
+    hojaVendedores,
+    vendedorId
+  );
+
+  if (!vendedor) {
+    ui.alert(
+      'Vendedor no encontrado',
+      'No se encontró el vendedor ' + vendedorId + '.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  if (
+    String(vendedor.estado || '')
+      .trim()
+      .toUpperCase() !== 'ACTIVO'
+  ) {
+    ui.alert(
+      'Vendedor inactivo',
+      'El vendedor debe estar ACTIVO antes de crear su acceso.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  const usuario = normalizarUsuario_(
+    vendedor.usuario || 'vendedor.prueba'
+  );
+
+  if (!validarNombreUsuario_(usuario)) {
+    ui.alert(
+      'Usuario no válido',
+      'El usuario "' + usuario + '" no es válido.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  const contrasena =
+    solicitarContrasenaVendedorWebMD20_(ui);
+
+  if (contrasena === null) {
+    return;
+  }
+
+  asegurarColumnaVendedorIdUsuariosMD20_(hojaUsuarios);
+
+  const encabezados = hojaUsuarios
+    .getRange(
+      1,
+      1,
+      1,
+      hojaUsuarios.getLastColumn()
+    )
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  const col = {};
+
+  encabezados.forEach((nombre, i) => {
+    col[nombre] = i;
+  });
+
+  const ultimaFila = hojaUsuarios.getLastRow();
+
+  let filaExistente = 0;
+  let datosExistentes = null;
+
+  if (ultimaFila > 1) {
+    const registros = hojaUsuarios
+      .getRange(
+        2,
+        1,
+        ultimaFila - 1,
+        hojaUsuarios.getLastColumn()
+      )
+      .getValues();
+
+    for (let i = 0; i < registros.length; i++) {
+      const usuarioFila =
+        String(registros[i][col.USUARIO] || '')
+          .trim()
+          .toLowerCase();
+
+      const vendedorFila =
+        String(registros[i][col.VENDEDOR_ID] || '')
+          .trim();
+
+      if (
+        usuarioFila === usuario ||
+        vendedorFila === vendedorId
+      ) {
+        filaExistente = i + 2;
+        datosExistentes = registros[i];
+        break;
+      }
+    }
+  }
+
+  if (
+    filaExistente &&
+    datosExistentes &&
+    String(datosExistentes[col.ROL_ID] || '').trim() !== 'ROL-VENDEDOR'
+  ) {
+    ui.alert(
+      'Usuario ocupado',
+      'El nombre de usuario "' +
+        usuario +
+        '" ya pertenece a otro tipo de usuario.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  const ahora = new Date();
+
+  const usuarioId =
+    filaExistente && datosExistentes
+      ? String(datosExistentes[col.USUARIO_ID] || '').trim()
+      : generarSiguienteUsuarioId_(hojaUsuarios);
+
+  const claveHash = generarHashContrasena_(
+    usuario,
+    contrasena
+  );
+
+  const totalColumnas = hojaUsuarios.getLastColumn();
+  const nuevaFila = new Array(totalColumnas).fill('');
+
+  nuevaFila[col.USUARIO_ID] = usuarioId;
+  nuevaFila[col.NOMBRE_COMPLETO] =
+    vendedor.nombreCompleto || 'Vendedor Prueba';
+  nuevaFila[col.USUARIO] = usuario;
+  nuevaFila[col.CORREO] = vendedor.correo || '';
+  nuevaFila[col.CLAVE_HASH] = claveHash;
+  nuevaFila[col.ROL_ID] = 'ROL-VENDEDOR';
+  nuevaFila[col.TELEFONO] = vendedor.whatsapp || '';
+  nuevaFila[col.ESTADO] = 'ACTIVO';
+  nuevaFila[col.ULTIMO_ACCESO] = '';
+  nuevaFila[col.CREADO_EN] =
+    filaExistente &&
+    datosExistentes &&
+    datosExistentes[col.CREADO_EN]
+      ? datosExistentes[col.CREADO_EN]
+      : ahora;
+  nuevaFila[col.ACTUALIZADO_EN] = ahora;
+  nuevaFila[col.VENDEDOR_ID] = vendedorId;
+
+  if (filaExistente) {
+    hojaUsuarios
+      .getRange(
+        filaExistente,
+        1,
+        1,
+        totalColumnas
+      )
+      .setValues([nuevaFila]);
+  } else {
+    const nuevaFilaNumero = hojaUsuarios.getLastRow() + 1;
+
+    hojaUsuarios
+      .getRange(
+        nuevaFilaNumero,
+        1,
+        1,
+        totalColumnas
+      )
+      .setValues([nuevaFila]);
+  }
+
+  SpreadsheetApp.flush();
+
+  registrarLogAdministrador_(
+    libro,
+    usuarioId,
+    'CREAR_ACCESO_WEB_VENDEDOR',
+    'Acceso web creado para ' + vendedorId + ' / ' + usuario
+  );
+
+  ui.alert(
+    'Acceso creado correctamente',
+    'El vendedor ya tiene usuario web.\n\n' +
+      'Vendedor: ' +
+      (vendedor.nombreCompleto || 'Vendedor Prueba') +
+      '\n' +
+      'ID: ' +
+      vendedorId +
+      '\n' +
+      'Usuario: ' +
+      usuario +
+      '\n' +
+      'Rol: VENDEDOR\n\n' +
+      'La contraseña quedó protegida y no se guardó como texto visible.',
+    ui.ButtonSet.OK
+  );
+
+  libro.setActiveSheet(hojaUsuarios);
+}
+
+function obtenerVendedorAccesoWebMD20_(hoja, vendedorId) {
+  if (!hoja || hoja.getLastRow() <= 1) {
+    return null;
+  }
+
+  const encabezados = hoja
+    .getRange(1, 1, 1, hoja.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  const colId = encabezados.indexOf('VENDEDOR_ID');
+
+  if (colId === -1) {
+    throw new Error(
+      'La pestaña VENDEDORES no tiene la columna VENDEDOR_ID.'
+    );
+  }
+
+  const registros = hoja
+    .getRange(
+      2,
+      1,
+      hoja.getLastRow() - 1,
+      hoja.getLastColumn()
+    )
+    .getValues();
+
+  const fila = registros.find(
+    f => String(f[colId] || '').trim() === vendedorId
+  );
+
+  if (!fila) {
+    return null;
+  }
+
+  function valor(nombre) {
+    const indice = encabezados.indexOf(nombre);
+    return indice === -1 ? '' : fila[indice];
+  }
+
+  return {
+    vendedorId: vendedorId,
+    nombreCompleto: String(valor('NOMBRE_COMPLETO') || '').trim(),
+    usuario: String(valor('USUARIO') || '').trim(),
+    correo: String(valor('CORREO') || '').trim().toLowerCase(),
+    whatsapp: String(valor('WHATSAPP') || '').trim(),
+    estado: String(valor('ESTADO') || '').trim()
+  };
+}
+
+function asegurarColumnaVendedorIdUsuariosMD20_(hojaUsuarios) {
+  const encabezados = hojaUsuarios
+    .getRange(1, 1, 1, hojaUsuarios.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  let indice = encabezados.indexOf('VENDEDOR_ID');
+
+  if (indice !== -1) {
+    return indice + 1;
+  }
+
+  const nuevaColumna = hojaUsuarios.getLastColumn() + 1;
+
+  hojaUsuarios
+    .getRange(1, nuevaColumna)
+    .setValue('VENDEDOR_ID')
+    .setBackground('#111114')
+    .setFontColor('#FFFFFF')
+    .setFontWeight('bold')
+    .setHorizontalAlignment('center')
+    .setVerticalAlignment('middle');
+
+  hojaUsuarios.setColumnWidth(nuevaColumna, 160);
+
+  return nuevaColumna;
+}
+
+function solicitarContrasenaVendedorWebMD20_(ui) {
+  while (true) {
+    const respuesta1 = ui.prompt(
+      'Contraseña del vendedor',
+      'Crea una contraseña para vendedor.prueba.\n\n' +
+        'Debe tener mínimo 8 caracteres e incluir letras y números.\n\n' +
+        'IMPORTANTE: no envíes captura mientras escribes la contraseña.',
+      ui.ButtonSet.OK_CANCEL
+    );
+
+    if (respuesta1.getSelectedButton() !== ui.Button.OK) {
+      return null;
+    }
+
+    const contrasena = respuesta1.getResponseText();
+
+    if (!validarContrasena_(contrasena)) {
+      ui.alert(
+        'Contraseña no válida',
+        'Debe tener mínimo 8 caracteres y contener letras y números.',
+        ui.ButtonSet.OK
+      );
+      continue;
+    }
+
+    const respuesta2 = ui.prompt(
+      'Confirmar contraseña',
+      'Escribe nuevamente la misma contraseña.',
+      ui.ButtonSet.OK_CANCEL
+    );
+
+    if (respuesta2.getSelectedButton() !== ui.Button.OK) {
+      return null;
+    }
+
+    if (contrasena !== respuesta2.getResponseText()) {
+      ui.alert(
+        'No coinciden',
+        'Las contraseñas no coinciden. Inténtalo nuevamente.',
+        ui.ButtonSet.OK
+      );
+      continue;
+    }
+
+    return contrasena;
+  }
+}
+
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0
+ * LOGIN WEB REAL — ADMIN + VENDEDOR
+ * =========================================================
+ */
+
+function autenticarUsuarioWebMD20_(datos) {
+  datos = datos || {};
+
+  const identificador = String(
+    datos.usuario || datos.correo || ''
+  )
+    .trim()
+    .toLowerCase();
+
+  const contrasena = String(datos.contrasena || '');
+
+  if (!identificador) {
+    throw new Error('Debes escribir tu usuario o correo.');
+  }
+
+  if (!contrasena) {
+    throw new Error('Debes escribir tu contraseña.');
+  }
+
+  const libro = md20LibroEstable_();
+  const hoja = libro.getSheetByName('USUARIOS');
+
+  if (!hoja) {
+    throw new Error('No existe la pestaña USUARIOS.');
+  }
+
+  if (hoja.getLastRow() <= 1) {
+    throw new Error('No existen usuarios registrados.');
+  }
+
+  const encabezados = hoja
+    .getRange(1, 1, 1, hoja.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  const col = {};
+  encabezados.forEach((nombre, indice) => {
+    col[nombre] = indice;
+  });
+
+  const obligatorias = [
+    'USUARIO_ID',
+    'NOMBRE_COMPLETO',
+    'USUARIO',
+    'CORREO',
+    'CLAVE_HASH',
+    'ROL_ID',
+    'ESTADO'
+  ];
+
+  obligatorias.forEach(nombre => {
+    if (typeof col[nombre] === 'undefined') {
+      throw new Error('Falta la columna ' + nombre + ' en USUARIOS.');
+    }
+  });
+
+  const registros = hoja
+    .getRange(
+      2,
+      1,
+      hoja.getLastRow() - 1,
+      hoja.getLastColumn()
+    )
+    .getValues();
+
+  let filaEncontrada = null;
+  let numeroFila = 0;
+
+  for (let i = 0; i < registros.length; i++) {
+    const fila = registros[i];
+
+    const usuarioGuardado = String(fila[col.USUARIO] || '')
+      .trim()
+      .toLowerCase();
+
+    const correoGuardado = String(fila[col.CORREO] || '')
+      .trim()
+      .toLowerCase();
+
+    if (
+      identificador === usuarioGuardado ||
+      (correoGuardado && identificador === correoGuardado)
+    ) {
+      filaEncontrada = fila;
+      numeroFila = i + 2;
+      break;
+    }
+  }
+
+  if (!filaEncontrada) {
+    throw new Error('Usuario o contraseña incorrectos.');
+  }
+
+  const estado = String(filaEncontrada[col.ESTADO] || '')
+    .trim()
+    .toUpperCase();
+
+  if (estado !== 'ACTIVO') {
+    throw new Error('Este usuario no tiene acceso activo.');
+  }
+
+  const usuarioReal = String(filaEncontrada[col.USUARIO] || '')
+    .trim()
+    .toLowerCase();
+
+  const hashGuardado = String(filaEncontrada[col.CLAVE_HASH] || '').trim();
+  const hashIngresado = generarHashContrasena_(usuarioReal, contrasena);
+
+  if (!hashGuardado || hashGuardado !== hashIngresado) {
+    throw new Error('Usuario o contraseña incorrectos.');
+  }
+
+  const rolId = String(filaEncontrada[col.ROL_ID] || '').trim();
+
+  if (!['ROL-ADMIN', 'ROL-VENDEDOR', 'ROL-SOPORTE'].includes(rolId)) {
+    throw new Error('El usuario no tiene un rol válido.');
+  }
+
+  const usuarioId = String(filaEncontrada[col.USUARIO_ID] || '').trim();
+  const nombreCompleto = String(
+    filaEncontrada[col.NOMBRE_COMPLETO] || ''
+  ).trim();
+  const correo = String(filaEncontrada[col.CORREO] || '').trim();
+
+  let vendedorId = '';
+  if (typeof col.VENDEDOR_ID !== 'undefined') {
+    vendedorId = String(filaEncontrada[col.VENDEDOR_ID] || '').trim();
+  }
+
+  const datosRol = obtenerRolUsuarioWebMD20_(libro, rolId);
+  const ahora = new Date();
+
+  if (typeof col.ULTIMO_ACCESO !== 'undefined') {
+    hoja
+      .getRange(numeroFila, col.ULTIMO_ACCESO + 1)
+      .setValue(ahora)
+      .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+  }
+
+  if (typeof col.ACTUALIZADO_EN !== 'undefined') {
+    hoja
+      .getRange(numeroFila, col.ACTUALIZADO_EN + 1)
+      .setValue(ahora);
+  }
+
+  registrarLogAdministrador_(
+    libro,
+    usuarioId,
+    'LOGIN_WEB',
+    'Inicio de sesión web correcto. Rol: ' + rolId
+  );
+
+  SpreadsheetApp.flush();
+
+  const usuarioSesion = {
+    usuarioId: usuarioId,
+    nombreCompleto: nombreCompleto,
+    usuario: usuarioReal,
+    correo: correo,
+    rolId: rolId,
+    rolNombre: datosRol.nombre,
+    permisos: datosRol.permisos,
+    vendedorId: vendedorId
+  };
+
+  const tokenSesion = crearTokenSesionWebMD20_(usuarioSesion);
+
+  return {
+    ok: true,
+    mensaje: 'Acceso correcto.',
+    usuario: usuarioSesion,
+    tokenSesion: tokenSesion,
+    expiraSegundos: 21600
+  };
+}
+
+function obtenerRolUsuarioWebMD20_(libro, rolId) {
+  const hoja = libro.getSheetByName('ROLES_PERMISOS');
+
+  if (!hoja || hoja.getLastRow() <= 1) {
+    return { nombre: rolId, permisos: {} };
+  }
+
+  const valores = hoja
+    .getRange(
+      2,
+      1,
+      hoja.getLastRow() - 1,
+      hoja.getLastColumn()
+    )
+    .getValues();
+
+  for (let i = 0; i < valores.length; i++) {
+    const fila = valores[i];
+
+    if (String(fila[0] || '').trim() === rolId) {
+      let permisos = {};
+
+      try {
+        permisos = JSON.parse(String(fila[3] || '{}'));
+      } catch (error) {
+        permisos = {};
+      }
+
+      return {
+        nombre: String(fila[1] || rolId).trim(),
+        permisos: permisos
+      };
+    }
+  }
+
+  return { nombre: rolId, permisos: {} };
+}
+
+
+
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0 — PANEL WEB DEL VENDEDOR — FASE 2
+ * Sesión privada + ventas + clientes + pagos + comisiones
+ * + productos + chat con administración.
+ * =========================================================
+ */
+
+function crearTokenSesionWebMD20_(usuario){
+  const token=
+    Utilities.getUuid().replace(/-/g,'')+
+    Utilities.getUuid().replace(/-/g,'');
+
+  CacheService.getScriptCache().put(
+    'MD20_WEB_SESION_'+token,
+    JSON.stringify({
+      usuarioId:String(usuario.usuarioId||''),
+      nombreCompleto:String(usuario.nombreCompleto||''),
+      usuario:String(usuario.usuario||''),
+      correo:String(usuario.correo||''),
+      rolId:String(usuario.rolId||''),
+      vendedorId:String(usuario.vendedorId||'')
+    }),
+    21600
+  );
+
+  return token;
+}
+
+function validarSesionVendedorWebMD20_(token){
+  token=String(token||'').trim();
+  if(!token)throw new Error('Tu sesión no es válida. Inicia sesión nuevamente.');
+
+  const bruto=CacheService.getScriptCache().get('MD20_WEB_SESION_'+token);
+  if(!bruto)throw new Error('Tu sesión venció. Cierra sesión e ingresa nuevamente.');
+
+  let sesion={};
+  try{sesion=JSON.parse(bruto)||{};}catch(_e){sesion={};}
+
+  if(String(sesion.rolId||'').toUpperCase()!=='ROL-VENDEDOR'){
+    throw new Error('Este acceso no pertenece a un vendedor.');
+  }
+
+  const vendedorId=String(sesion.vendedorId||'').trim();
+  if(!vendedorId)throw new Error('Tu usuario no está vinculado con un vendedor.');
+
+  const hoja=md20LibroEstable_().getSheetByName('VENDEDORES');
+  if(!hoja||hoja.getLastRow()<=1)throw new Error('No se encontró el registro del vendedor.');
+
+  const encabezados=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0]
+    .map(v=>String(v||'').trim().toUpperCase());
+  const iId=encabezados.indexOf('VENDEDOR_ID');
+  const iEstado=encabezados.indexOf('ESTADO');
+  const iNombre=encabezados.indexOf('NOMBRE_COMPLETO');
+  const iUsuario=encabezados.indexOf('USUARIO');
+  if(iId<0)throw new Error('Falta VENDEDOR_ID en la pestaña VENDEDORES.');
+
+  const filas=hoja.getRange(2,1,hoja.getLastRow()-1,hoja.getLastColumn()).getValues();
+  const fila=filas.find(f=>String(f[iId]||'').trim()===vendedorId);
+  if(!fila)throw new Error('El vendedor vinculado ya no existe.');
+
+  const estado=iEstado>=0?String(fila[iEstado]||'ACTIVO').trim().toUpperCase():'ACTIVO';
+  if(estado!=='ACTIVO')throw new Error('Tu acceso de vendedor está desactivado.');
+
+  sesion.nombreCompleto=(iNombre>=0?String(fila[iNombre]||'').trim():'')||sesion.nombreCompleto||vendedorId;
+  sesion.usuario=(iUsuario>=0?String(fila[iUsuario]||'').trim():'')||sesion.usuario||'';
+  sesion.vendedorId=vendedorId;
+
+  // Renovación deslizante mientras el vendedor usa el panel.
+  CacheService.getScriptCache().put('MD20_WEB_SESION_'+token,JSON.stringify(sesion),21600);
+  return sesion;
+}
+
+function obtenerPanelVendedorWebMD20_(token){
+  const sesion=validarSesionVendedorWebMD20_(token);
+  const vendedorId=sesion.vendedorId;
+
+  const ventas=listarVentasVendedorWebMD20_(vendedorId);
+  const ventasIds=ventas.map(v=>String(v.id));
+  const clientes=listarClientesVendedorWebMD20_(ventas);
+  const pagos=listarPagosVendedorWebMD20_(ventasIds);
+  const comisiones=listarComisionesVendedorWebMD20_(vendedorId);
+  const productos=listarProductosVendedorWebMD20_(vendedorId);
+  const chat=listarChatVendedorPanelMD20_(vendedorId);
+
+  const totalVentas=ventas.reduce((s,v)=>s+Number(v.total||0),0);
+  const ventasPagadas=ventas.filter(v=>String(v.estadoPago||'').toUpperCase()==='PAGADO');
+  const totalPagado=ventasPagadas.reduce((s,v)=>s+Number(v.total||0),0);
+  const comPendientes=comisiones.filter(c=>String(c.estado||'').toUpperCase()==='PENDIENTE');
+  const comPagadas=comisiones.filter(c=>String(c.estado||'').toUpperCase()==='PAGADA');
+
+  return {
+    ok:true,
+    vendedor:{
+      id:vendedorId,
+      nombre:sesion.nombreCompleto||vendedorId,
+      usuario:sesion.usuario||'',
+      estado:'ACTIVO'
+    },
+    resumen:{
+      ventas:ventas.length,
+      ventasTotal:totalVentas,
+      ventasPagadas:ventasPagadas.length,
+      ingresosConfirmados:totalPagado,
+      clientes:clientes.length,
+      pagos:pagos.length,
+      comisiones:comisiones.length,
+      comisionesPendientes:comPendientes.length,
+      comisionPendienteUsd:comPendientes.reduce((s,c)=>s+Number(c.monto||0),0),
+      comisionPagadaUsd:comPagadas.reduce((s,c)=>s+Number(c.monto||0),0),
+      productos:productos.length,
+      mensajes:chat.length
+    },
+    ventas:ventas,
+    clientes:clientes,
+    pagos:pagos,
+    comisiones:comisiones,
+    productos:productos,
+    chat:chat
+  };
+}
+
+function listarVentasVendedorWebMD20_(vendedorId){
+  vendedorId=String(vendedorId||'').trim();
+  if(!vendedorId)return[];
+
+  const libro=md20LibroEstable_();
+  const idsPermitidos={};
+
+  // Ventas originadas por la tienda pública del vendedor.
+  const pedidos=libro.getSheetByName('PEDIDOS_TIENDA');
+  if(pedidos&&pedidos.getLastRow()>1){
+    const h=pedidos.getRange(1,1,1,pedidos.getLastColumn()).getDisplayValues()[0]
+      .map(v=>String(v||'').trim().toUpperCase());
+    const iV=h.indexOf('VENDEDOR_ID');
+    const iVentas=h.indexOf('VENTAS_IDS');
+    if(iV>=0&&iVentas>=0){
+      pedidos.getRange(2,1,pedidos.getLastRow()-1,pedidos.getLastColumn()).getValues().forEach(f=>{
+        if(String(f[iV]||'').trim()!==vendedorId)return;
+        String(f[iVentas]||'').split(',').map(x=>x.trim()).filter(Boolean).forEach(id=>idsPermitidos[id]=true);
+      });
+    }
+  }
+
+  // Ventas registradas directamente con VENDEDOR_ID o con la nota de vendedor.
+  const hv=libro.getSheetByName('VENTAS');
+  if(hv&&hv.getLastRow()>1){
+    const h=hv.getRange(1,1,1,hv.getLastColumn()).getDisplayValues()[0]
+      .map(v=>String(v||'').trim().toUpperCase());
+    const iId=h.indexOf('VENTA_ID');
+    const iVend=h.indexOf('VENDEDOR_ID');
+    const iNotas=h.indexOf('NOTAS');
+    if(iId>=0){
+      hv.getRange(2,1,hv.getLastRow()-1,hv.getLastColumn()).getValues().forEach(f=>{
+        const id=String(f[iId]||'').trim();
+        const directo=iVend>=0&&String(f[iVend]||'').trim()===vendedorId;
+        const notas=iNotas>=0?String(f[iNotas]||''):'';
+        const porNota=notas.indexOf('VENDEDOR: '+vendedorId)>=0;
+        if(id&&(directo||porNota))idsPermitidos[id]=true;
+      });
+    }
+  }
+
+  return listarVentasMD20_()
+    .filter(v=>idsPermitidos[String(v.id)])
+    .map(v=>Object.assign({},v,{vendedorId:vendedorId}));
+}
+
+function listarClientesVendedorWebMD20_(ventas){
+  const ids={};
+  (ventas||[]).forEach(v=>{if(v.clienteId)ids[String(v.clienteId)]=true;});
+  return listarClientesMD20_().filter(c=>ids[String(c.id)]);
+}
+
+function listarPagosVendedorWebMD20_(ventasIds){
+  const ids={};
+  (ventasIds||[]).forEach(id=>ids[String(id)]=true);
+  return listarPagosMD20_().filter(p=>ids[String(p.ventaId)]);
+}
+
+function listarProductosVendedorWebMD20_(vendedorId){
+  try{
+    return listarCatalogoPublicoMD20_(vendedorId).map(p=>({
+      id:String(p.id||''),
+      nombre:String(p.nombre||''),
+      categoria:String(p.categoriaNombre||p.categoriaId||''),
+      precio:Number(p.precio||0),
+      precioAnterior:Number(p.precioAnterior||0),
+      moneda:String(p.moneda||'USD'),
+      disponibilidad:String(p.disponibilidad||'DISPONIBLE'),
+      oferta:String(p.oferta||'NO'),
+      destacado:String(p.destacado||'NO'),
+      tipoEntrega:String(p.tipoEntrega||''),
+      imagenUrl:String(p.imagenUrl||'')
+    }));
+  }catch(_e){
+    return listarProductosMD20_().filter(p=>p.estado==='ACTIVO').map(p=>({
+      id:p.id,nombre:p.nombre,categoria:p.categoriaNombre||p.categoriaId||'',
+      precio:Number(p.precioVenta||0),precioAnterior:0,moneda:p.moneda||'USD',
+      disponibilidad:'DISPONIBLE',oferta:'NO',destacado:'NO',tipoEntrega:p.tipoEntrega||'',imagenUrl:p.imagenUrl||''
+    }));
+  }
+}
+
+function listarComisionesVendedorWebMD20_(vendedorId){
+  const libro=md20LibroEstable_();
+  const nombres=['COMISIONES_VENDEDORES','COMISIONES','VENDEDOR_COMISIONES','COMISIONES_VENDEDOR'];
+  let hoja=null;
+  for(let i=0;i<nombres.length&&!hoja;i++)hoja=libro.getSheetByName(nombres[i]);
+  if(!hoja){
+    hoja=libro.getSheets().find(h=>String(h.getName()||'').toUpperCase().indexOf('COMISION')>=0)||null;
+  }
+  if(!hoja||hoja.getLastRow()<=1)return[];
+
+  const headers=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0]
+    .map(v=>String(v||'').trim().toUpperCase());
+  const filas=hoja.getRange(2,1,hoja.getLastRow()-1,hoja.getLastColumn()).getValues();
+
+  const valor=(fila,alias,defecto)=>{
+    for(let i=0;i<alias.length;i++){
+      const pos=headers.indexOf(alias[i]);
+      if(pos>=0&&fila[pos]!==''&&fila[pos]!=null)return fila[pos];
+    }
+    return defecto;
+  };
+
+  return filas.filter(f=>{
+    const id=String(valor(f,['VENDEDOR_ID','ID_VENDEDOR'],'')||'').trim();
+    return id===vendedorId;
+  }).map(f=>({
+    id:String(valor(f,['COMISION_ID','ID_COMISION','REGISTRO_ID'],'')||''),
+    vendedorId:vendedorId,
+    vendedorNombre:String(valor(f,['VENDEDOR_NOMBRE','NOMBRE_VENDEDOR','VENDEDOR'],'')||''),
+    cliente:String(valor(f,['CLIENTE','CLIENTE_NOMBRE','NOMBRE_CLIENTE'],'')||''),
+    ventaId:String(valor(f,['VENTA_ID','RENOVACION_ID','SOLICITUD_ID'],'')||''),
+    montoVenta:Number(valor(f,['MONTO_VENTA','TOTAL_VENTA','VENTA_MONTO','MONTO'],'0')||0),
+    tipo:String(valor(f,['COMISION_TIPO','TIPO_COMISION','TIPO'],'')||''),
+    valor:Number(valor(f,['COMISION_VALOR','VALOR_COMISION','PORCENTAJE','VALOR'],'0')||0),
+    monto:Number(valor(f,['COMISION_MONTO','MONTO_COMISION','COMISION','IMPORTE_COMISION'],'0')||0),
+    moneda:String(valor(f,['MONEDA'],'USD')||'USD'),
+    estado:String(valor(f,['ESTADO_COMISION','ESTADO'],'PENDIENTE')||'PENDIENTE').toUpperCase(),
+    generadaEn:fechaHoraApi_(valor(f,['GENERADA_EN','GENERADO_EN','CREADO_EN','FECHA_GENERADA'],'') ),
+    pagadaEn:fechaHoraApi_(valor(f,['PAGADO_EN','PAGADA_EN','FECHA_PAGO'],'') ),
+    notas:String(valor(f,['NOTAS','OBSERVACIONES'],'')||'')
+  })).sort((a,b)=>String(b.generadaEn).localeCompare(String(a.generadaEn)));
+}
+
+function listarChatVendedorPanelMD20_(vendedorId){
+  try{
+    const h=md20LibroEstable_().getSheetByName('CHAT_MENSAJES');
+    if(!h||h.getLastRow()<=1)return[];
+    const mensajes=nmLeerMensajesChat_().filter(m=>String(m.vendedorId)===String(vendedorId));
+    // Marcar como leídos para el vendedor los mensajes del administrador.
+    const vals=h.getRange(2,1,h.getLastRow()-1,7).getValues();
+    vals.forEach((r,i)=>{
+      if(String(r[1])===String(vendedorId)&&String(r[2])==='ADMIN'&&String(r[5])!=='SI'){
+        h.getRange(i+2,6).setValue('SI');
+      }
+    });
+    return mensajes;
+  }catch(_e){
+    return[];
+  }
+}
+
+function enviarMensajeVendedorPanelMD20_(token,mensaje){
+  const sesion=validarSesionVendedorWebMD20_(token);
+  mensaje=String(mensaje||'').trim();
+  if(!mensaje)throw new Error('Escribe un mensaje.');
+  if(mensaje.length>2000)throw new Error('El mensaje es demasiado largo.');
+
+  // Si todavía no existe el acceso de chat, se crea automáticamente para el vendedor web.
+  try{
+    const h=md20LibroEstable_().getSheetByName('CHAT_ACCESOS_VENDEDORES');
+    if(h){
+      const fila=nmFilaPorId_(h,1,sesion.vendedorId);
+      if(!fila){
+        generarAccesoChatVendedorMD20_({vendedorId:sesion.vendedorId,nombre:sesion.nombreCompleto});
+      }else if(String(h.getRange(fila,4).getValue()||'').toUpperCase()!=='ACTIVO'){
+        h.getRange(fila,4).setValue('ACTIVO');
+        h.getRange(fila,6).setValue(new Date());
+      }
+    }
+  }catch(_e){}
+
+  return {ok:true,registro:nmGuardarMensajeChat_(sesion.vendedorId,'VENDEDOR',mensaje)};
 }
