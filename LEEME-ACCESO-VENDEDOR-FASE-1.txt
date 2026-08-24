@@ -1,0 +1,24 @@
+MUNDO DIGITAL 2.0 — ACCESO WEB + PANEL VENDEDOR — FASE 1
+
+ESTA ENTREGA INCLUYE:
+- Login real conectado a Apps Script.
+- Reconocimiento de ROL-ADMIN / ROL-VENDEDOR / ROL-SOPORTE.
+- Redirección automática por rol.
+- Sesión en navegador (Recordarme usa almacenamiento persistente).
+- Protección de navegación: un VENDEDOR no abre las páginas administrativas normales.
+- Nuevo vendedor-dashboard.html.
+- Cierre de sesión que limpia la sesión.
+- No modifica Bot Admin ni Bot Vendedores.
+
+PRUEBA ESPERADA:
+1) Abrir index.html / URL de Vercel.
+2) Entrar con vendedor.prueba + su contraseña.
+3) Debe abrir vendedor-dashboard.html y mostrar VND-PRUEBA001.
+4) Cerrar sesión.
+5) Entrar con admin + contraseña del administrador.
+6) Debe abrir dashboard.html.
+
+NOTA:
+Los botones de Ventas, Clientes, Pagos, Comisiones, Productos y Chat del panel vendedor
+son la estructura de navegación de la Fase 1. En las siguientes fases se conectarán
+los datos filtrados de cada vendedor.

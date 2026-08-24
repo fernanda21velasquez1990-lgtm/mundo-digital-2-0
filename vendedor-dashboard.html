@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel del vendedor de Mundo Digital 2.0">
+  <title>Mundo Digital 2.0 | Panel del vendedor</title>
+  <link rel="stylesheet" href="css/vendedor-dashboard.css?v=1">
+  <script src="js/auth.js?v=acceso-vendedor-1"></script>
+</head>
+<body>
+  <div class="glow glow-a"></div><div class="glow glow-b"></div>
+  <header class="topbar">
+    <a class="brand" href="vendedor-dashboard.html"><span>MD</span><div><strong>Mundo Digital 2.0</strong><small>PANEL DEL VENDEDOR</small></div></a>
+    <button class="logout" data-cerrar-sesion type="button">Cerrar sesión</button>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <span class="badge">ACCESO VENDEDOR ACTIVO</span>
+        <h1>Hola, <span id="nombreVendedor">Vendedor</span></h1>
+        <p>Este es tu espacio privado dentro de Mundo Digital 2.0. Aquí iremos concentrando tus ventas, clientes, pagos, comisiones y comunicación con administración.</p>
+      </div>
+      <aside class="identity">
+        <small>IDENTIFICACIÓN</small>
+        <strong id="vendedorId">—</strong>
+        <span id="usuarioVendedor">—</span>
+        <i>● ACTIVO</i>
+      </aside>
+    </section>
+
+    <section class="stats">
+      <article><small>Rol</small><strong>VENDEDOR</strong><span>Acceso separado del Administrador</span></article>
+      <article><small>Estado</small><strong class="ok">ACTIVO</strong><span>Inicio de sesión verificado</span></article>
+      <article><small>Sesión</small><strong id="horaSesion">Ahora</strong><span>Protegida en este navegador</span></article>
+    </section>
+
+    <section class="modules">
+      <div class="section-title"><div><small>MI CENTRO DE TRABAJO</small><h2>Módulos del vendedor</h2></div><span>Fase de acceso completada</span></div>
+      <div class="grid">
+        <button class="module active" data-modulo="Mis ventas"><b>01</b><div><strong>Mis ventas</strong><span>Solo operaciones asociadas a tu vendedor.</span></div></button>
+        <button class="module" data-modulo="Mis clientes"><b>02</b><div><strong>Mis clientes</strong><span>Clientes atendidos desde tu cuenta.</span></div></button>
+        <button class="module" data-modulo="Mis pagos"><b>03</b><div><strong>Mis pagos</strong><span>Seguimiento de pagos de tus ventas.</span></div></button>
+        <button class="module" data-modulo="Mis comisiones"><b>04</b><div><strong>Mis comisiones</strong><span>Pendientes, pagadas e historial.</span></div></button>
+        <button class="module" data-modulo="Productos"><b>05</b><div><strong>Productos</strong><span>Catálogo autorizado para vender.</span></div></button>
+        <button class="module" data-modulo="Chat con Administrador"><b>06</b><div><strong>Chat con Administrador</strong><span>Soporte e incidencias internas.</span></div></button>
+      </div>
+    </section>
+
+    <div id="toast" class="toast" role="status"></div>
+  </main>
+
+  <script src="js/vendedor-dashboard.js?v=1"></script>
+</body>
+</html>
