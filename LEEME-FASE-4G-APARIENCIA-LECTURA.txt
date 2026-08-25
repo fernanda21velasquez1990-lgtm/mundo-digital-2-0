@@ -1,0 +1,25 @@
+MUNDO DIGITAL 2.0 — FASE 4G — APARIENCIA Y LECTURA
+
+NUEVO EN CONFIGURACION
+- Tamaño de letra: Compacto / Normal / Grande / Muy grande
+- Tipo de letra: Sistema / Arial / Verdana / Trebuchet MS / Georgia
+- Mostrar emojis: Sí / No
+- Emoji del título: puedes colocar uno o dejarlo vacío
+
+VALOR INICIAL
+- El tamaño queda en GRANDE para mejorar la lectura.
+- La fuente queda en SISTEMA.
+- Emojis activados con ✨.
+
+COMPORTAMIENTO
+- Los cambios se guardan en la pestaña CONFIGURACION de Google Sheets.
+- Se aplican automáticamente al panel administrativo.
+- La previsualización se ve de inmediato dentro de Configuración.
+- No modifica ventas, pagos, clientes, inventario ni datos de negocio.
+
+INSTALACION
+1. Copia todo este paquete sobre tu carpeta mundo-digital-2-0-futurista y reemplaza.
+2. En Apps Script reemplaza Código.gs completo usando apps-script/Codigo.gs.
+3. Guardar > Implementar > Administrar implementaciones > Nueva versión > Implementar.
+4. Git add / commit / pull --rebase / push.
+5. Abre Configuración y ajusta Apariencia y lectura.

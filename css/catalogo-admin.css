@@ -171,3 +171,32 @@
 .biblioteca-publicidad-vacio{padding:45px 15px;text-align:center;color:#8a8a94}
 @media(max-width:900px){.biblioteca-publicidad-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:640px){.biblioteca-publicidad-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.biblioteca-publicidad-cuerpo{padding:14px}}
+
+
+/* =========================================================
+   FASE 4G · PREFERENCIAS VISUALES
+   El tamaño y la tipografía se controlan desde CONFIGURACION.
+   ========================================================= */
+:root{
+  --ui-font-scale:1;
+  --ui-font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea{
+  font-family:var(--ui-font-family)!important;
+}
+html[data-ui-emojis="NO"] .menu-emoji,
+html[data-ui-emojis="NO"] .ui-page-emoji{
+  display:none!important;
+}
+.ui-page-emoji{
+  display:inline-block;
+  margin-right:.35em;
+  font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif!important;
+  font-style:normal;
+  line-height:1;
+  vertical-align:.03em;
+}

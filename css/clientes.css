@@ -13,12 +13,12 @@
   background:linear-gradient(135deg,#ff1744,#ff6d00);
   box-shadow:0 10px 30px rgba(255,61,0,.18);
 }
-.cliente-identidad strong, .cliente-dato strong { display:block; color:#fff; font-size:14px; }
-.cliente-identidad small, .cliente-dato small { display:block; margin-top:5px; color:#8e8e98; font-size:11px; }
+.cliente-identidad strong, .cliente-dato strong { display:block; color:#fff; font-size: calc(14px * var(--ui-font-scale, 1)); }
+.cliente-identidad small, .cliente-dato small { display:block; margin-top:5px; color:#8e8e98; font-size: calc(11px * var(--ui-font-scale, 1)); }
 .etiquetas-cliente { display:flex; flex-wrap:wrap; gap:6px; max-width:220px; }
 .etiqueta-cliente {
   padding:5px 8px; border:1px solid rgba(255,106,0,.22); border-radius:999px;
-  color:#ffad72; background:rgba(255,106,0,.08); font-size:10px; font-weight:700;
+  color:#ffad72; background:rgba(255,106,0,.08); font-size: calc(10px * var(--ui-font-scale, 1)); font-weight:700;
 }
 .acciones-cliente { display:flex; gap:7px; align-items:center; }
 .accion-cliente {
@@ -29,11 +29,11 @@
 .accion-cliente svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; }
 .accion-cliente.whatsapp { color:#4ade80; }
 .estado-cliente {
-  display:inline-flex; padding:7px 10px; border-radius:999px; font-size:10px; font-weight:900;
+  display:inline-flex; padding:7px 10px; border-radius:999px; font-size: calc(10px * var(--ui-font-scale, 1)); font-weight:900;
 }
 .estado-cliente.activo { color:#8ff0ba; background:#123d2a; }
 .estado-cliente.inactivo { color:#c7c7ce; background:#36363d; }
-.compras-cliente strong { color:#fff; font-size:15px; }
+.compras-cliente strong { color:#fff; font-size: calc(15px * var(--ui-font-scale, 1)); }
 .compras-cliente small { color:#888893; display:block; margin-top:4px; }
 .modal-cliente { max-width:1050px; }
 .modal-historial { max-width:900px; }
@@ -45,12 +45,41 @@
 .historial-resumen article {
   padding:18px; border:1px solid rgba(255,255,255,.09); border-radius:15px; background:#15151a;
 }
-.historial-resumen span { display:block; color:#9999a4; font-size:11px; }
-.historial-resumen strong { display:block; margin-top:8px; color:#fff; font-size:22px; }
+.historial-resumen span { display:block; color:#9999a4; font-size: calc(11px * var(--ui-font-scale, 1)); }
+.historial-resumen strong { display:block; margin-top:8px; color:#fff; font-size: calc(22px * var(--ui-font-scale, 1)); }
 .tabla-historial { width:100%; border-collapse:collapse; min-width:700px; }
 .tabla-historial th,.tabla-historial td { padding:13px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
-.tabla-historial th { color:#ff8a3d; font-size:10px; text-transform:uppercase; }
-.tabla-historial td { color:#d5d5da; font-size:12px; }
+.tabla-historial th { color:#ff8a3d; font-size: calc(10px * var(--ui-font-scale, 1)); text-transform:uppercase; }
+.tabla-historial td { color:#d5d5da; font-size: calc(12px * var(--ui-font-scale, 1)); }
 @media (max-width:700px) {
   .historial-resumen { grid-template-columns:1fr; }
+}
+
+
+/* =========================================================
+   FASE 4G · PREFERENCIAS VISUALES
+   El tamaño y la tipografía se controlan desde CONFIGURACION.
+   ========================================================= */
+:root{
+  --ui-font-scale:1;
+  --ui-font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea{
+  font-family:var(--ui-font-family)!important;
+}
+html[data-ui-emojis="NO"] .menu-emoji,
+html[data-ui-emojis="NO"] .ui-page-emoji{
+  display:none!important;
+}
+.ui-page-emoji{
+  display:inline-block;
+  margin-right:.35em;
+  font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif!important;
+  font-style:normal;
+  line-height:1;
+  vertical-align:.03em;
 }

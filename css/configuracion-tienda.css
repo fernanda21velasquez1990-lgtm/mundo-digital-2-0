@@ -1,1 +1,29 @@
 .config-tienda{padding:28px;display:grid;gap:22px}.hero-config{border:1px solid #292932;border-radius:22px;background:linear-gradient(135deg,rgba(255,23,68,.08),rgba(255,109,0,.06));padding:25px;display:flex;justify-content:space-between;gap:25px}.hero-config h2{margin:10px 0 8px;font-size:2rem}.hero-config p{margin:0;color:#9999a5;max-width:680px;line-height:1.6}.estado-config{align-self:center;display:flex;gap:11px;align-items:center;padding:14px 16px;border:1px solid #292932;border-radius:15px;background:#121217}.punto-estado{width:10px;height:10px;border-radius:50%;background:#ffb020}.punto-estado.ok{background:#22d98b}.estado-config div{display:grid;gap:3px}.estado-config small{color:#777783}.grid-config-principal{display:grid;grid-template-columns:1.35fr .65fr;gap:18px}.panel-config,.panel-metodos{border:1px solid #292932;border-radius:20px;background:#121217;padding:22px}.panel-config>header,.panel-metodos>header{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:18px}.panel-config h3,.panel-metodos h3{margin:6px 0 0}.panel-config>header>svg{color:#ff6d00}.form-config{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:14px;align-items:end}.form-config label{display:grid;gap:7px}.form-config label>span{font-size:.76rem;font-weight:800;color:#c2c2cb}.form-config input,.form-config select,.campo-metodo input,.campo-metodo select,.campo-metodo textarea{width:100%;border:1px solid #292932;border-radius:13px;background:#18181f;color:#fff;padding:12px;outline:0}.campo-tasa{display:flex}.campo-tasa input{border-radius:13px 0 0 13px}.campo-tasa b{min-width:54px;border:1px solid #292932;border-left:0;border-radius:0 13px 13px 0;display:grid;place-items:center;background:#202027;color:#ff8a45}.dato-fecha{grid-column:1/-1;padding-top:4px;display:flex;gap:10px;color:#888894}.dato-fecha small{color:#666671}.carpeta-config{display:flex;flex-direction:column}.carpeta-config p{color:#9999a5;line-height:1.6}.carpeta-config a{width:max-content;margin:8px 0 12px;padding:11px 14px;border-radius:12px;background:rgba(255,109,0,.12);border:1px solid rgba(255,109,0,.3);color:#fff}.carpeta-config>small{margin-top:auto;color:#777783}.panel-metodos>header p{margin:6px 0 0;color:#888894}.lista-metodos-config{display:grid;gap:14px}.metodo-admin{border:1px solid #292932;border-radius:17px;background:#16161c;overflow:hidden}.metodo-admin>header{padding:14px 16px;background:#1b1b22;display:flex;justify-content:space-between;align-items:center}.metodo-admin>header div{display:grid;gap:4px}.metodo-admin>header small{color:#ff8a45}.metodo-admin-cuerpo{padding:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.campo-metodo{display:grid;gap:6px}.campo-metodo span{font-size:.7rem;color:#aaaab5;font-weight:750}.campo-metodo.ancho{grid-column:1/-1}.campo-metodo textarea{min-height:78px;resize:vertical}.boton-abrir-tienda{min-height:44px;padding:0 14px;border:1px solid rgba(255,109,0,.3);border-radius:13px;background:rgba(255,109,0,.09);display:flex;align-items:center;gap:8px;font-weight:800}.mensaje-config{position:fixed;z-index:100;left:50%;bottom:22px;transform:translate(-50%,25px);opacity:0;padding:13px 18px;border-radius:14px;background:#18181e;border:1px solid #292932;transition:.25s}.mensaje-config.visible{opacity:1;transform:translate(-50%,0)}.mensaje-config.error{border-color:#ff5362}@media(max-width:900px){.grid-config-principal{grid-template-columns:1fr}.metodo-admin-cuerpo{grid-template-columns:repeat(2,1fr)}.hero-config{flex-direction:column}.estado-config{align-self:stretch}}@media(max-width:620px){.config-tienda{padding:15px}.form-config,.metodo-admin-cuerpo{grid-template-columns:1fr}.campo-metodo.ancho{grid-column:1}.cabecera-derecha .boton-abrir-tienda{display:none}}
+
+/* =========================================================
+   FASE 4G · PREFERENCIAS VISUALES
+   El tamaño y la tipografía se controlan desde CONFIGURACION.
+   ========================================================= */
+:root{
+  --ui-font-scale:1;
+  --ui-font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea{
+  font-family:var(--ui-font-family)!important;
+}
+html[data-ui-emojis="NO"] .menu-emoji,
+html[data-ui-emojis="NO"] .ui-page-emoji{
+  display:none!important;
+}
+.ui-page-emoji{
+  display:inline-block;
+  margin-right:.35em;
+  font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif!important;
+  font-style:normal;
+  line-height:1;
+  vertical-align:.03em;
+}

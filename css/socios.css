@@ -57,7 +57,7 @@
 
 .cabecera-copy p {
   max-width: 650px;
-  font-size: 15px;
+  font-size: calc(15px * var(--ui-font-scale, 1));
   line-height: 1.65;
   color: #a8a8b2;
 }
@@ -71,7 +71,7 @@
   height: 52px;
   padding: 0 20px;
   color: #fff;
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-font-scale, 1));
   font-weight: 800;
   border: 0;
   border-radius: 14px;
@@ -97,7 +97,7 @@
   gap: 8px;
   margin-top: 13px;
   padding: 7px 11px;
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-font-scale, 1));
   font-weight: 700;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.08);
@@ -171,21 +171,21 @@
 .kpi-socio p {
   margin: 0 0 7px;
   color: #9999a4;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   text-transform: uppercase;
   letter-spacing: .7px;
 }
 
 .kpi-socio h3 {
   margin: 0;
-  font-size: 30px;
+  font-size: calc(30px * var(--ui-font-scale, 1));
 }
 
 .kpi-socio small {
   display: block;
   margin-top: 10px;
   color: #686873;
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-font-scale, 1));
 }
 
 .panel-socios {
@@ -237,7 +237,7 @@
 .buscador-socios input {
   height: 47px;
   padding: 0 16px 0 44px;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   border-radius: 13px;
 }
 
@@ -245,7 +245,7 @@
   width: 190px;
   height: 47px;
   padding: 0 13px;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   border-radius: 13px;
 }
 
@@ -280,7 +280,7 @@
 
 .tabla-socios th {
   color: #70707c;
-  font-size: 10px;
+  font-size: calc(10px * var(--ui-font-scale, 1));
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .8px;
@@ -290,7 +290,7 @@
 
 .tabla-socios td {
   color: #d5d5dc;
-  font-size: 12px;
+  font-size: calc(12px * var(--ui-font-scale, 1));
 }
 
 .tabla-socios tbody tr {
@@ -330,7 +330,7 @@
   min-width: 38px;
   height: 38px;
   color: #ff8b32;
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-font-scale, 1));
   font-weight: 900;
   border: 1px solid rgba(255,106,0,.2);
   border-radius: 11px;
@@ -343,20 +343,20 @@
 .celda-fechas strong,
 .celda-precios strong {
   color: #fff;
-  font-size: 12px;
+  font-size: calc(12px * var(--ui-font-scale, 1));
 }
 
 .celda-contacto small,
 .celda-producto small,
 .celda-fechas small {
   color: #777783;
-  font-size: 10px;
+  font-size: calc(10px * var(--ui-font-scale, 1));
 }
 
 .celda-fechas span,
 .celda-precios span {
   color: #aaaab4;
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-font-scale, 1));
 }
 
 .password-fila {
@@ -369,7 +369,7 @@
   max-width: 150px;
   overflow: hidden;
   color: #c9c9d1;
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-font-scale, 1));
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -377,7 +377,7 @@
 .boton-mini {
   padding: 4px 7px;
   color: #ff8b32;
-  font-size: 9px;
+  font-size: calc(9px * var(--ui-font-scale, 1));
   font-weight: 800;
   border: 1px solid rgba(255,106,0,.16);
   border-radius: 7px;
@@ -391,7 +391,7 @@
   align-items: center;
   justify-content: center;
   padding: 7px 10px;
-  font-size: 10px;
+  font-size: calc(10px * var(--ui-font-scale, 1));
   font-weight: 800;
   border-radius: 999px;
   white-space: nowrap;
@@ -485,14 +485,14 @@
 
 .estado-tabla h3 {
   margin: 0 0 8px;
-  font-size: 19px;
+  font-size: calc(19px * var(--ui-font-scale, 1));
 }
 
 .estado-tabla p {
   max-width: 470px;
   margin: 0 0 18px;
   color: #888894;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   line-height: 1.6;
 }
 
@@ -566,7 +566,7 @@
 
 .modal-cabecera h2 {
   margin: 4px 0 0;
-  font-size: 23px;
+  font-size: calc(23px * var(--ui-font-scale, 1));
 }
 
 .modal-cerrar {
@@ -601,7 +601,7 @@
   gap: 10px;
   margin-bottom: 15px;
   color: #ff8b32;
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-font-scale, 1));
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -631,7 +631,7 @@
   display: block;
   margin-bottom: 8px;
   color: #cfcfd6;
-  font-size: 12px;
+  font-size: calc(12px * var(--ui-font-scale, 1));
   font-weight: 700;
 }
 
@@ -643,7 +643,7 @@
 .campo-formulario select {
   height: 50px;
   padding: 0 14px;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   border-radius: 12px;
 }
 
@@ -651,7 +651,7 @@
   min-height: 100px;
   padding: 13px 14px;
   resize: vertical;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   line-height: 1.55;
   border-radius: 12px;
 }
@@ -666,7 +666,7 @@
   display: block;
   margin-top: 7px;
   color: #6f6f7a;
-  font-size: 10px;
+  font-size: calc(10px * var(--ui-font-scale, 1));
   line-height: 1.4;
 }
 
@@ -688,7 +688,7 @@
   min-width: 150px;
   height: 47px;
   padding: 0 18px;
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-font-scale, 1));
   font-weight: 800;
   border-radius: 12px;
   cursor: pointer;
@@ -741,9 +741,38 @@
 
 @media (max-width: 560px) {
   .kpis-socios { grid-template-columns: 1fr; }
-  .cabecera-copy h2 { font-size: 31px; }
+  .cabecera-copy h2 { font-size: calc(31px * var(--ui-font-scale, 1)); }
   .modal-fondo { padding: 0; }
   .modal-socio { width: 100%; max-height: 100vh; min-height: 100vh; border-radius: 0; }
   .modal-acciones { flex-direction: column-reverse; }
   .boton-cancelar, .boton-guardar { width: 100%; }
+}
+
+
+/* =========================================================
+   FASE 4G · PREFERENCIAS VISUALES
+   El tamaño y la tipografía se controlan desde CONFIGURACION.
+   ========================================================= */
+:root{
+  --ui-font-scale:1;
+  --ui-font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea{
+  font-family:var(--ui-font-family)!important;
+}
+html[data-ui-emojis="NO"] .menu-emoji,
+html[data-ui-emojis="NO"] .ui-page-emoji{
+  display:none!important;
+}
+.ui-page-emoji{
+  display:inline-block;
+  margin-right:.35em;
+  font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif!important;
+  font-style:normal;
+  line-height:1;
+  vertical-align:.03em;
 }
