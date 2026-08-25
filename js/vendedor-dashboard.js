@@ -173,7 +173,7 @@
         <td>${esc(c.telefono ? "+" + c.telefono : "—")}</td>
         <td>${esc(c.correo || "—")}</td>
         <td>${esc([c.pais, c.ciudad].filter(Boolean).join(" / ") || "—")}</td>
-        <td>${Number(c.totalCompras || 0)}</td>
+        <td>${Number(c.cantidadCompras || 0)}</td>
         <td><span class="status ${estadoClase(c.estado)}">${esc(c.estado || "ACTIVO")}</span></td>
       </tr>`)
     );

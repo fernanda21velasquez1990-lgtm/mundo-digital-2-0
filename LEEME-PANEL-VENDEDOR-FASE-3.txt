@@ -1,0 +1,50 @@
+MUNDO DIGITAL 2.0 — PANEL VENDEDOR — FASE 3
+==============================================
+
+OBJETIVO
+--------
+Ajustes finales detectados durante la prueba real del Panel del Vendedor.
+
+CAMBIOS INCLUIDOS
+-----------------
+1) MIS CLIENTES
+   - La columna "Compras" ahora muestra la CANTIDAD de compras de ese vendedor.
+   - Ya no muestra por error el monto total comprado como si fuera una cantidad.
+   - Los totales del cliente dentro del panel vendedor se calculan solo con las ventas de ese vendedor.
+
+2) MIS COMISIONES
+   - Se mejora la resolución del nombre del cliente.
+   - Intenta obtenerlo directamente de la comisión, por CLIENTE_ID, por VENTA_ID,
+     por suscripción/renovación/solicitud y por referencias guardadas en NOTAS.
+   - Si el vendedor tiene un único cliente asociado y una comisión antigua no trae referencia
+     suficiente, se usa ese único cliente como respaldo seguro.
+
+3) SE CONSERVA
+   - Login Admin.
+   - Login Vendedor.
+   - Sesiones por rol.
+   - Mis ventas.
+   - Mis pagos.
+   - Productos.
+   - Chat Admin <-> Vendedor.
+   - Función para restablecer contraseña del Administrador.
+   - Bots y puentes existentes sin cambios intencionales.
+
+IMPORTANTE PARA REEMPLAZAR LA CARPETA
+-------------------------------------
+Este ZIP NO incluye la carpeta oculta .git.
+
+NO borres la carpeta local actual del proyecto.
+Extrae este ZIP y copia TODO el contenido de "mundo-digital-2-0-futurista"
+dentro de tu carpeta local actual "mundo-digital-2-0-futurista".
+Cuando Windows pregunte, selecciona REEMPLAZAR LOS ARCHIVOS EN EL DESTINO.
+
+Así conservas el historial Git que ya está sincronizado con GitHub.
+
+APPS SCRIPT
+-----------
+El archivo completo está en:
+apps-script/Codigo.gs
+
+Cuando se indique, se reemplaza TODO Código.gs en Apps Script por este archivo,
+se guarda y se actualiza la implementación existente con una Nueva versión.

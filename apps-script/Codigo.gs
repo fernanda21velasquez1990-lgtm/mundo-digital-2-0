@@ -9523,9 +9523,35 @@ function listarVentasVendedorWebMD20_(vendedorId){
 }
 
 function listarClientesVendedorWebMD20_(ventas){
-  const ids={};
-  (ventas||[]).forEach(v=>{if(v.clienteId)ids[String(v.clienteId)]=true;});
-  return listarClientesMD20_().filter(c=>ids[String(c.id)]);
+  const estadisticas={};
+
+  (ventas||[]).forEach(v=>{
+    const clienteId=String(v.clienteId||'').trim();
+    if(!clienteId)return;
+
+    if(!estadisticas[clienteId]){
+      estadisticas[clienteId]={cantidad:0,total:0,ultimaCompra:''};
+    }
+
+    const e=estadisticas[clienteId];
+    e.cantidad+=1;
+    e.total+=Number(v.total||0);
+
+    const fecha=String(v.fechaVenta||'');
+    if(fecha&&(!e.ultimaCompra||fecha>e.ultimaCompra))e.ultimaCompra=fecha;
+  });
+
+  return listarClientesMD20_()
+    .filter(c=>estadisticas[String(c.id)])
+    .map(c=>{
+      const e=estadisticas[String(c.id)]||{cantidad:0,total:0,ultimaCompra:''};
+      return Object.assign({},c,{
+        // En el panel vendedor estas cifras son SOLO de sus propias ventas.
+        cantidadCompras:e.cantidad,
+        totalCompras:e.total,
+        ultimaCompra:e.ultimaCompra||c.ultimaCompra||''
+      });
+    });
 }
 
 function listarPagosVendedorWebMD20_(ventasIds){
@@ -9580,25 +9606,143 @@ function listarComisionesVendedorWebMD20_(vendedorId){
     return defecto;
   };
 
+  const clientes=listarClientesMD20_();
+  const clientesPorId={};
+  clientes.forEach(c=>clientesPorId[String(c.id||'').trim()]=String(c.nombreCompleto||'').trim());
+
+  const referenciasCliente=construirMapaReferenciasClienteComisionMD20_(libro,clientesPorId);
+  const ventasVendedor=listarVentasVendedorWebMD20_(vendedorId);
+  const clientesVendedor={};
+  ventasVendedor.forEach(v=>{
+    const nombre=String(v.clienteNombre||'').trim();
+    if(nombre)clientesVendedor[nombre.toLowerCase()]=nombre;
+  });
+  const unicoClienteVendedor=Object.keys(clientesVendedor).length===1
+    ? clientesVendedor[Object.keys(clientesVendedor)[0]]
+    : '';
+
   return filas.filter(f=>{
     const id=String(valor(f,['VENDEDOR_ID','ID_VENDEDOR'],'')||'').trim();
     return id===vendedorId;
-  }).map(f=>({
-    id:String(valor(f,['COMISION_ID','ID_COMISION','REGISTRO_ID'],'')||''),
-    vendedorId:vendedorId,
-    vendedorNombre:String(valor(f,['VENDEDOR_NOMBRE','NOMBRE_VENDEDOR','VENDEDOR'],'')||''),
-    cliente:String(valor(f,['CLIENTE','CLIENTE_NOMBRE','NOMBRE_CLIENTE'],'')||''),
-    ventaId:String(valor(f,['VENTA_ID','RENOVACION_ID','SOLICITUD_ID'],'')||''),
-    montoVenta:Number(valor(f,['MONTO_VENTA','TOTAL_VENTA','VENTA_MONTO','MONTO'],'0')||0),
-    tipo:String(valor(f,['COMISION_TIPO','TIPO_COMISION','TIPO'],'')||''),
-    valor:Number(valor(f,['COMISION_VALOR','VALOR_COMISION','PORCENTAJE','VALOR'],'0')||0),
-    monto:Number(valor(f,['COMISION_MONTO','MONTO_COMISION','COMISION','IMPORTE_COMISION'],'0')||0),
-    moneda:String(valor(f,['MONEDA'],'USD')||'USD'),
-    estado:String(valor(f,['ESTADO_COMISION','ESTADO'],'PENDIENTE')||'PENDIENTE').toUpperCase(),
-    generadaEn:fechaHoraApi_(valor(f,['GENERADA_EN','GENERADO_EN','CREADO_EN','FECHA_GENERADA'],'') ),
-    pagadaEn:fechaHoraApi_(valor(f,['PAGADO_EN','PAGADA_EN','FECHA_PAGO'],'') ),
-    notas:String(valor(f,['NOTAS','OBSERVACIONES'],'')||'')
-  })).sort((a,b)=>String(b.generadaEn).localeCompare(String(a.generadaEn)));
+  }).map(f=>{
+    const clienteId=String(valor(f,['CLIENTE_ID','ID_CLIENTE','CLIENTE_CODIGO'],'')||'').trim();
+    const clienteDirecto=String(valor(f,[
+      'CLIENTE','CLIENTE_NOMBRE','NOMBRE_CLIENTE','CLIENTE_NOMBRE_COMPLETO','NOMBRE_COMPLETO_CLIENTE'
+    ],'')||'').trim();
+    const referencia=String(valor(f,[
+      'VENTA_ID','RENOVACION_ID','SOLICITUD_ID','RENOVACION_SOLICITUD_ID','SOLICITUD_RENOVACION_ID','RESPUESTA_ID','SUSCRIPCION_ID','REGISTRO_ORIGEN_ID','ORIGEN_ID'
+    ],'')||'').trim();
+    const notas=String(valor(f,['NOTAS','OBSERVACIONES'],'')||'');
+    const referenciasNotas=extraerReferenciasComisionMD20_(notas);
+
+    let cliente=clienteDirecto||clientesPorId[clienteId]||referenciasCliente[referencia]||'';
+
+    if(!cliente){
+      for(let i=0;i<referenciasNotas.length&&!cliente;i++){
+        cliente=referenciasCliente[referenciasNotas[i]]||'';
+      }
+    }
+
+    // Para una comisión de venta, usa la venta exacta si está vinculada.
+    if(!cliente&&referencia){
+      const venta=ventasVendedor.find(v=>String(v.id||'')===referencia||String(v.numeroVenta||'')===referencia);
+      if(venta)cliente=String(venta.clienteNombre||'').trim();
+    }
+
+    // Último respaldo seguro: solo se completa automáticamente cuando
+    // este vendedor tiene un único cliente relacionado en sus ventas.
+    if(!cliente&&unicoClienteVendedor)cliente=unicoClienteVendedor;
+
+    return {
+      id:String(valor(f,['COMISION_ID','ID_COMISION','REGISTRO_ID'],'')||''),
+      vendedorId:vendedorId,
+      vendedorNombre:String(valor(f,['VENDEDOR_NOMBRE','NOMBRE_VENDEDOR','VENDEDOR'],'')||''),
+      clienteId:clienteId,
+      cliente:cliente,
+      ventaId:referencia,
+      montoVenta:Number(valor(f,['MONTO_VENTA','TOTAL_VENTA','VENTA_MONTO','MONTO'],'0')||0),
+      tipo:String(valor(f,['COMISION_TIPO','TIPO_COMISION','TIPO'],'')||''),
+      valor:Number(valor(f,['COMISION_VALOR','VALOR_COMISION','PORCENTAJE','VALOR'],'0')||0),
+      monto:Number(valor(f,['COMISION_MONTO','MONTO_COMISION','COMISION','IMPORTE_COMISION'],'0')||0),
+      moneda:String(valor(f,['MONEDA'],'USD')||'USD'),
+      estado:String(valor(f,['ESTADO_COMISION','ESTADO'],'PENDIENTE')||'PENDIENTE').toUpperCase(),
+      generadaEn:fechaHoraApi_(valor(f,['GENERADA_EN','GENERADO_EN','CREADO_EN','FECHA_GENERADA'],'') ),
+      pagadaEn:fechaHoraApi_(valor(f,['PAGADO_EN','PAGADA_EN','FECHA_PAGO'],'') ),
+      notas:notas
+    };
+  }).sort((a,b)=>String(b.generadaEn).localeCompare(String(a.generadaEn)));
+}
+
+/**
+ * Construye un mapa referencia -> cliente usando únicamente hojas
+ * relacionadas con ventas, suscripciones, renovaciones y solicitudes.
+ * Permite resolver comisiones aunque la hoja de comisiones solo guarde
+ * CLIENTE_ID o una referencia de la operación.
+ */
+function construirMapaReferenciasClienteComisionMD20_(libro,clientesPorId){
+  const mapa={};
+  const hojas=libro.getSheets().filter(h=>{
+    const n=String(h.getName()||'').toUpperCase();
+    return /(VENTA|RENOV|SOLICITUD|SUSCRIP|RESPUESTA)/.test(n)&&n.indexOf('COMISION')<0;
+  });
+
+  const aliasesRef=[
+    'VENTA_ID','NUMERO_VENTA','RENOVACION_ID','SOLICITUD_ID','RENOVACION_SOLICITUD_ID','SOLICITUD_RENOVACION_ID','RESPUESTA_ID',
+    'SUSCRIPCION_ID','SERVICIO_ID','REGISTRO_ID','PEDIDO_ID'
+  ];
+  const aliasesClienteId=['CLIENTE_ID','ID_CLIENTE','CLIENTE_CODIGO'];
+  const aliasesClienteNombre=[
+    'CLIENTE','CLIENTE_NOMBRE','NOMBRE_CLIENTE','CLIENTE_NOMBRE_COMPLETO','NOMBRE_COMPLETO_CLIENTE'
+  ];
+
+  hojas.forEach(hoja=>{
+    if(hoja.getLastRow()<=1||hoja.getLastColumn()<=0)return;
+
+    const headers=hoja.getRange(1,1,1,hoja.getLastColumn()).getDisplayValues()[0]
+      .map(v=>String(v||'').trim().toUpperCase());
+    const posicionesRef=aliasesRef.map(a=>headers.indexOf(a)).filter(i=>i>=0);
+    const posicionesClienteId=aliasesClienteId.map(a=>headers.indexOf(a)).filter(i=>i>=0);
+    const posicionesClienteNombre=aliasesClienteNombre.map(a=>headers.indexOf(a)).filter(i=>i>=0);
+
+    if(!posicionesRef.length||(!posicionesClienteId.length&&!posicionesClienteNombre.length))return;
+
+    const filas=hoja.getRange(2,1,hoja.getLastRow()-1,hoja.getLastColumn()).getValues();
+    filas.forEach(f=>{
+      let cliente='';
+
+      for(let i=0;i<posicionesClienteNombre.length&&!cliente;i++){
+        cliente=String(f[posicionesClienteNombre[i]]||'').trim();
+      }
+
+      if(!cliente){
+        for(let i=0;i<posicionesClienteId.length&&!cliente;i++){
+          const id=String(f[posicionesClienteId[i]]||'').trim();
+          cliente=clientesPorId[id]||'';
+        }
+      }
+
+      if(!cliente)return;
+
+      posicionesRef.forEach(pos=>{
+        const ref=String(f[pos]||'').trim();
+        if(ref)mapa[ref]=cliente;
+      });
+    });
+  });
+
+  return mapa;
+}
+
+/** Extrae IDs mencionados dentro de NOTAS de una comisión. */
+function extraerReferenciasComisionMD20_(notas){
+  const texto=String(notas||'');
+  const refs=[];
+  const rx=/(?:VENTA|RENOVACION|RENOVACION_SOLICITUD|SOLICITUD|RESPUESTA|SUSCRIPCION|PEDIDO)\s*[:=#-]?\s*([A-Z0-9][A-Z0-9_-]{4,})/gi;
+  let m;
+  while((m=rx.exec(texto))!==null){
+    if(m[1]&&!refs.includes(m[1]))refs.push(m[1]);
+  }
+  return refs;
 }
 
 function listarChatVendedorPanelMD20_(vendedorId){
@@ -9640,4 +9784,174 @@ function enviarMensajeVendedorPanelMD20_(token,mensaje){
   }catch(_e){}
 
   return {ok:true,registro:nmGuardarMensajeChat_(sesion.vendedorId,'VENDEDOR',mensaje)};
+}
+
+
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0
+ * RESTABLECER CONTRASEÑA DEL ADMINISTRADOR
+ * =========================================================
+ *
+ * Uso manual desde Apps Script.
+ * - No crea otro administrador.
+ * - No modifica vendedores.
+ * - No cambia bots, ventas, pagos ni comisiones.
+ * - Solo reemplaza CLAVE_HASH del usuario con ROL-ADMIN.
+ */
+function restablecerContrasenaAdministradorMD20() {
+  const ui = SpreadsheetApp.getUi();
+  const libro = md20LibroEstable_();
+  const hoja = libro.getSheetByName('USUARIOS');
+
+  try {
+    if (!hoja) {
+      throw new Error('No existe la pestaña USUARIOS.');
+    }
+
+    if (hoja.getLastRow() <= 1) {
+      throw new Error('No existen usuarios registrados.');
+    }
+
+    const encabezados = hoja
+      .getRange(1, 1, 1, hoja.getLastColumn())
+      .getDisplayValues()[0]
+      .map(v => String(v || '').trim().toUpperCase());
+
+    const col = {};
+    encabezados.forEach((nombre, indice) => {
+      col[nombre] = indice;
+    });
+
+    ['USUARIO_ID', 'USUARIO', 'CORREO', 'CLAVE_HASH', 'ROL_ID', 'ESTADO']
+      .forEach(nombre => {
+        if (typeof col[nombre] === 'undefined') {
+          throw new Error('Falta la columna ' + nombre + ' en USUARIOS.');
+        }
+      });
+
+    const registros = hoja
+      .getRange(2, 1, hoja.getLastRow() - 1, hoja.getLastColumn())
+      .getValues();
+
+    let filaAdmin = null;
+    let numeroFila = 0;
+
+    for (let i = 0; i < registros.length; i++) {
+      const rol = String(registros[i][col.ROL_ID] || '').trim().toUpperCase();
+      if (rol === 'ROL-ADMIN') {
+        filaAdmin = registros[i];
+        numeroFila = i + 2;
+        break;
+      }
+    }
+
+    if (!filaAdmin || !numeroFila) {
+      throw new Error('No se encontró ningún usuario con ROL-ADMIN.');
+    }
+
+    const usuario = String(filaAdmin[col.USUARIO] || '').trim().toLowerCase();
+    const correo = String(filaAdmin[col.CORREO] || '').trim().toLowerCase();
+    const usuarioId = String(filaAdmin[col.USUARIO_ID] || '').trim();
+
+    if (!usuario) {
+      throw new Error('El administrador no tiene nombre de usuario.');
+    }
+
+    let nuevaContrasena = '';
+
+    while (true) {
+      const respuesta1 = ui.prompt(
+        'Nueva contraseña del Administrador',
+        'Administrador: ' + usuario + '\n' +
+        (correo ? 'Correo: ' + correo + '\n\n' : '\n') +
+        'Escribe una contraseña nueva. Debe tener mínimo 8 caracteres e incluir letras y números.\n\n' +
+        'IMPORTANTE: no envíes capturas mientras escribes la contraseña.',
+        ui.ButtonSet.OK_CANCEL
+      );
+
+      if (respuesta1.getSelectedButton() !== ui.Button.OK) {
+        ui.alert('Proceso cancelado', 'No se modificó la contraseña.', ui.ButtonSet.OK);
+        return;
+      }
+
+      nuevaContrasena = respuesta1.getResponseText();
+
+      if (!validarContrasena_(nuevaContrasena)) {
+        ui.alert(
+          'Contraseña no válida',
+          'Debe tener mínimo 8 caracteres e incluir por lo menos una letra y un número.',
+          ui.ButtonSet.OK
+        );
+        continue;
+      }
+
+      const respuesta2 = ui.prompt(
+        'Confirmar nueva contraseña',
+        'Escribe nuevamente la misma contraseña.',
+        ui.ButtonSet.OK_CANCEL
+      );
+
+      if (respuesta2.getSelectedButton() !== ui.Button.OK) {
+        ui.alert('Proceso cancelado', 'No se modificó la contraseña.', ui.ButtonSet.OK);
+        return;
+      }
+
+      if (nuevaContrasena !== respuesta2.getResponseText()) {
+        ui.alert(
+          'Las contraseñas no coinciden',
+          'Escríbelas nuevamente.',
+          ui.ButtonSet.OK
+        );
+        continue;
+      }
+
+      break;
+    }
+
+    const nuevoHash = generarHashContrasena_(usuario, nuevaContrasena);
+    const ahora = new Date();
+
+    hoja.getRange(numeroFila, col.CLAVE_HASH + 1).setValue(nuevoHash);
+    hoja.getRange(numeroFila, col.ESTADO + 1).setValue('ACTIVO');
+
+    if (typeof col.ULTIMO_ACCESO !== 'undefined') {
+      hoja.getRange(numeroFila, col.ULTIMO_ACCESO + 1).clearContent();
+    }
+
+    if (typeof col.ACTUALIZADO_EN !== 'undefined') {
+      hoja
+        .getRange(numeroFila, col.ACTUALIZADO_EN + 1)
+        .setValue(ahora)
+        .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+    }
+
+    registrarLogAdministrador_(
+      libro,
+      usuarioId,
+      'RESTABLECER_CONTRASENA_ADMIN',
+      'Se restableció la contraseña del Administrador desde Apps Script.'
+    );
+
+    SpreadsheetApp.flush();
+
+    ui.alert(
+      'Contraseña actualizada',
+      'La contraseña del Administrador fue restablecida correctamente.\n\n' +
+      'Usuario: ' + usuario + '\n' +
+      (correo ? 'Correo: ' + correo + '\n' : '') +
+      '\nYa puedes iniciar sesión en Mundo Digital 2.0.\n\n' +
+      'La contraseña no se guardó como texto visible.',
+      ui.ButtonSet.OK
+    );
+
+    libro.setActiveSheet(hoja);
+  } catch (error) {
+    console.error(error);
+    ui.alert(
+      'No se pudo restablecer la contraseña',
+      error.message || 'Ocurrió un error inesperado.',
+      ui.ButtonSet.OK
+    );
+  }
 }
