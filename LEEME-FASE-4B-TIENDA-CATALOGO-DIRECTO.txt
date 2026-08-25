@@ -1,0 +1,26 @@
+MUNDO DIGITAL 2.0 — FASE 4B
+REDISEÑO DE TIENDA PÚBLICA: CATÁLOGO DIRECTO
+
+OBJETIVO
+- Quitar el aspecto de landing extensa de la tienda pública.
+- Mostrar los productos mucho antes, como una tienda/catálogo real.
+- Reducir espacios vacíos y dar protagonismo a los productos en venta.
+
+CAMBIOS
+1. Encabezado/portada compacto con resumen de productos y destacados.
+2. Buscador y categorías inmediatamente después de la cabecera.
+3. Rejilla de productos de 4 columnas en escritorio, 2 en tablet y 1 en móvil.
+4. Tarjetas más compactas para ver más productos al mismo tiempo.
+5. Los productos destacados siguen identificados mediante badges dentro del catálogo.
+6. Se elimina visualmente la sección grande independiente de destacados.
+7. Se mantiene intacto el carrito, checkout, pagos y conexión de Fase 4A.
+8. Se conserva Apps Script, panel Admin, panel Vendedor y bots sin cambios.
+
+ARCHIVOS MODIFICADOS
+- tienda.html
+- css/tienda.css
+
+NO REQUIERE
+- Cambiar Apps Script.
+- Ejecutar funciones.
+- Modificar bots.

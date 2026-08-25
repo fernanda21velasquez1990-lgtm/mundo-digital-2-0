@@ -6,7 +6,7 @@
   <meta name="description" content="Catálogo de productos digitales de Mundo Digital 2.0">
   <meta name="theme-color" content="#08080a">
   <title>Mundo Digital 2.0 | Tienda</title>
-  <link rel="stylesheet" href="css/tienda.css">
+  <link rel="stylesheet" href="css/tienda.css?v=2026082402">
 </head>
 <body>
   <svg class="svg-sprite" aria-hidden="true">
@@ -43,9 +43,8 @@
 
       <nav id="navegacionTienda" class="navegacion-tienda">
         <a href="#inicio">Inicio</a>
-        <a href="#destacados">Destacados</a>
-        <a href="#categorias">Categorías</a>
         <a href="#productos">Productos</a>
+        <a href="#categorias">Categorías</a>
       </nav>
 
       <div class="acciones-cabecera">
@@ -69,97 +68,46 @@
   </section>
 
   <main>
-    <section id="inicio" class="hero-tienda">
-      <div class="contenedor hero-rejilla">
-        <div class="hero-copy">
-          <span class="etiqueta-superior">CATÁLOGO DIGITAL</span>
-          <h1>Todo lo que necesitas, en un solo lugar.</h1>
-          <p>Explora nuestros cursos, agendas, libros, herramientas y servicios digitales. Elige tus productos y solicita tu compra directamente por WhatsApp.</p>
-
-          <div class="hero-acciones">
-            <a class="boton-principal-tienda" href="#productos">
-              Ver productos <svg><use href="#t-arrow"></use></svg>
-            </a>
-            <button id="botonVerDestacados" class="boton-secundario-tienda" type="button">
-              Ver destacados
-            </button>
-          </div>
-
-          <div class="beneficios-rapidos">
-            <span><svg><use href="#t-check"></use></svg> Entrega digital</span>
-            <span><svg><use href="#t-check"></use></svg> Atención personalizada</span>
-            <span><svg><use href="#t-check"></use></svg> Compra sencilla</span>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <div class="orbita orbita-uno"></div>
-          <div class="orbita orbita-dos"></div>
-          <article class="tarjeta-hero tarjeta-hero-principal">
-            <span class="mini-icono"><svg><use href="#t-bag"></use></svg></span>
-            <small>Productos publicados</small>
-            <strong id="heroTotalProductos">0</strong>
-            <p>Opciones disponibles para ti.</p>
-          </article>
-          <article class="tarjeta-hero tarjeta-hero-secundaria">
-            <span class="mini-icono"><svg><use href="#t-star"></use></svg></span>
-            <strong id="heroDestacados">0 destacados</strong>
-            <small>Selección recomendada</small>
-          </article>
-          <article class="tarjeta-hero tarjeta-hero-terciaria">
-            <span class="mini-icono"><svg><use href="#t-download"></use></svg></span>
-            <strong>Entrega digital</strong>
-            <small>Rápida y organizada</small>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="franja-confianza">
-      <div class="contenedor franja-rejilla">
-        <article>
-          <span><svg><use href="#t-shield"></use></svg></span>
-          <div><strong>Compra acompañada</strong><small>Te guiamos durante el proceso</small></div>
-        </article>
-        <article>
-          <span><svg><use href="#t-download"></use></svg></span>
-          <div><strong>Productos digitales</strong><small>Archivos, cursos y accesos</small></div>
-        </article>
-        <article>
-          <span><svg><use href="#t-whatsapp"></use></svg></span>
-          <div><strong>Atención por WhatsApp</strong><small>Consulta antes de pagar</small></div>
-        </article>
-      </div>
-    </section>
-
-    <section id="destacados" class="seccion-tienda seccion-destacados" hidden>
+    <section id="inicio" class="catalogo-portada">
       <div class="contenedor">
-        <div class="encabezado-seccion">
-          <div>
-            <span class="etiqueta-superior">RECOMENDADOS</span>
-            <h2>Productos destacados</h2>
-            <p>Una selección especial de nuestras mejores opciones.</p>
+        <div class="portada-linea">
+          <div class="portada-copy">
+            <span class="etiqueta-superior">TIENDA DIGITAL</span>
+            <h1>Catálogo de productos</h1>
+            <p>Explora todo lo que tenemos disponible. Cursos, agendas, herramientas y accesos digitales en una sola tienda.</p>
           </div>
-          <div class="controles-carrusel">
-            <button id="destacadosAnterior" type="button" aria-label="Anterior">‹</button>
-            <button id="destacadosSiguiente" type="button" aria-label="Siguiente">›</button>
+
+          <div class="portada-datos" aria-label="Resumen de la tienda">
+            <article>
+              <strong id="heroTotalProductos">0</strong>
+              <span>Productos disponibles</span>
+            </article>
+            <article>
+              <strong id="heroDestacados">0 destacados</strong>
+              <span>Ofertas y recomendados</span>
+            </article>
           </div>
         </div>
-        <div id="rejillaDestacados" class="rejilla-productos destacados-horizontal"></div>
+
+        <div class="portada-ventajas">
+          <span><svg><use href="#t-check"></use></svg> Entrega digital</span>
+          <span><svg><use href="#t-check"></use></svg> Atención personalizada</span>
+          <span><svg><use href="#t-check"></use></svg> Compra sencilla y segura</span>
+        </div>
       </div>
     </section>
 
-    <section id="categorias" class="seccion-tienda">
+    <section id="categorias" class="catalogo-filtros">
       <div class="contenedor">
-        <div class="encabezado-seccion">
+        <div class="cabecera-catalogo-directo">
           <div>
-            <span class="etiqueta-superior">EXPLORA</span>
-            <h2>Encuentra lo que buscas</h2>
-            <p>Filtra los productos por categoría o utiliza el buscador.</p>
+            <span class="etiqueta-superior">NUESTROS PRODUCTOS</span>
+            <h2>Encuentra lo que necesitas</h2>
           </div>
+          <p>Busca por nombre o filtra por categoría.</p>
         </div>
 
-        <div class="barra-busqueda">
+        <div class="barra-busqueda tienda-buscador-directo">
           <label class="campo-busqueda">
             <svg><use href="#t-search"></use></svg>
             <input id="buscarTienda" type="search" placeholder="Buscar cursos, agendas, herramientas...">
@@ -171,11 +119,11 @@
       </div>
     </section>
 
-    <section id="productos" class="seccion-tienda productos-publicos">
+    <section id="productos" class="productos-publicos catalogo-directo-productos">
       <div class="contenedor">
-        <div class="encabezado-seccion encabezado-productos">
+        <div class="encabezado-seccion encabezado-productos catalogo-directo-encabezado">
           <div>
-            <span class="etiqueta-superior">CATÁLOGO</span>
+            <span class="etiqueta-superior">DISPONIBLES AHORA</span>
             <h2 id="tituloResultados">Todos los productos</h2>
             <p id="textoResultados">Cargando productos publicados...</p>
           </div>
@@ -206,8 +154,17 @@
           <small>Prueba con otra búsqueda o categoría.</small>
         </div>
 
-        <div id="rejillaProductos" class="rejilla-productos"></div>
+        <div id="rejillaProductos" class="rejilla-productos catalogo-rejilla-directa"></div>
       </div>
+    </section>
+
+    <!-- Compatibilidad con la lógica existente de destacados. Se mantiene oculto
+         porque el nuevo diseño muestra todas las ofertas dentro del catálogo directo. -->
+    <section id="destacados" class="seccion-destacados compat-destacados" hidden aria-hidden="true">
+      <button id="botonVerDestacados" type="button" hidden>Destacados</button>
+      <button id="destacadosAnterior" type="button" hidden>Anterior</button>
+      <button id="destacadosSiguiente" type="button" hidden>Siguiente</button>
+      <div id="rejillaDestacados" hidden></div>
     </section>
   </main>
 
@@ -222,9 +179,9 @@
       </div>
       <div>
         <strong>Catálogo</strong>
-        <a href="#destacados">Destacados</a>
-        <a href="#categorias">Categorías</a>
         <a href="#productos">Productos</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#inicio">Inicio</a>
       </div>
       <div>
         <strong>Atención</strong>

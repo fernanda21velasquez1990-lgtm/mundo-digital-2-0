@@ -738,3 +738,83 @@ svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke
 .formulario-comprobante{width:100%;margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;text-align:left}.campo-archivo-comprobante{display:grid;gap:8px}.campo-archivo-comprobante>span{font-size:.78rem;font-weight:800;color:#c1c1ca}.campo-archivo-comprobante input{position:absolute;opacity:0;pointer-events:none}.vista-comprobante{min-height:82px;border:1px dashed #41414b;border-radius:15px;background:#15151a;display:flex;align-items:center;gap:13px;padding:15px;cursor:pointer}.vista-comprobante:hover{border-color:var(--naranja)}.vista-comprobante svg{width:30px;height:30px;color:var(--naranja)}.vista-comprobante div{display:grid;gap:4px}.vista-comprobante small{color:#858590}.vista-comprobante.seleccionado{border-style:solid;border-color:rgba(34,217,139,.5)}
 .pago-en-revision{width:100%;margin-top:18px;padding:22px;border:1px solid rgba(255,176,32,.35);border-radius:18px;background:rgba(255,176,32,.08);display:grid;justify-items:center;gap:8px}.icono-revision{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,176,32,.13);color:#ffb020}.pago-en-revision h4{margin:5px 0 0;font-size:1.3rem}.pago-en-revision p{margin:0!important}.pago-en-revision>strong{color:#ffcf72}
 @media(max-width:700px){.barra-tasa-contenido{padding:8px 0;flex-direction:column;gap:3px}.datos-metodo-final,.formulario-comprobante{grid-template-columns:1fr}.cabecera-instrucciones-pago{align-items:flex-start;flex-direction:column}.monto-exacto-pago{text-align:left}}
+
+/* =========================================================
+   FASE 4B — TIENDA PÚBLICA / CATÁLOGO DIRECTO
+   El producto es el protagonista desde el primer pantallazo.
+   ========================================================= */
+.catalogo-portada{
+  padding:34px 0 24px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  background:
+    linear-gradient(90deg,rgba(255,23,68,.075),transparent 40%,rgba(255,109,0,.045)),
+    rgba(10,10,13,.58);
+}
+.portada-linea{display:flex;align-items:center;justify-content:space-between;gap:34px}
+.portada-copy{max-width:720px}
+.portada-copy h1{margin:7px 0 8px;font-size:clamp(2.05rem,4vw,3.45rem);line-height:1;letter-spacing:-.045em}
+.portada-copy p{margin:0;max-width:700px;color:#a7a7b3;line-height:1.6;font-size:.96rem}
+.portada-datos{display:flex;gap:10px;flex:none}
+.portada-datos article{
+  min-width:156px;padding:15px 17px;border:1px solid var(--borde);border-radius:17px;
+  background:linear-gradient(145deg,#15151b,#101014);display:grid;gap:4px
+}
+.portada-datos strong{font-size:1.28rem;line-height:1.1}
+.portada-datos span{color:#858590;font-size:.72rem}
+.portada-ventajas{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px;color:#aaaab5;font-size:.78rem}
+.portada-ventajas span{display:flex;align-items:center;gap:7px}
+.portada-ventajas svg{width:15px;height:15px;color:var(--verde)}
+
+.catalogo-filtros{padding:34px 0 12px}
+.cabecera-catalogo-directo{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:18px}
+.cabecera-catalogo-directo h2{margin:6px 0 0;font-size:clamp(1.7rem,3vw,2.45rem);letter-spacing:-.035em}
+.cabecera-catalogo-directo p{margin:0 0 3px;color:#888894;font-size:.86rem}
+.tienda-buscador-directo{margin-bottom:14px}
+.tienda-buscador-directo .campo-busqueda{min-height:52px;border-radius:15px}
+.lista-categorias{padding-bottom:4px}
+
+.catalogo-directo-productos{padding:28px 0 78px}
+.catalogo-directo-encabezado{margin-bottom:20px;padding-top:2px}
+.catalogo-directo-encabezado h2{font-size:clamp(1.7rem,3.2vw,2.55rem)}
+.catalogo-rejilla-directa{grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.catalogo-rejilla-directa .tarjeta-producto{border-radius:19px}
+.catalogo-rejilla-directa .imagen-producto{height:205px}
+.catalogo-rejilla-directa .cuerpo-producto{padding:16px}
+.catalogo-rejilla-directa .cuerpo-producto h3{font-size:1.06rem;margin:7px 0 8px}
+.catalogo-rejilla-directa .descripcion-producto{font-size:.82rem;line-height:1.5;margin-bottom:13px;-webkit-line-clamp:2}
+.catalogo-rejilla-directa .meta-producto{margin-bottom:14px}
+.catalogo-rejilla-directa .precio-producto strong{font-size:1.34rem}
+.catalogo-rejilla-directa .boton-comprar{padding:0 12px;font-size:.78rem}
+.catalogo-rejilla-directa .acciones-producto button{height:39px}
+.catalogo-rejilla-directa .boton-detalle{width:39px}
+
+/* En catálogo directo los destacados aparecen con sus badges dentro de la rejilla principal. */
+.seccion-destacados.compat-destacados{display:none!important}
+
+/* Header más de tienda y menos de landing. */
+.cabecera-contenido{height:70px}
+.navegacion-tienda{gap:24px}
+
+@media(max-width:1120px){
+  .catalogo-rejilla-directa{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .portada-datos article{min-width:140px}
+}
+@media(max-width:860px){
+  .portada-linea{align-items:flex-start;flex-direction:column;gap:20px}
+  .portada-datos{width:100%}
+  .portada-datos article{flex:1}
+  .cabecera-catalogo-directo{align-items:flex-start;flex-direction:column;gap:8px}
+  .catalogo-rejilla-directa{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .catalogo-portada{padding:26px 0 20px}
+  .portada-copy h1{font-size:2.15rem}
+  .portada-datos{display:grid;grid-template-columns:1fr 1fr}
+  .portada-datos article{min-width:0;padding:13px}
+  .portada-datos strong{font-size:1.05rem}
+  .portada-ventajas{gap:10px 16px;margin-top:15px}
+  .catalogo-filtros{padding-top:26px}
+  .catalogo-directo-productos{padding-top:22px}
+  .catalogo-rejilla-directa{grid-template-columns:1fr}
+  .catalogo-rejilla-directa .imagen-producto{height:290px}
+}
