@@ -1,0 +1,58 @@
+MUNDO DIGITAL 2.0 — FASE 4F
+USUARIOS + CONFIGURACIÓN + REPORTES
+
+OBJETIVO
+Cerrar las últimas opciones del panel Administrador que todavía mostraban “se conectará en su fase”.
+
+ACTIVADO
+1. Usuarios
+   - Lista segura de usuarios (nunca muestra CLAVE_HASH).
+   - Roles y estado.
+   - Vendedor asociado.
+   - Crear usuario.
+   - Editar usuario.
+   - Restablecer contraseña escribiendo una nueva.
+   - Activar/desactivar acceso.
+   - Protección para no desactivar el único Administrador activo.
+
+2. Configuración
+   - Lee CONFIGURACION desde Google Sheets.
+   - Solo muestra configuraciones seguras.
+   - Oculta API keys, tokens, IDs privados y secretos.
+   - Solo permite editar filas marcadas EDITABLE = SI.
+   - Acceso directo a Tasa y pagos.
+
+3. Reportes
+   - Ventas registradas.
+   - Ingresos confirmados.
+   - Saldos pendientes.
+   - Total de clientes.
+   - Productos más vendidos.
+   - Métodos de pago.
+   - Ventas recientes.
+   - Exportación CSV e impresión.
+
+4. Navegación
+   - Usuarios, Configuración y Reportes ahora tienen páginas reales.
+   - Se eliminaron los enlaces de “siguiente fase”.
+   - Los accesos rápidos de Pagos e Inventario del Dashboard ahora abren sus páginas.
+   - El buscador del Dashboard reconoce Reportes, Usuarios y Configuración.
+
+ARCHIVOS PRINCIPALES NUEVOS
+- usuarios.html
+- configuracion.html
+- reportes.html
+- css/admin-final.css
+- js/admin-api.js
+- js/usuarios-admin.js
+- js/configuracion-admin.js
+- js/reportes-admin.js
+
+BACKEND
+- apps-script/Codigo.gs contiene el Código.gs COMPLETO actualizado sobre la Fase 4E.
+- No pegues funciones sueltas. Reemplaza el Código.gs completo por este archivo.
+
+IMPORTANTE
+- Después de reemplazar Código.gs, crea una NUEVA VERSIÓN de la implementación Web App en Apps Script.
+- Mantén la misma implementación para conservar la misma URL /exec.
+- Luego sube el proyecto web a GitHub y Vercel como normalmente.

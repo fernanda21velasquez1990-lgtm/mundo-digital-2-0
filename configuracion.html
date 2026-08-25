@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Configuración general de Mundo Digital 2.0"><title>Mundo Digital 2.0 | Configuración</title><link rel="stylesheet" href="css/panel.css"><link rel="stylesheet" href="css/admin-final.css"><script src="js/auth.js?v=acceso-vendedor-1"></script></head><body>
+<svg aria-hidden="true" class="svg-sprite">
+<symbol id="i-grid" viewbox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></symbol>
+<symbol id="i-users" viewbox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></symbol>
+<symbol id="i-box" viewbox="0 0 24 24"><path d="m21 8-9-5-9 5 9 5 9-5ZM3 8v8l9 5 9-5V8M12 13v8"></path></symbol>
+<symbol id="i-layers" viewbox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7l10-5ZM2 12l10 5 10-5M2 17l10 5 10-5"></path></symbol>
+<symbol id="i-cart" viewbox="0 0 24 24"><path d="M3 3h2l2.4 11.3a2 2 0 0 0 2 1.7H18a2 2 0 0 0 2-1.6L21 7H6M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM18 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"></path></symbol>
+<symbol id="i-wallet" viewbox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a3 3 0 0 0 0 6h15v10a2 2 0 0 1-2 2H5a3 3 0 0 1-3-3V6M16 13h4"></path></symbol>
+<symbol id="i-send" viewbox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"></path></symbol>
+<symbol id="i-clock" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></symbol>
+<symbol id="i-chart" viewbox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"></path></symbol>
+<symbol id="i-shield" viewbox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path><path d="m9 12 2 2 4-4"></path></symbol>
+<symbol id="i-settings" viewbox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4H21v4h-.09A1.7 1.7 0 0 0 19.4 15Z"></path></symbol>
+<symbol id="i-bell" viewbox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"></path></symbol>
+<symbol id="i-refresh" viewbox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66M20 4v7h-7"></path></symbol>
+<symbol id="i-menu" viewbox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></symbol>
+<symbol id="i-close" viewbox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"></path></symbol>
+<symbol id="i-plus" viewbox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></symbol>
+<symbol id="i-arrow" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></symbol>
+<symbol id="i-spark" viewbox="0 0 24 24"><path d="m12 2 1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2Z"></path><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"></path></symbol>
+<symbol id="i-search" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></symbol>
+<symbol id="i-logout" viewbox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path></symbol>
+<symbol id="i-check" viewbox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></symbol>
+</svg>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div id="capaOscura" class="capa-oscura"></div>
+<aside class="menu-lateral" id="menuLateral">
+<div class="marca-menu">
+<a aria-label="Ir al inicio" class="marca" href="dashboard.html">
+<span class="marca-orbita"><span>MD</span></span>
+<span class="marca-copy">
+<strong>Mundo Digital</strong>
+<small>CONTROL CENTER 2.0</small>
+</span>
+</a>
+<button aria-label="Cerrar menú" class="boton-icono cerrar-menu" id="botonCerrarMenu" type="button">
+<svg><use href="#i-close"></use></svg>
+</button>
+</div>
+<div class="estado-sistema">
+<span class="pulso"></span>
+<div>
+<strong>Sistema operativo</strong>
+<small>Servicios en línea</small>
+</div>
+<span class="latencia">24 ms</span>
+</div>
+<nav aria-label="Navegación principal" class="navegacion">
+<p class="grupo-menu">Centro de control</p>
+<a class="enlace-menu" href="dashboard.html">
+<span class="halo-icono"><svg><use href="#i-grid"></use></svg></span>
+<span class="texto-menu"><strong>Resumen</strong><small>Vista general</small></span>
+<span class="marca-activa"></span>
+</a>
+<p class="grupo-menu">Gestión comercial</p>
+<a class="enlace-menu" href="clientes.html">
+<span class="halo-icono"><svg><use href="#i-users"></use></svg></span>
+<span class="texto-menu"><strong>Clientes</strong><small>Contactos y compras</small></span>
+</a>
+<a class="enlace-menu" href="productos.html">
+<span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+<span class="texto-menu"><strong>Productos</strong><small>Catálogo digital</small></span>
+</a>
+<a class="enlace-menu" data-menu-page="catalogo-admin.html" href="catalogo-admin.html">
+<span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
+<span class="texto-menu"><strong>Catálogo y tienda</strong><small>Publicación de productos</small></span>
+</a>
+<a class="enlace-menu" href="canva.html"><span class="halo-icono"><svg><use href="#i-box"></use></svg></span><span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span></a>
+<a class="enlace-menu" href="proveedores.html"><span class="halo-icono"><svg><use href="#i-truck"></use></svg></span><span class="texto-menu"><strong>Proveedores</strong><small>Compras y renovaciones</small></span></a>
+<a class="enlace-menu" href="revendedores.html"><span class="halo-icono"><svg><use href="#i-store"></use></svg></span><span class="texto-menu"><strong>Revendedores</strong><small>Servicios y ganancias</small></span></a>
+<a class="enlace-menu" href="inventario.html">
+<span class="halo-icono"><svg><use href="#i-layers"></use></svg></span>
+<span class="texto-menu"><strong>Inventario</strong><small>Cuentas y accesos</small></span>
+<span class="chip-menu">12</span>
+</a>
+<a class="enlace-menu" href="ventas.html">
+<span class="halo-icono"><svg><use href="#i-cart"></use></svg></span>
+<span class="texto-menu"><strong>Ventas</strong><small>Pedidos y facturación</small></span>
+</a>
+<p class="grupo-menu">Operaciones</p>
+<a class="enlace-menu" href="pagos.html">
+<span class="halo-icono"><svg><use href="#i-wallet"></use></svg></span>
+<span class="texto-menu"><strong>Pagos</strong><small>Movimientos recibidos</small></span>
+</a>
+<a href="alertas-pagos.html">Alertas de pagos</a><a class="enlace-menu" data-menu-page="entregas.html" href="entregas.html">
+<span class="halo-icono"><svg><use href="#i-send"></use></svg></span>
+<span class="texto-menu"><strong>Entregas</strong><small>Archivos y credenciales</small></span>
+</a>
+<a class="enlace-menu" href="suscripciones.html">
+<span class="halo-icono"><svg><use href="#i-clock"></use></svg></span>
+<span class="texto-menu"><strong>Suscripciones</strong><small>Vencimientos</small></span>
+<span class="chip-menu alerta">4</span>
+</a>
+<a class="enlace-menu" href="renovaciones.html"><span class="halo-icono"><svg><use href="#i-bell"></use></svg></span><span class="texto-menu"><strong>Renovaciones</strong><small>Respuestas de clientes</small></span></a>
+<p class="grupo-menu">Herramientas nuevas</p>
+<a class="enlace-menu" href="telegram-proveedores.html"><span class="halo-icono"><span class="menu-emoji">📡</span></span><span class="texto-menu"><strong>Telegram Proveedores</strong><small>Bots, canales y compras</small></span></a>
+<a class="enlace-menu" href="publicidad.html"><span class="halo-icono"><span class="menu-emoji">🖼️</span></span><span class="texto-menu"><strong>Publicidad</strong><small>Imágenes y copies</small></span></a>
+<a class="enlace-menu" href="chat-admin.html"><span class="halo-icono"><span class="menu-emoji">💬</span></span><span class="texto-menu"><strong>Chat Vendedores</strong><small>Soporte interno</small></span></a>
+<p class="grupo-menu">Inteligencia</p>
+<a class="enlace-menu" href="reportes.html">
+<span class="halo-icono"><svg><use href="#i-chart"></use></svg></span>
+<span class="texto-menu"><strong>Reportes</strong><small>Análisis de resultados</small></span>
+</a>
+<a class="enlace-menu" href="usuarios.html">
+<span class="halo-icono"><svg><use href="#i-shield"></use></svg></span>
+<span class="texto-menu"><strong>Usuarios</strong><small>Accesos y permisos</small></span>
+</a>
+<a class="enlace-menu activo" href="configuracion.html">
+<span class="halo-icono"><svg><use href="#i-settings"></use></svg></span>
+<span class="texto-menu"><strong>Configuración</strong><small>Ajustes del sistema</small></span>
+<span class="marca-activa"></span></a>
+</nav>
+<div class="usuario-menu">
+<div class="avatar">A</div>
+<div class="usuario-copy"><strong>Administrador</strong><small>Cuenta principal</small></div>
+<button aria-label="Cerrar sesión" class="boton-icono boton-salir" id="botonCerrarSesion" type="button">
+<svg><use href="#i-logout"></use></svg>
+</button>
+</div>
+</aside>
+<main class="contenido-principal"><header class="barra-superior"><div class="cabecera-izquierda"><button id="botonAbrirMenu" class="boton-icono boton-menu-movil" type="button"><svg><use href="#i-menu"></use></svg></button><div><span class="sobrelinea">SISTEMA</span><h1>Configuración</h1></div></div><div class="cabecera-derecha"><button id="botonActualizar" class="boton-icono accion-cabecera" type="button" title="Actualizar"><svg><use href="#i-refresh"></use></svg></button></div></header><section class="admin-page">
+  <section class="admin-hero"><div class="admin-hero-row"><div><span class="sobrelinea">AJUSTES DEL SISTEMA</span><h2>Configuración <span>central.</span></h2><p>Edita únicamente los ajustes autorizados. Las claves privadas, tokens y datos internos sensibles no se muestran en esta pantalla.</p></div><div class="admin-actions"><a class="admin-btn" href="configuracion-tienda.html" style="text-decoration:none;display:inline-flex;align-items:center">Tasa y pagos</a><button id="btnGuardarConfig" class="admin-btn primary" type="button">Guardar cambios</button></div></div></section>
+  <section class="admin-kpis"><article class="admin-kpi"><span>Ajustes visibles</span><strong id="kConfigTotal">0</strong><small>Configuraciones seguras</small></article><article class="admin-kpi"><span>Editables</span><strong id="kConfigEdit">0</strong><small>Pueden modificarse aquí</small></article><article class="admin-kpi"><span>Protegidos</span><strong>OCULTOS</strong><small>Tokens y claves privadas</small></article><article class="admin-kpi"><span>Conexión</span><strong style="color:var(--green)">ACTIVA</strong><small>Google Sheets + Apps Script</small></article></section>
+  <section class="admin-panel"><div class="admin-panel-head"><div><h3>Preferencias de Mundo Digital 2.0</h3><p>Los cambios se guardan directamente en la pestaña CONFIGURACION de Google Sheets.</p></div></div><div id="configGrid" class="config-grid"><div class="admin-empty" style="grid-column:1/-1">Cargando configuración...</div></div></section>
+</section></main>
+<div id="toastAdmin" class="toast-admin"></div><script src="js/configuracion.js?v=fase5-final-1"></script><script src="js/admin-api.js?v=fase4f"></script><script src="js/configuracion-admin.js?v=fase4f"></script></body></html>
