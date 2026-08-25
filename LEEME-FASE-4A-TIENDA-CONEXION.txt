@@ -1,0 +1,13 @@
+MUNDO DIGITAL 2.0 — FASE 4A
+CORRECCIÓN DE CONEXIÓN DE LA TIENDA PÚBLICA
+
+Problema detectado:
+- El panel Administrador consultaba el Apps Script principal.
+- La tienda pública consultaba una URL de Apps Script diferente/anterior.
+- Por eso el Administrador veía 2 productos publicados y la tienda pública mostraba 0.
+
+Corrección:
+- js/tienda-config.js ahora usa la misma URL de Apps Script que js/configuracion.js.
+- tienda.html incluye versión de caché para forzar la carga del archivo actualizado.
+
+No cambia Apps Script, bots, panel Administrador ni panel Vendedor.
