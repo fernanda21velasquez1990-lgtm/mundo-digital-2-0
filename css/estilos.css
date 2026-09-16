@@ -87,3 +87,39 @@ html { font-size: 18px; }
   .mensaje-principal > p { font-size: 17px; }
   .encabezado-login h2 { font-size: 32px; }
 }
+
+/* =========================================================
+   RECUPERACIÓN DE CONTRASEÑA — MUNDO DIGITAL 2.0
+   ========================================================= */
+body.modal-abierto{overflow:hidden}
+.modal-recuperacion{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:22px}
+.modal-recuperacion.visible{display:flex}
+.modal-recuperacion-fondo{position:absolute;inset:0;background:rgba(3,3,6,.78);backdrop-filter:blur(9px)}
+.recuperacion-card{position:relative;z-index:1;width:min(100%,500px);max-height:calc(100vh - 44px);overflow:auto;padding:34px;border:1px solid rgba(255,114,0,.24);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015)),#111116;box-shadow:0 32px 100px rgba(0,0,0,.7)}
+.recuperacion-brillo{position:absolute;left:0;right:0;top:0;height:2px;background:var(--gradient)}
+.recuperacion-cerrar{position:absolute;right:17px;top:17px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;background:#19191e;color:#a9a9b1;cursor:pointer;transition:.2s ease}
+.recuperacion-cerrar:hover{color:#fff;border-color:rgba(255,114,0,.45);background:rgba(255,114,0,.08)}
+.recuperacion-cerrar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.recuperacion-cabecera{padding-right:44px}
+.recuperacion-cabecera>span{font-size:10px;letter-spacing:1.5px;color:var(--orange);font-weight:900}
+.recuperacion-cabecera h2{margin-top:9px;font-size:28px;letter-spacing:-.7px}
+.recuperacion-cabecera p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.6}
+.recuperacion-pasos{display:flex;align-items:center;justify-content:center;margin:25px 0 18px}
+.recuperacion-pasos span{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:#19191e;color:#6f7079;font-size:12px;font-weight:900;transition:.2s ease}
+.recuperacion-pasos span.activo{border-color:rgba(255,114,0,.45);color:#fff;background:rgba(255,114,0,.12)}
+.recuperacion-pasos span.actual{box-shadow:0 0 0 5px rgba(255,114,0,.06)}
+.recuperacion-pasos i{width:54px;height:1px;background:var(--line)}
+.recuperacion-mensaje{margin:0 0 18px}
+.recuperacion-form{display:none;margin-top:0}
+.recuperacion-form.activo{display:block;animation:md20EntradaRecuperacion .22s ease}
+@keyframes md20EntradaRecuperacion{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.recuperacion-form .grupo-campo{margin-bottom:15px}
+.recuperacion-ayuda{margin:-3px 0 18px;color:#858691;font-size:12px;line-height:1.55}
+.recuperacion-destino{margin:0 0 16px;padding:11px 13px;border:1px solid rgba(255,114,0,.16);border-radius:11px;background:rgba(255,114,0,.05);color:#b9bac2;font-size:12px;line-height:1.5}
+.recuperacion-destino strong{color:#ffae74}
+.campo-codigo input{font-size:22px!important;font-weight:900;letter-spacing:8px;text-align:center}
+.recuperacion-secundario,.recuperacion-volver{width:100%;margin-top:12px;padding:11px 12px;border:0;background:transparent;color:#ff9b51;font-size:12px;font-weight:750;cursor:pointer}
+.recuperacion-secundario:hover,.recuperacion-volver:hover{text-decoration:underline}
+.recuperacion-secundario:disabled{opacity:.55;cursor:not-allowed;text-decoration:none}
+.recuperacion-volver{margin-top:17px;padding-top:18px;border-top:1px solid var(--line);color:#898a94}
+@media(max-width:560px){.modal-recuperacion{padding:12px}.recuperacion-card{padding:28px 19px 22px;border-radius:20px}.recuperacion-cabecera{padding-right:38px}.recuperacion-cabecera h2{font-size:24px}.recuperacion-pasos i{width:38px}.campo-codigo input{letter-spacing:6px}}

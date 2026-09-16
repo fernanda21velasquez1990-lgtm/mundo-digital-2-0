@@ -14,6 +14,9 @@
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M15 8l3 3M17 6l3 3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   </svg>
 
   <div class="orbe orbe-rojo"></div>
@@ -75,7 +78,64 @@
     </section>
   </main>
 
-  <script src="js/configuracion.js?v=acceso-vendedor-1"></script>
-  <script src="js/login.js?v=acceso-vendedor-1"></script>
+  <div id="modalRecuperacion" class="modal-recuperacion" aria-hidden="true">
+    <div class="modal-recuperacion-fondo" data-cerrar-recuperacion></div>
+    <section class="recuperacion-card" role="dialog" aria-modal="true" aria-labelledby="tituloRecuperacion">
+      <div class="recuperacion-brillo"></div>
+      <button id="cerrarRecuperacion" class="recuperacion-cerrar" type="button" aria-label="Cerrar recuperación">
+        <svg><use href="#i-close"></use></svg>
+      </button>
+
+      <div class="recuperacion-cabecera">
+        <span>RECUPERAR ACCESO</span>
+        <h2 id="tituloRecuperacion">Restablece tu contraseña</h2>
+        <p id="textoRecuperacion">Te enviaremos un código de seguridad al correo registrado.</p>
+      </div>
+
+      <div class="recuperacion-pasos" aria-label="Progreso de recuperación">
+        <span class="activo" data-indicador-paso="1">1</span><i></i><span data-indicador-paso="2">2</span><i></i><span data-indicador-paso="3">3</span>
+      </div>
+
+      <div id="mensajeRecuperacion" class="mensaje recuperacion-mensaje" role="alert" aria-live="polite"></div>
+
+      <form id="formRecuperacionCorreo" class="recuperacion-form activo" novalidate>
+        <label class="grupo-campo" for="correoRecuperacion">
+          <span>Correo registrado</span>
+          <div class="campo"><svg><use href="#i-mail"></use></svg><input id="correoRecuperacion" type="email" placeholder="correo@ejemplo.com" autocomplete="email"></div>
+        </label>
+        <p class="recuperacion-ayuda">Usa el mismo correo asociado a tu usuario de Mundo Digital 2.0.</p>
+        <button id="botonEnviarCodigo" class="boton-ingresar" type="submit"><span>Enviar código</span><svg><use href="#i-arrow"></use></svg></button>
+      </form>
+
+      <form id="formRecuperacionCodigo" class="recuperacion-form" novalidate>
+        <div class="recuperacion-destino">Código enviado a <strong id="correoDestino"></strong></div>
+        <label class="grupo-campo" for="codigoRecuperacion">
+          <span>Código de 6 dígitos</span>
+          <div class="campo campo-codigo"><svg><use href="#i-key"></use></svg><input id="codigoRecuperacion" type="text" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="000000" autocomplete="one-time-code"></div>
+        </label>
+        <p class="recuperacion-ayuda">El código vence en 10 minutos.</p>
+        <button id="botonVerificarCodigo" class="boton-ingresar" type="submit"><span>Verificar código</span><svg><use href="#i-arrow"></use></svg></button>
+        <button id="botonReenviarCodigo" class="recuperacion-secundario" type="button">Reenviar código</button>
+      </form>
+
+      <form id="formNuevaContrasena" class="recuperacion-form" novalidate>
+        <label class="grupo-campo" for="nuevaContrasena">
+          <span>Nueva contraseña</span>
+          <div class="campo"><svg><use href="#i-lock"></use></svg><input id="nuevaContrasena" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password"></div>
+        </label>
+        <label class="grupo-campo" for="confirmarNuevaContrasena">
+          <span>Confirmar nueva contraseña</span>
+          <div class="campo"><svg><use href="#i-lock"></use></svg><input id="confirmarNuevaContrasena" type="password" placeholder="Repite la contraseña" autocomplete="new-password"></div>
+        </label>
+        <p class="recuperacion-ayuda">Debe tener mínimo 8 caracteres e incluir letras y números.</p>
+        <button id="botonCambiarContrasena" class="boton-ingresar" type="submit"><span>Cambiar contraseña</span><svg><use href="#i-check"></use></svg></button>
+      </form>
+
+      <button id="volverLoginRecuperacion" class="recuperacion-volver" type="button">← Volver al inicio de sesión</button>
+    </section>
+  </div>
+
+  <script src="js/configuracion.js?v=recuperacion-clave-2"></script>
+  <script src="js/login.js?v=recuperacion-clave-2"></script>
 </body>
 </html>

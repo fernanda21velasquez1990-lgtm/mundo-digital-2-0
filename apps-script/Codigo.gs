@@ -141,7 +141,14 @@ function obtenerEstructuraBase_() {
         "ESTADO",
         "ULTIMO_ACCESO",
         "CREADO_EN",
-        "ACTUALIZADO_EN"
+        "ACTUALIZADO_EN",
+        "RECUP_CODIGO_HASH",
+        "RECUP_CODIGO_EXPIRA",
+        "RECUP_INTENTOS",
+        "RECUP_TOKEN_HASH",
+        "RECUP_TOKEN_EXPIRA",
+        "RECUP_ULTIMO_ENVIO",
+        "RECUP_ULTIMO_CAMBIO"
       ]
     },
 
@@ -3777,6 +3784,19 @@ function doPost(e) {
     // LOGIN WEB — acción pública
     if(a==='loginWebMD20'){
       return respuestaJson_(autenticarUsuarioWebMD20_(c));
+    }
+
+    // RECUPERACIÓN DE CONTRASEÑA — acciones públicas controladas.
+    if(a==='solicitarRecuperacionContrasenaMD20'){
+      return respuestaJson_(solicitarRecuperacionContrasenaMD20_(c));
+    }
+
+    if(a==='verificarCodigoRecuperacionMD20'){
+      return respuestaJson_(verificarCodigoRecuperacionMD20_(c));
+    }
+
+    if(a==='restablecerContrasenaWebMD20'){
+      return respuestaJson_(restablecerContrasenaWebMD20_(c));
     }
 
     // Acción pública protegida por token individual.
@@ -10180,6 +10200,645 @@ function enviarMensajeVendedorPanelMD20_(token,mensaje){
   }catch(_e){}
 
   return {ok:true,registro:nmGuardarMensajeChat_(sesion.vendedorId,'VENDEDOR',mensaje)};
+}
+
+
+/**
+ * =========================================================
+ * MUNDO DIGITAL 2.0
+ * RECUPERACIÓN DE CONTRASEÑA POR CORREO
+ * =========================================================
+ * Flujo:
+ * 1) solicitarRecuperacionContrasenaMD20
+ * 2) verificarCodigoRecuperacionMD20
+ * 3) restablecerContrasenaWebMD20
+ *
+ * Seguridad:
+ * - Código de 6 dígitos con duración de 10 minutos.
+ * - Máximo 5 intentos por código.
+ * - Reenvío limitado a 60 segundos.
+ * - El código y el token se guardan únicamente como HMAC-SHA256.
+ * - El token de cambio de contraseña dura 15 minutos.
+ * - La contraseña final continúa guardándose solo como CLAVE_HASH.
+ */
+
+const MD20_RECUPERACION = {
+  MINUTOS_CODIGO: 10,
+  MINUTOS_TOKEN: 15,
+  MAX_INTENTOS: 5,
+  SEGUNDOS_REENVIO: 60,
+  COLUMNAS: [
+    'RECUP_CODIGO_HASH',
+    'RECUP_CODIGO_EXPIRA',
+    'RECUP_INTENTOS',
+    'RECUP_TOKEN_HASH',
+    'RECUP_TOKEN_EXPIRA',
+    'RECUP_ULTIMO_ENVIO',
+    'RECUP_ULTIMO_CAMBIO'
+  ]
+};
+
+/**
+ * Ejecuta una sola vez después de pegar esta versión.
+ * Añade únicamente las columnas que falten al final de USUARIOS.
+ * También solicita/valida el permiso de envío de correo de Apps Script.
+ */
+function prepararRecuperacionContrasenaMD20() {
+  const ui = SpreadsheetApp.getUi();
+
+  try {
+    const libro = md20LibroEstable_();
+    const hoja = libro.getSheetByName('USUARIOS');
+
+    if (!hoja) {
+      throw new Error('No existe la pestaña USUARIOS.');
+    }
+
+    asegurarColumnasRecuperacionMD20_(hoja);
+
+    // Esta llamada no envía mensajes, pero hace que Apps Script solicite
+    // el permiso necesario para MailApp al ejecutar la función por primera vez.
+    const cuota = MailApp.getRemainingDailyQuota();
+
+    SpreadsheetApp.flush();
+
+    ui.alert(
+      'Recuperación de contraseña lista',
+      'El módulo quedó preparado correctamente.\n\n' +
+        'Código: 6 dígitos / 10 minutos.\n' +
+        'Intentos: máximo 5.\n' +
+        'Token para cambio: 15 minutos.\n' +
+        'Cuota de correos disponible hoy: ' + cuota + '.\n\n' +
+        'No se modificó ningún usuario ni contraseña.',
+      ui.ButtonSet.OK
+    );
+  } catch (error) {
+    console.error(error);
+    ui.alert(
+      'No se pudo preparar la recuperación',
+      error.message || 'Ocurrió un error inesperado.',
+      ui.ButtonSet.OK
+    );
+  }
+}
+
+function asegurarColumnasRecuperacionMD20_(hoja) {
+  if (!hoja) {
+    throw new Error('No existe la pestaña USUARIOS.');
+  }
+
+  let encabezados = hoja
+    .getRange(1, 1, 1, hoja.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  MD20_RECUPERACION.COLUMNAS.forEach(nombre => {
+    if (!encabezados.includes(nombre)) {
+      const nuevaColumna = hoja.getLastColumn() + 1;
+
+      hoja
+        .getRange(1, nuevaColumna)
+        .setValue(nombre)
+        .setBackground('#111114')
+        .setFontColor('#FFFFFF')
+        .setFontWeight('bold')
+        .setHorizontalAlignment('center')
+        .setVerticalAlignment('middle')
+        .setWrap(true);
+
+      hoja.setColumnWidth(nuevaColumna, nombre.includes('HASH') ? 220 : 170);
+      encabezados.push(nombre);
+    }
+  });
+
+  const mapa = {};
+  encabezados.forEach((nombre, indice) => {
+    mapa[nombre] = indice + 1; // número de columna 1-based
+  });
+
+  return mapa;
+}
+
+function obtenerContextoRecuperacionMD20_(correo) {
+  correo = String(correo || '').trim().toLowerCase();
+
+  if (!correo || !validarCorreo_(correo)) {
+    throw new Error('Escribe un correo electrónico válido.');
+  }
+
+  const libro = md20LibroEstable_();
+  const hoja = libro.getSheetByName('USUARIOS');
+
+  if (!hoja) {
+    throw new Error('No existe la pestaña USUARIOS.');
+  }
+
+  const columnasRecuperacion = asegurarColumnasRecuperacionMD20_(hoja);
+  const encabezados = hoja
+    .getRange(1, 1, 1, hoja.getLastColumn())
+    .getDisplayValues()[0]
+    .map(v => String(v || '').trim().toUpperCase());
+
+  const idx = {};
+  encabezados.forEach((nombre, indice) => {
+    idx[nombre] = indice;
+  });
+
+  ['USUARIO_ID', 'NOMBRE_COMPLETO', 'USUARIO', 'CORREO', 'CLAVE_HASH', 'ROL_ID', 'ESTADO']
+    .forEach(nombre => {
+      if (typeof idx[nombre] === 'undefined') {
+        throw new Error('Falta la columna ' + nombre + ' en USUARIOS.');
+      }
+    });
+
+  let filaNumero = 0;
+  let filaDatos = null;
+
+  if (hoja.getLastRow() > 1) {
+    const registros = hoja
+      .getRange(2, 1, hoja.getLastRow() - 1, hoja.getLastColumn())
+      .getValues();
+
+    for (let i = 0; i < registros.length; i++) {
+      const correoGuardado = String(registros[i][idx.CORREO] || '')
+        .trim()
+        .toLowerCase();
+
+      if (correoGuardado && correoGuardado === correo) {
+        filaNumero = i + 2;
+        filaDatos = registros[i];
+        break;
+      }
+    }
+  }
+
+  return {
+    libro: libro,
+    hoja: hoja,
+    correo: correo,
+    encabezados: encabezados,
+    idx: idx,
+    colRec: columnasRecuperacion,
+    filaNumero: filaNumero,
+    filaDatos: filaDatos
+  };
+}
+
+function solicitarRecuperacionContrasenaMD20_(datos) {
+  datos = datos || {};
+  const correo = String(datos.correo || '').trim().toLowerCase();
+  const contexto = obtenerContextoRecuperacionMD20_(correo);
+
+  // Respuesta genérica para no revelar públicamente si un correo existe.
+  const respuestaGenerica = {
+    ok: true,
+    mensaje: 'Si el correo está registrado y activo, recibirás un código de verificación.',
+    expiraMinutos: MD20_RECUPERACION.MINUTOS_CODIGO
+  };
+
+  if (!contexto.filaNumero || !contexto.filaDatos) {
+    return respuestaGenerica;
+  }
+
+  const estado = String(contexto.filaDatos[contexto.idx.ESTADO] || '')
+    .trim()
+    .toUpperCase();
+
+  if (estado !== 'ACTIVO') {
+    return respuestaGenerica;
+  }
+
+  const col = contexto.colRec;
+  const ultimoEnvio = contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_ULTIMO_ENVIO)
+    .getValue();
+
+  const ahora = new Date();
+
+  if (ultimoEnvio instanceof Date && !isNaN(ultimoEnvio)) {
+    const transcurridos = Math.floor((ahora.getTime() - ultimoEnvio.getTime()) / 1000);
+
+    if (transcurridos < MD20_RECUPERACION.SEGUNDOS_REENVIO) {
+      const faltan = MD20_RECUPERACION.SEGUNDOS_REENVIO - transcurridos;
+      throw new Error('Espera ' + faltan + ' segundos antes de solicitar otro código.');
+    }
+  }
+
+  const codigo = String(Math.floor(100000 + Math.random() * 900000));
+  const codigoHash = generarHashRecuperacionMD20_(
+    'CODIGO|' + correo + '|' + codigo
+  );
+  const expira = new Date(
+    ahora.getTime() + MD20_RECUPERACION.MINUTOS_CODIGO * 60 * 1000
+  );
+
+  // Guardamos primero el código protegido. Si falla el correo, se limpia.
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_CODIGO_HASH)
+    .setValue(codigoHash);
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_CODIGO_EXPIRA)
+    .setValue(expira)
+    .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_INTENTOS)
+    .setValue(0);
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_HASH)
+    .clearContent();
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_EXPIRA)
+    .clearContent();
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_ULTIMO_ENVIO)
+    .setValue(ahora)
+    .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+
+  SpreadsheetApp.flush();
+
+  const nombre = String(
+    contexto.filaDatos[contexto.idx.NOMBRE_COMPLETO] || 'Usuario'
+  ).trim();
+
+  try {
+    enviarCodigoRecuperacionMD20_(correo, nombre, codigo);
+  } catch (error) {
+    limpiarCodigoRecuperacionMD20_(contexto);
+    SpreadsheetApp.flush();
+    throw new Error(
+      'No se pudo enviar el código por correo. Revisa la autorización de correo de Apps Script e inténtalo nuevamente.'
+    );
+  }
+
+  try {
+    const usuarioId = String(
+      contexto.filaDatos[contexto.idx.USUARIO_ID] || ''
+    ).trim();
+
+    registrarLogAdministrador_(
+      contexto.libro,
+      usuarioId,
+      'SOLICITAR_RECUPERACION_CONTRASENA',
+      'Se envió un código de recuperación al correo registrado.'
+    );
+  } catch (_e) {}
+
+  return {
+    ok: true,
+    mensaje: 'Código enviado. Revisa tu correo y escribe los 6 dígitos.',
+    correoOculto: ocultarCorreoRecuperacionMD20_(correo),
+    expiraMinutos: MD20_RECUPERACION.MINUTOS_CODIGO
+  };
+}
+
+function verificarCodigoRecuperacionMD20_(datos) {
+  datos = datos || {};
+  const correo = String(datos.correo || '').trim().toLowerCase();
+  const codigo = String(datos.codigo || '').trim().replace(/\D/g, '');
+
+  if (!/^\d{6}$/.test(codigo)) {
+    throw new Error('Escribe el código de 6 dígitos recibido por correo.');
+  }
+
+  const contexto = obtenerContextoRecuperacionMD20_(correo);
+
+  if (!contexto.filaNumero || !contexto.filaDatos) {
+    throw new Error('El código no es válido o ya venció.');
+  }
+
+  const estado = String(contexto.filaDatos[contexto.idx.ESTADO] || '')
+    .trim()
+    .toUpperCase();
+
+  if (estado !== 'ACTIVO') {
+    throw new Error('El código no es válido o ya venció.');
+  }
+
+  const col = contexto.colRec;
+  const codigoHashGuardado = String(
+    contexto.hoja
+      .getRange(contexto.filaNumero, col.RECUP_CODIGO_HASH)
+      .getValue() || ''
+  ).trim();
+  const expira = contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_CODIGO_EXPIRA)
+    .getValue();
+  let intentos = Number(
+    contexto.hoja
+      .getRange(contexto.filaNumero, col.RECUP_INTENTOS)
+      .getValue() || 0
+  );
+
+  if (
+    !codigoHashGuardado ||
+    !(expira instanceof Date) ||
+    isNaN(expira) ||
+    expira.getTime() < Date.now()
+  ) {
+    limpiarCodigoRecuperacionMD20_(contexto);
+    SpreadsheetApp.flush();
+    throw new Error('El código no es válido o ya venció. Solicita uno nuevo.');
+  }
+
+  if (intentos >= MD20_RECUPERACION.MAX_INTENTOS) {
+    limpiarCodigoRecuperacionMD20_(contexto);
+    SpreadsheetApp.flush();
+    throw new Error('Se agotaron los intentos. Solicita un código nuevo.');
+  }
+
+  const codigoHashIngresado = generarHashRecuperacionMD20_(
+    'CODIGO|' + correo + '|' + codigo
+  );
+
+  if (codigoHashIngresado !== codigoHashGuardado) {
+    intentos += 1;
+
+    contexto.hoja
+      .getRange(contexto.filaNumero, col.RECUP_INTENTOS)
+      .setValue(intentos);
+
+    if (intentos >= MD20_RECUPERACION.MAX_INTENTOS) {
+      limpiarCodigoRecuperacionMD20_(contexto, true);
+      SpreadsheetApp.flush();
+      throw new Error('Código incorrecto. Se agotaron los intentos; solicita uno nuevo.');
+    }
+
+    SpreadsheetApp.flush();
+    throw new Error(
+      'Código incorrecto. Te quedan ' +
+        (MD20_RECUPERACION.MAX_INTENTOS - intentos) +
+        ' intentos.'
+    );
+  }
+
+  const token =
+    Utilities.getUuid().replace(/-/g, '') +
+    Utilities.getUuid().replace(/-/g, '');
+  const tokenHash = generarHashRecuperacionMD20_(
+    'TOKEN|' + correo + '|' + token
+  );
+  const tokenExpira = new Date(
+    Date.now() + MD20_RECUPERACION.MINUTOS_TOKEN * 60 * 1000
+  );
+
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_HASH)
+    .setValue(tokenHash);
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_EXPIRA)
+    .setValue(tokenExpira)
+    .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+
+  limpiarCodigoRecuperacionMD20_(contexto, true);
+  SpreadsheetApp.flush();
+
+  return {
+    ok: true,
+    mensaje: 'Código correcto. Ahora crea tu nueva contraseña.',
+    tokenRecuperacion: token,
+    expiraMinutos: MD20_RECUPERACION.MINUTOS_TOKEN
+  };
+}
+
+function restablecerContrasenaWebMD20_(datos) {
+  datos = datos || {};
+
+  const correo = String(datos.correo || '').trim().toLowerCase();
+  const token = String(
+    datos.tokenRecuperacion || datos.token || ''
+  ).trim();
+  const nuevaContrasena = String(
+    datos.nuevaContrasena || datos.contrasena || ''
+  );
+  const confirmarContrasena = String(
+    datos.confirmarContrasena || datos.confirmacion || ''
+  );
+
+  if (!token || token.length < 40) {
+    throw new Error('La autorización para cambiar la contraseña no es válida.');
+  }
+
+  if (!validarContrasena_(nuevaContrasena)) {
+    throw new Error(
+      'La contraseña debe tener mínimo 8 caracteres e incluir letras y números.'
+    );
+  }
+
+  if (nuevaContrasena !== confirmarContrasena) {
+    throw new Error('Las contraseñas no coinciden.');
+  }
+
+  const contexto = obtenerContextoRecuperacionMD20_(correo);
+
+  if (!contexto.filaNumero || !contexto.filaDatos) {
+    throw new Error('La autorización para cambiar la contraseña no es válida o venció.');
+  }
+
+  const estado = String(contexto.filaDatos[contexto.idx.ESTADO] || '')
+    .trim()
+    .toUpperCase();
+
+  if (estado !== 'ACTIVO') {
+    throw new Error('Este usuario no tiene acceso activo.');
+  }
+
+  const col = contexto.colRec;
+  const tokenHashGuardado = String(
+    contexto.hoja
+      .getRange(contexto.filaNumero, col.RECUP_TOKEN_HASH)
+      .getValue() || ''
+  ).trim();
+  const tokenExpira = contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_EXPIRA)
+    .getValue();
+
+  if (
+    !tokenHashGuardado ||
+    !(tokenExpira instanceof Date) ||
+    isNaN(tokenExpira) ||
+    tokenExpira.getTime() < Date.now()
+  ) {
+    limpiarTokenRecuperacionMD20_(contexto);
+    SpreadsheetApp.flush();
+    throw new Error('La autorización venció. Solicita un código nuevo.');
+  }
+
+  const tokenHashIngresado = generarHashRecuperacionMD20_(
+    'TOKEN|' + correo + '|' + token
+  );
+
+  if (tokenHashIngresado !== tokenHashGuardado) {
+    throw new Error('La autorización para cambiar la contraseña no es válida.');
+  }
+
+  const usuario = String(
+    contexto.filaDatos[contexto.idx.USUARIO] || ''
+  )
+    .trim()
+    .toLowerCase();
+
+  if (!usuario) {
+    throw new Error('El usuario no tiene un nombre de acceso válido.');
+  }
+
+  const nuevoHash = generarHashContrasena_(usuario, nuevaContrasena);
+  const ahora = new Date();
+
+  contexto.hoja
+    .getRange(contexto.filaNumero, contexto.idx.CLAVE_HASH + 1)
+    .setValue(nuevoHash);
+
+  if (typeof contexto.idx.ULTIMO_ACCESO !== 'undefined') {
+    contexto.hoja
+      .getRange(contexto.filaNumero, contexto.idx.ULTIMO_ACCESO + 1)
+      .clearContent();
+  }
+
+  if (typeof contexto.idx.ACTUALIZADO_EN !== 'undefined') {
+    contexto.hoja
+      .getRange(contexto.filaNumero, contexto.idx.ACTUALIZADO_EN + 1)
+      .setValue(ahora)
+      .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+  }
+
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_ULTIMO_CAMBIO)
+    .setValue(ahora)
+    .setNumberFormat('dd/MM/yyyy HH:mm:ss');
+
+  limpiarCodigoRecuperacionMD20_(contexto, true);
+  limpiarTokenRecuperacionMD20_(contexto);
+
+  try {
+    const usuarioId = String(
+      contexto.filaDatos[contexto.idx.USUARIO_ID] || ''
+    ).trim();
+
+    registrarLogAdministrador_(
+      contexto.libro,
+      usuarioId,
+      'RESTABLECER_CONTRASENA_WEB',
+      'La contraseña fue cambiada mediante código de recuperación enviado al correo registrado.'
+    );
+  } catch (_e) {}
+
+  SpreadsheetApp.flush();
+
+  return {
+    ok: true,
+    mensaje: 'Contraseña actualizada correctamente. Ya puedes iniciar sesión.'
+  };
+}
+
+function enviarCodigoRecuperacionMD20_(correo, nombre, codigo) {
+  const minutos = MD20_RECUPERACION.MINUTOS_CODIGO;
+  const asunto = 'Código para recuperar tu contraseña — Mundo Digital 2.0';
+  const saludo = nombre ? 'Hola ' + nombre + ',' : 'Hola,';
+  const cuerpo =
+    saludo + '\n\n' +
+    'Recibimos una solicitud para cambiar la contraseña de tu acceso a Mundo Digital 2.0.\n\n' +
+    'Tu código de verificación es: ' + codigo + '\n\n' +
+    'El código vence en ' + minutos + ' minutos.\n' +
+    'Si no solicitaste este cambio, puedes ignorar este correo.\n\n' +
+    'Mundo Digital 2.0';
+
+  const html =
+    '<div style="font-family:Arial,sans-serif;background:#0b0b0f;padding:24px;color:#ffffff">' +
+      '<div style="max-width:520px;margin:auto;background:#15151b;border:1px solid #ff5a1f;border-radius:16px;padding:28px">' +
+        '<div style="font-size:13px;color:#ff7a3d;font-weight:bold;letter-spacing:1px">MUNDO DIGITAL 2.0</div>' +
+        '<h2 style="margin:10px 0 12px;color:#ffffff">Recuperación de contraseña</h2>' +
+        '<p style="color:#d7d7dc;line-height:1.6">' + escaparHtmlMD20_(saludo) + '</p>' +
+        '<p style="color:#d7d7dc;line-height:1.6">Recibimos una solicitud para cambiar la contraseña de tu acceso.</p>' +
+        '<div style="margin:24px 0;text-align:center">' +
+          '<div style="font-size:13px;color:#bdbdc7;margin-bottom:8px">Tu código de verificación</div>' +
+          '<div style="display:inline-block;background:#08080a;border:1px solid #ff1744;border-radius:12px;padding:16px 24px;font-size:32px;font-weight:bold;letter-spacing:8px;color:#ffffff">' + codigo + '</div>' +
+        '</div>' +
+        '<p style="color:#d7d7dc;line-height:1.6">Este código vence en <strong>' + minutos + ' minutos</strong>.</p>' +
+        '<p style="color:#9696a1;font-size:13px;line-height:1.6">Si no solicitaste este cambio, ignora este correo. Tu contraseña actual seguirá funcionando.</p>' +
+      '</div>' +
+    '</div>';
+
+  MailApp.sendEmail({
+    to: correo,
+    subject: asunto,
+    body: cuerpo,
+    htmlBody: html,
+    name: 'Mundo Digital 2.0'
+  });
+}
+
+function obtenerSecretoRecuperacionMD20_() {
+  const propiedades = PropertiesService.getScriptProperties();
+  const nombre = 'MUNDO_DIGITAL_RECOVERY_SECRET';
+  let secreto = propiedades.getProperty(nombre);
+
+  if (!secreto) {
+    secreto =
+      Utilities.getUuid() +
+      Utilities.getUuid() +
+      Utilities.getUuid();
+    propiedades.setProperty(nombre, secreto);
+  }
+
+  return secreto;
+}
+
+function generarHashRecuperacionMD20_(contenido) {
+  const firma = Utilities.computeHmacSha256Signature(
+    String(contenido || ''),
+    obtenerSecretoRecuperacionMD20_()
+  );
+
+  return firma
+    .map(byte => ((byte + 256) % 256).toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function limpiarCodigoRecuperacionMD20_(contexto, conservarIntentos) {
+  const col = contexto.colRec;
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_CODIGO_HASH)
+    .clearContent();
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_CODIGO_EXPIRA)
+    .clearContent();
+
+  if (!conservarIntentos) {
+    contexto.hoja
+      .getRange(contexto.filaNumero, col.RECUP_INTENTOS)
+      .clearContent();
+  }
+}
+
+function limpiarTokenRecuperacionMD20_(contexto) {
+  const col = contexto.colRec;
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_HASH)
+    .clearContent();
+  contexto.hoja
+    .getRange(contexto.filaNumero, col.RECUP_TOKEN_EXPIRA)
+    .clearContent();
+}
+
+function ocultarCorreoRecuperacionMD20_(correo) {
+  const partes = String(correo || '').split('@');
+  if (partes.length !== 2) return '';
+
+  const nombre = partes[0];
+  const dominio = partes[1];
+  const visible = nombre.slice(0, Math.min(2, nombre.length));
+  const ocultos = '*'.repeat(Math.max(3, nombre.length - visible.length));
+
+  return visible + ocultos + '@' + dominio;
+}
+
+function escaparHtmlMD20_(valor) {
+  return String(valor || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 
