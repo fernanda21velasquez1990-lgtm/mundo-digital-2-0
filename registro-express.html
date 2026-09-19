@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mundo Digital 2.0 | Productos</title>
+  <title>Mundo Digital 2.0 | Registro Express</title>
   <link rel="stylesheet" href="css/panel.css?v=fase4g-ui-1">
   <link rel="stylesheet" href="css/socios.css?v=fase4g-ui-1">
-  <link rel="stylesheet" href="css/productos.css?v=fase4g-ui-1">
+  <link rel="stylesheet" href="css/registro-express.css?v=2">
   <script src="js/auth.js?v=acceso-vendedor-1"></script>
 </head>
 <body>
@@ -30,8 +30,10 @@
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
     <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"/></symbol>
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
-    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/></symbol>
-    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4A8 8 0 1 1 20 11.5Z"/><path d="M8.5 7.5c.5 3 2.5 5 5.5 6"/></symbol>
+    <symbol id="i-team" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5M12 18h.01"/></symbol>
     <symbol id="i-truck" viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 9h4l3 4v4h-7z"/></symbol>
     <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l2-5h14l2 5M5 13v8h14v-8"/></symbol>
   </svg>
@@ -39,10 +41,7 @@
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div id="capaOscura" class="capa-oscura"></div>
 
   <aside id="menuLateral" class="menu-lateral">
-    <div class="marca-menu">
-      <a class="marca" href="dashboard.html"><span class="marca-orbita"><span>MD</span></span><span class="marca-copy"><strong>Mundo Digital</strong><small>CONTROL CENTER 2.0</small></span></a>
-      <button id="botonCerrarMenu" class="boton-icono cerrar-menu"><svg><use href="#i-close"></use></svg></button>
-    </div>
+    <div class="marca-menu"><a class="marca" href="dashboard.html"><span class="marca-orbita"><span>MD</span></span><span class="marca-copy"><strong>Mundo Digital</strong><small>CONTROL CENTER 2.0</small></span></a><button id="botonCerrarMenu" class="boton-icono cerrar-menu"><svg><use href="#i-close"></use></svg></button></div>
     <div class="estado-sistema"><span class="pulso"></span><div><strong>Sistema operativo</strong><small>Servicios en línea</small></div><span class="latencia">24 ms</span></div>
     <nav class="navegacion">
       <p class="grupo-menu">Centro de control</p>
@@ -56,22 +55,22 @@
         <span class="halo-icono"><svg><use href="#i-users"></use></svg></span>
         <span class="texto-menu"><strong>Clientes</strong><small>Contactos y compras</small></span>
       </a>
-      <a href="registro-express.html" class="enlace-menu" data-menu-page="registro-express.html">
+      <a href="registro-express.html" class="enlace-menu activo" data-menu-page="registro-express.html">
         <span class="halo-icono"><span class="menu-emoji">⚡</span></span>
         <span class="texto-menu"><strong>Registro express</strong><small>Alta rápida de servicios</small></span>
+        <span class="marca-activa"></span>
       </a>
-      <a href="productos.html" class="enlace-menu activo" data-menu-page="productos.html">
+      <a href="productos.html" class="enlace-menu" data-menu-page="productos.html">
         <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
         <span class="texto-menu"><strong>Productos</strong><small>Catálogo digital</small></span>
-      <span class="marca-activa"></span></a>
+      </a>
       <a href="catalogo-admin.html" class="enlace-menu" data-menu-page="catalogo-admin.html">
         <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
         <span class="texto-menu"><strong>Catálogo y tienda</strong><small>Publicación de productos</small></span>
       </a>
       <a href="canva.html" class="enlace-menu" data-menu-page="canva.html">
         <span class="halo-icono"><svg><use href="#i-box"></use></svg></span>
-        <span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span>
-      </a>
+        <span class="texto-menu"><strong>Panel de Canva</strong><small>Equipos y vencimientos</small></span></a>
       <a href="proveedores.html" class="enlace-menu" data-menu-page="proveedores.html">
         <span class="halo-icono"><svg><use href="#i-truck"></use></svg></span>
         <span class="texto-menu"><strong>Proveedores</strong><small>Compras y renovaciones</small></span>
@@ -130,71 +129,89 @@
   </aside>
 
   <main class="contenido-principal">
-    <header class="barra-superior">
-      <div class="cabecera-izquierda"><button id="botonAbrirMenu" class="boton-icono boton-menu-movil"><svg><use href="#i-menu"></use></svg></button><div><span class="sobrelinea">CATÁLOGO DIGITAL</span><h1>Productos</h1></div></div>
-      <div class="cabecera-derecha"><span id="estadoConexion" class="estado-conexion local">Comprobando conexión...</span><button id="botonActualizar" class="boton-icono accion-cabecera"><svg><use href="#i-refresh"></use></svg></button><button class="boton-icono accion-cabecera notificacion"><svg><use href="#i-bell"></use></svg><span>0</span></button></div>
+    <header class="cabecera-superior">
+      <div class="cabecera-izquierda"><button id="botonAbrirMenu" class="boton-icono boton-menu"><svg><use href="#i-menu"></use></svg></button><div><span class="sobrelinea">OPERACIÓN RÁPIDA</span><h1>Registro Express</h1></div></div>
+      <div class="cabecera-derecha"><span id="estadoConexion" class="estado-conexion local">Comprobando conexión...</span><button id="botonActualizar" class="boton-icono accion-cabecera"><svg><use href="#i-refresh"></use></svg></button></div>
     </header>
 
-    <section class="modulo-productos">
-      <section class="cabecera-productos">
-        <div><span class="sobrelinea">CATÁLOGO CENTRAL</span><h2>Productos <span>digitales</span></h2><p>Administra cursos, libros, agendas, streaming, accesos, archivos y servicios.</p></div>
-        <button id="botonNuevoProducto" class="boton-nuevo-socio"><svg><use href="#i-plus"></use></svg> Nuevo producto</button>
-      </section>
-
-      <section class="kpis-socios">
-        <article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-box"></use></svg></span><p>Total productos</p><h3 id="kpiTotal">0</h3><small>Registros del catálogo</small></article>
-        <article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-box"></use></svg></span><p>Productos activos</p><h3 id="kpiActivos">0</h3><small>Disponibles para vender</small></article>
-        <article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-layers"></use></svg></span><p>Con control de stock</p><h3 id="kpiStock">0</h3><small>Inventario controlado</small></article>
-        <article class="kpi-socio"><span class="kpi-socio-icono"><svg><use href="#i-wallet"></use></svg></span><p>Valor del catálogo</p><h3 id="kpiValor">0,00</h3><small>Suma de precios de venta</small></article>
-      </section>
-
-      <section class="panel-socios">
-        <div class="barra-herramientas-socios">
-          <label class="buscador-socios"><svg><use href="#i-search"></use></svg><input id="buscarProducto" type="search" placeholder="Buscar producto, categoría o tipo de entrega..."></label>
-          <select id="filtroCategoria" class="filtro-socios"><option value="TODAS">Todas las categorías</option></select>
-          <select id="filtroEstado" class="filtro-socios"><option value="TODOS">Todos los estados</option><option value="ACTIVO">Activos</option><option value="INACTIVO">Inactivos</option></select>
+    <section class="modulo-express">
+      <section class="hero-express">
+        <div>
+          <span class="sobrelinea">⚡ ALTA DE SERVICIO EN SEGUNDOS</span>
+          <h2>Registro <span>Express</span></h2>
+          <p>Registra cuenta, cliente y suscripción en un solo formulario. El sistema calcula automáticamente la fecha de vencimiento y reutiliza el cliente si ya existe con el mismo WhatsApp.</p>
         </div>
-        <div id="rejillaProductos" class="rejilla-productos"></div>
-        <div id="cargandoProductos" class="estado-tabla"><div class="cargando-puntos"><span></span><span></span><span></span></div><p>Cargando productos...</p></div>
-        <div id="estadoVacio" class="estado-tabla" hidden><span class="estado-tabla-icono"><svg><use href="#i-box"></use></svg></span><h3>No hay productos</h3><p>Crea el primer producto para comenzar tu catálogo.</p></div>
+        <div class="express-badge">1 formulario · 3 registros</div>
+      </section>
+
+      <form id="formRegistroExpress" class="express-form">
+        <section class="express-card">
+          <header><span class="express-step">01</span><div><h3>Cuenta y plataforma</h3><p>Credenciales que recibirá el cliente.</p></div></header>
+          <div class="cuadricula-formulario">
+            <div class="campo-formulario ancho-2"><label>Nombre de la plataforma <span>*</span></label><input id="plataforma" required placeholder="Ejemplo: Netflix, Prime Video, Disney+, Gemini"></div>
+            <div class="campo-formulario ancho-2"><label>Correo o usuario de la cuenta <span>*</span></label><input id="correoCuenta" required autocomplete="off" placeholder="correo@ejemplo.com o usuario"></div>
+            <div class="campo-formulario ancho-2"><label>Contraseña <span>*</span></label><div class="password-wrap"><input id="contrasena" type="password" required autocomplete="new-password"><button id="verContrasena" type="button" class="toggle-pass">Ver</button></div></div>
+            <div class="campo-formulario"><label>Perfil</label><input id="perfil" placeholder="Ejemplo: Perfil 1"></div>
+            <div class="campo-formulario"><label>PIN</label><input id="pin" inputmode="numeric" placeholder="Opcional"></div>
+          </div>
+        </section>
+
+        <section class="express-card">
+          <header><span class="express-step">02</span><div><h3>Cliente</h3><p>Datos para identificar y contactar al comprador.</p></div></header>
+          <div class="cuadricula-formulario">
+            <div class="campo-formulario ancho-2"><label>Nombre del cliente <span>*</span></label><input id="cliente" required placeholder="Nombre y apellido"></div>
+            <div class="campo-formulario ancho-2"><label>WhatsApp con código de país <span>*</span></label><input id="whatsapp" required inputmode="tel" placeholder="Ejemplo: 584121234567"></div>
+          </div>
+        </section>
+
+        <section class="express-card">
+          <header><span class="express-step">03</span><div><h3>Servicio y proveedor</h3><p>Selecciona el proveedor y el tiempo contratado.</p></div></header>
+          <div class="cuadricula-formulario">
+            <div class="campo-formulario ancho-2"><label>Proveedor</label><select id="proveedorId"><option value="">Sin proveedor</option><option value="__OTRO__">Otro / escribir manualmente</option></select></div>
+            <div id="campoProveedorManual" class="campo-formulario ancho-2" hidden><label>Nombre del proveedor</label><input id="proveedorManual" placeholder="Escribe el nombre del proveedor"></div>
+            <div class="campo-formulario ancho-3"><label>Meses de servicio <span>*</span></label><div id="selectorMeses" class="selector-meses"><button type="button" data-meses="1" class="activo">1 mes</button><button type="button" data-meses="2">2 meses</button><button type="button" data-meses="3">3 meses</button><button type="button" data-meses="6">6 meses</button><button type="button" data-meses="12">12 meses</button><button type="button" data-meses="otro">Otro</button></div><input id="mesesManual" class="meses-manual" type="number" min="1" max="36" value="1" hidden></div>
+            <div class="campo-formulario"><label>Fecha de inicio</label><input id="fechaInicio" type="date" readonly></div>
+            <div class="campo-formulario"><label>Fecha de vencimiento</label><input id="fechaVencimiento" type="date" readonly></div>
+            <div class="campo-formulario"><label>Tiempo contratado</label><input id="tiempoVista" readonly value="1 mes"></div>
+          </div>
+        </section>
+
+        <section class="express-resumen">
+          <div><span class="resumen-icono">⚡</span><div><strong>Todo se guardará de una vez</strong><small>Cliente + cuenta digital + suscripción</small></div></div>
+          <button id="botonGuardarExpress" class="boton-guardar express-submit" type="submit">Guardar registro express</button>
+        </section>
+      </form>
+
+      <section id="resultadoExpress" class="resultado-express" hidden>
+        <div class="resultado-check">✓</div>
+        <div class="resultado-contenido">
+          <span class="sobrelinea">REGISTRO CONFIRMADO</span>
+          <h3>Servicio guardado correctamente</h3>
+          <p id="resultadoMomento" class="resultado-momento"></p>
+          <div id="resultadoDatos" class="resultado-datos"></div>
+
+          <div class="mensaje-cliente-box">
+            <div class="mensaje-cliente-cabecera">
+              <div>
+                <strong>📲 Mensaje listo para el cliente</strong>
+                <small>Incluye credenciales y fecha de vencimiento del registro que acaba de guardarse.</small>
+              </div>
+            </div>
+            <textarea id="mensajeClienteExpress" class="mensaje-cliente-preview" rows="12" readonly></textarea>
+            <div class="resultado-acciones">
+              <button id="copiarMensajeExpress" class="boton-secundario-express" type="button">📋 Copiar mensaje</button>
+              <button id="whatsappMensajeExpress" class="boton-whatsapp-express" type="button">📲 Enviar por WhatsApp</button>
+            </div>
+          </div>
+        </div>
+        <button id="nuevoRegistroExpress" class="boton-guardar resultado-nuevo" type="button">Crear otro registro</button>
       </section>
     </section>
   </main>
 
-  <div id="modalProducto" class="modal-fondo" aria-hidden="true">
-    <section class="modal-socio modal-producto">
-      <header class="modal-cabecera"><div><span class="sobrelinea">FICHA DEL PRODUCTO</span><h2 id="tituloModal">Nuevo producto</h2></div><button id="botonCerrarModal" class="modal-cerrar"><svg><use href="#i-close"></use></svg></button></header>
-      <form id="formularioProducto" class="formulario-socio">
-        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Información principal</h3><div class="cuadricula-formulario">
-          <div class="campo-formulario ancho-2"><label>Nombre <span>*</span></label><input id="nombre" required></div>
-          <div class="campo-formulario"><label>Categoría <span>*</span></label><select id="categoriaId" required></select></div>
-          <div class="campo-formulario"><label>Tipo de producto</label><select id="tipoProducto"><option>DIGITAL</option><option>SUSCRIPCION</option><option>SERVICIO</option></select></div>
-          <div class="campo-formulario ancho-3"><label>Descripción</label><textarea id="descripcion"></textarea></div>
-        </div></section>
-
-        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Venta y entrega</h3><div class="cuadricula-formulario">
-          <div class="campo-formulario"><label>Tipo de entrega</label><select id="tipoEntrega"><option>PDF</option><option>ARCHIVO</option><option>ENLACE</option><option>CREDENCIALES</option><option>PLATAFORMA</option></select></div>
-          <div class="campo-formulario"><label>Precio de compra</label><input id="precioCompra" type="number" min="0" step="0.01" value="0"></div>
-          <div class="campo-formulario"><label>Precio de venta <span>*</span></label><input id="precioVenta" type="number" min="0" step="0.01" required></div>
-          <div class="campo-formulario"><label>Moneda</label><select id="moneda"><option>USD</option><option>VES</option><option>COP</option></select></div>
-          <div class="campo-formulario"><label>Duración en días</label><input id="duracionDias" type="number" min="0" step="1" value="0"></div>
-          <div class="campo-formulario"><label>Controlar stock</label><select id="controlarStock"><option value="NO">No</option><option value="SI">Sí</option></select></div>
-          <div class="campo-formulario"><label>Stock mínimo</label><input id="stockMinimo" type="number" min="0" step="1" value="0"></div>
-          <div class="campo-formulario"><label>Estado</label><select id="estado"><option>ACTIVO</option><option>INACTIVO</option></select></div>
-        </div></section>
-
-        <section class="seccion-formulario"><h3 class="seccion-formulario-titulo">Archivo e imagen</h3><div class="cuadricula-formulario">
-          <div class="campo-formulario ancho-2"><label>URL del archivo o enlace</label><input id="archivoId" placeholder="Enlace de Drive, curso o descarga"></div>
-          <div class="campo-formulario ancho-2"><label>URL de imagen</label><input id="imagenUrl" type="url" placeholder="https://..."></div>
-        </div></section>
-
-        <div class="modal-acciones"><button id="botonCancelar" class="boton-cancelar" type="button">Cancelar</button><button id="botonGuardar" class="boton-guardar" type="submit">Guardar producto</button></div>
-      </form>
-    </section>
-  </div>
-
-  <div id="mensajePanel" class="mensaje-flotante"></div>
+  <div id="mensajePanel" class="mensaje-flotante" role="alert" aria-live="polite"></div>
   <script src="js/configuracion.js?v=fase4g-ui-1"></script>
-  <script src="js/productos.js"></script>
+  <script src="js/admin-api.js"></script>
+  <script src="js/registro-express.js?v=3"></script>
 </body>
 </html>

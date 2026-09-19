@@ -1,0 +1,18 @@
+MUNDO DIGITAL 2.0 — RECUPERACIÓN DE CONTRASEÑA
+
+Este paquete conserva el proyecto completo y agrega la recuperación desde el login:
+1. Correo registrado.
+2. Código de 6 dígitos enviado por correo.
+3. Validación del código.
+4. Nueva contraseña y confirmación.
+5. Regreso al login.
+
+ARCHIVOS ACTUALIZADOS:
+- index.html
+- js/login.js
+- css/estilos.css
+- apps-script/Codigo.gs (copia de respaldo del backend ya instalado/probado)
+
+IMPORTANTE:
+- No necesitas volver a reemplazar Apps Script si ya instalaste y desplegaste la versión de recuperación.
+- El parámetro de versión de login.js fue actualizado para evitar que el navegador use el JavaScript viejo en caché.

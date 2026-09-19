@@ -1,0 +1,11 @@
+MUNDO DIGITAL 2.0 — REGISTRO EXPRESS WEB V10.6.20
+
+MEJORAS:
+- La confirmación verde permanece oculta hasta que Google Sheets confirma el guardado.
+- Al guardar correctamente se limpian los campos del formulario.
+- La confirmación muestra fecha y hora exacta del registro confirmado.
+- Se conserva una tarjeta con los datos del último registro confirmado.
+- Botón "Copiar mensaje" con credenciales, tiempo y vencimiento.
+- Botón "Enviar por WhatsApp" dirigido al número registrado del cliente.
+- Botón "Crear otro registro" vuelve a mostrar el formulario totalmente limpio.
+- No requiere cambios adicionales en Apps Script si ya está instalada V10.6.19.
